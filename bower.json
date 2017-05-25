@@ -7,6 +7,7 @@
   "ignore": [
     ".editorconfig",
     ".scss-lint.json",
+    ".gitignore",
     "circle.yml",
     "ft.yml",
     "Makefile",
