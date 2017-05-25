@@ -4,6 +4,15 @@
     "src/js/index.js",
     "src/scss/main.scss"
   ],
+  "ignore": [
+    ".editorconfig",
+    ".scss-lint.json",
+    "circle.yml",
+    "ft.yml",
+    "Makefile",
+    "package.json",
+    "secrets.js"
+  ],
   "dependencies": {
     "n-ui-foundations": "^1.2.3",
     "next-session-client": "^2.3.3"

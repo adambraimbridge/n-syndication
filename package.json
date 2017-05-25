@@ -1,7 +1,7 @@
 {
   "name": "@financial-times/n-syndication",
   "version": "0.0.0",
-  "main": "src/js/index.jsmake i",
+  "main": "src/js/index.js",
   "devDependencies": {
     "@financial-times/n-gage": "^1.1.6"
   },
@@ -11,5 +11,8 @@
         "node_modules/.bin/secret-squirrel"
       ]
     }
+  },
+  "engines": {
+    "node": "6.10.3"
   }
 }
