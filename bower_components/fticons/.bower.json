@@ -1,0 +1,14 @@
+{
+  "name": "fticons",
+  "homepage": "https://github.com/Financial-Times/fticons",
+  "version": "1.7.0",
+  "_release": "1.7.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.7.0",
+    "commit": "88b3aac930cdf2f2599b34b8ebfbf234f9f4bd1f"
+  },
+  "_source": "https://github.com/Financial-Times/fticons.git",
+  "_target": "v1.7.0",
+  "_originalSource": "fticons"
+}
