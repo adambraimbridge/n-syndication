@@ -4,7 +4,9 @@
   "main": "main.js",
   "devDependencies": {
     "@financial-times/n-gage": "^1.1.6",
-    "bower": "^1.8.0"
+    "bower": "^1.8.0",
+    "eslint": "^3.19.0",
+    "lintspaces-cli": "^0.6.0"
   },
   "config": {
     "pre-git": {
