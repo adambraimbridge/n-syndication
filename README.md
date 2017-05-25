@@ -1,4 +1,4 @@
-# Syndication
+# n-syndication [![CircleCI](https://circleci.com/gh/Financial-Times/n-syndication.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-syndication)
 
 This contains the implementation for the syndication indicator.  This indiciator is for users who subscribe to our [syndication platform](http://ftsyndication.com/).  Each article contains an attribute to display if it can be syndicated or not.  We then show a tick icon or a red icon that is supposed to look a bit like a stop sign to dislay the status.  They look like this:
 
