@@ -1,8 +1,8 @@
 {
   "name": "n-syndication",
   "main": [
-    "src/js/index.js",
-    "src/scss/main.scss"
+    "main.js",
+    "main.scss"
   ],
   "ignore": [
     ".editorconfig",

@@ -167,6 +167,6 @@ function init (flags){
 }
 
 export {
-	checkIfUserIsSyndicationCustomer,
-	init
+	init,
+	checkIfUserIsSyndicationCustomer
 }
