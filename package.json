@@ -1,0 +1,15 @@
+{
+  "name": "@financial-times/n-syndication",
+  "version": "0.0.0",
+  "main": "src/js/index.jsmake i",
+  "devDependencies": {
+    "@financial-times/n-gage": "^1.1.6"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [
+        "node_modules/.bin/secret-squirrel"
+      ]
+    }
+  }
+}

@@ -1,1 +1,7 @@
+.DS_Store
+.editorconfig
+.eslintrc.js
+.scss-lint.yml
+
 /bower_components/
+/node_modules/
