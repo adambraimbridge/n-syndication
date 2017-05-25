@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "src/js/index.js",
   "devDependencies": {
-    "@financial-times/n-gage": "^1.1.6"
+    "@financial-times/n-gage": "^1.1.6",
+    "bower": "^1.8.0"
   },
   "config": {
     "pre-git": {
