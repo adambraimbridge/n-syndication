@@ -15,7 +15,10 @@
     "secrets.js"
   ],
   "dependencies": {
-    "n-ui-foundations": "^1.2.3",
+    "n-ui-foundations": "^2.0.0-alpha",
     "next-session-client": "^2.3.3"
+  },
+  "resolutions": {
+    "o-colors": "^4.0.1"
   }
 }
