@@ -8,8 +8,8 @@
 .o-teaser__syndication-indicator--yes {
 	&:after {
 		content: 'Download';
-		color: white;
-		background-color: rgba(0, 0, 0, 0.85);
+		color: getColor('white');
+		background-color: rgba(getColor('black'), 0.85);
 		padding: 5px;
 		border-radius: 5px;
 		position: absolute;
@@ -43,9 +43,9 @@
 
 .syndi__download-options {
 	@include nUiZIndexFor('overlay');
-	background-color: rgba(black, 0.85);
+	background-color: rgba(getColor('black'), 0.85);
 	border-radius: 5px;
-	color: white;
+	color: getColor('white');
 	font-size: 16px;
 	padding: 5px 0;
 	position: absolute;
@@ -60,7 +60,7 @@
 	// (Using n-skip-link lets keyboard-navigating folks use syndication)
 	&:hover,
 	&:focus {
-		background: black;
+		background: getColor('black');
 		position: static;
 	}
 }
@@ -83,7 +83,7 @@
 	}
 	.syndi__link:hover,
 	.syndi__link:focus {
-		background: black;
+		background: getColor('black');
 		position: static;
 	}
 }
