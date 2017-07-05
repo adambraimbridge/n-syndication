@@ -1,5 +1,6 @@
 import {$$, $} from 'n-ui-foundations';
 import {products as getUserProducts, uuid as getUuid} from 'next-session-client';
+import {init as initRedux} from './redux';
 
 import newSyndicators from './new-synders';
 
@@ -117,6 +118,10 @@ function onAsyncContentLoaded (createSyndicator){
 }
 
 function init (flags){
+	if (flags.get('syndicationRedux')) {
+		return initRedux(flags);
+	}
+
 	if(!flags.get('syndication')){
 		return;
 	}
