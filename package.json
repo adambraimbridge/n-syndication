@@ -3,20 +3,17 @@
   "version": "0.0.0",
   "main": "main.js",
   "devDependencies": {
-    "@financial-times/n-gage": "^1.1.6",
+    "@financial-times/n-gage": "^1.8.18",
     "bower": "^1.8.0",
     "eslint": "^3.19.0",
     "lintspaces-cli": "^0.6.0"
   },
-  "config": {
-    "pre-git": {
-      "pre-commit": [
-        "make verify",
-        "node_modules/.bin/secret-squirrel"
-      ]
-    }
-  },
+  "config": {},
   "engines": {
     "node": "6.10.3"
+  },
+  "scripts": {
+    "precommit": "node_modules/.bin/secret-squirrel",
+    "prepush": "make verify -j3"
   }
 }
