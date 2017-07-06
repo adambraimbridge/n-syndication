@@ -3,45 +3,82 @@
 import { $$ } from 'n-ui-foundations';
 
 const ATTR_CONTENT_ID = 'data-content-id';
-const CSS_CLASS_PREFIX = 'o-syndication';
+const ATTR_SYNDICATED = 'data-syndicated';
+const CSS_CLASS_PREFIX = 'n-syndication';
 const SLC_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
+const SLC_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 
-const URI_RESOLVE_SYNDICATABLE_CONTENT = '/syndication/resolve';
-const URI_USER_STATUS = '/syndication/user-status';
+const DATA_STORE = [];
+const DATA_STORE_MAP = {};
 
 const EXCLUDE_ELEMENTS = {
 	BUTTON: true,
 	FORM: true
 };
 
+const SYNDICATION_INSERTION_RULES = {
+	'a': { fn: 'closest', slc: '.o-teaser__heading' },
+	'article': { fn: 'querySelector', slc: '.topper__headline' }
+};
+
+const URI_RESOLVE_SYNDICATABLE_CONTENT = '/syndication/resolve';
+const URI_USER_STATUS = '/syndication/user-status';
+
 function init (flags) {
 	if (!flags.get('syndicationRedux')) {
 		return;
 	}
 
-	const ELEMENTS = getSyndicatableItems();
-
-	const ITEM_IDS = getSyndicatableItemIDs(ELEMENTS);
-
 	getUserStatus().then(response => {
 		if (response !== null) {
-			resolveSyndicatableItems(ITEM_IDS)
-				.then(data => updatePage(data, ELEMENTS));
+			addEventListener('asyncContentLoaded', () => {
+				syndicate();
+			}, true);
+
+			return syndicate();
 		}
 	});
 }
 
+function findElementToSyndicate (el) {
+	if (el !== document.documentElement && !EXCLUDE_ELEMENTS[el.tagName.toUpperCase()]) {
+		for (let [match, rule] of Object.entries(SYNDICATION_INSERTION_RULES)) {
+			if (el.matches(match)) {
+				const targetElement = el[rule.fn](rule.slc);
+
+				if (targetElement) {
+					return targetElement;
+				}
+			}
+		}
+	}
+
+	return null;
+}
+
 function getSyndicatableItems () {
-	return $$(SLC_CONTENT_ID);
+	return $$(`${SLC_CONTENT_ID}${SLC_NOT_SYNDICATED}`);
 }
 
 function getSyndicatableItemIDs (items) {
-	let IDs = Array.from(items).map(item => item.getAttribute(ATTR_CONTENT_ID));
+	let IDs = Array.from(items).map(el => {
+		let ID = el.getAttribute(ATTR_CONTENT_ID);
+
+		// there is a case where an item has a `data-content-id` with no value.
+		// I can't figure it out right now, so temporary "fix"...
+		if (!ID && el.tagName.toUpperCase() === 'A') {
+			ID = el.getAttribute('href').split('/').pop();
+
+			el.setAttribute(ATTR_CONTENT_ID, ID);
+		}
+
+		return ID;
+	});
 
 	// Save time by sending only distinct content IDs
-	IDs = IDs.reduce((acc, item) => {
-		if (item) {
-			acc[item] = item;
+	IDs = IDs.reduce((acc, id) => {
+		if (id) {
+			acc[id] = id;
 		}
 
 		return acc;
@@ -82,6 +119,39 @@ function getUserStatus () {
 	});
 }
 
+function icon (item) {
+	return toElement(`<span class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${item.canBeSyndicated}" role="button"></span>`);
+}
+
+function refreshDataStore (data) {
+	const EXISTING = [];
+
+	data.forEach(item => {
+		if (item.id in DATA_STORE_MAP) {
+			EXISTING.push(item);
+
+			const existingIndex = DATA_STORE.findIndex(storeItem => storeItem.id === item.id);
+
+			if (existingIndex > -1) {
+				DATA_STORE[existingIndex] = item;
+			}
+		}
+
+		if (!EXISTING.includes(item)) {
+			DATA_STORE.push(item);
+		}
+
+		// replace with new content things may have changed
+		DATA_STORE_MAP[item.id] = item;
+	});
+
+	return {
+		DATA_STORE,
+		DATA_STORE_MAP,
+		EXISTING
+	};
+}
+
 function resolveSyndicatableItems (itemIDs) {
 	return fetch(URI_RESOLVE_SYNDICATABLE_CONTENT, {
 		body: JSON.stringify(itemIDs),
@@ -114,33 +184,66 @@ function resolveSyndicatableItems (itemIDs) {
 	});
 }
 
-function syndicate (item, elements) {
-	if (!elements.length) {
+function syndicate () {
+	const ELEMENTS = getSyndicatableItems();
+
+	const ITEM_IDS = getSyndicatableItemIDs(ELEMENTS);
+
+	return resolveSyndicatableItems(ITEM_IDS)
+		.then(data => {
+			refreshDataStore(data);
+
+			updatePage(ELEMENTS);
+		});
+}
+
+function syndicateElement (item, el) {
+	const element = findElementToSyndicate(el);
+
+	el.setAttribute(ATTR_SYNDICATED, 'true');
+
+	if (element !== null && element.getAttribute(ATTR_SYNDICATED) !== 'true') {
+		element.classList.add(CSS_CLASS_PREFIX);
+		element.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
+
+		element.prepend(icon(item));
+	}
+}
+
+function syndicateElements (item, els) {
+	if (!els.length) {
 		return;
 	}
 
-	elements.forEach(el => {
-		el.classList.add(CSS_CLASS_PREFIX);
-		el.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
-	});
+	els.forEach(el => syndicateElement(item, el));
 }
 
-function updatePage (data, elements) {
-	const elementsByContentID = Array.from(elements).reduce((acc, item) => {
-		const contentID = item.getAttribute(ATTR_CONTENT_ID);
+function toElement (html) {
+	const frag = document.createDocumentFragment();
+
+	const ct = document.createElement('div');
+
+	ct.innerHTML = html;
+
+	Array.from(ct.children).reverse().forEach(el => frag.prepend(el));
+
+	return frag;
+}
+
+function updatePage (els) {
+	const elementsByContentID = Array.from(els).reduce((acc, el) => {
+		const contentID = el.getAttribute(ATTR_CONTENT_ID);
 
 		if (!Array.isArray(acc[contentID])) {
 			acc[contentID] = [];
 		}
 
-		if (item !== document.documentElement && !EXCLUDE_ELEMENTS[item.tagName.toUpperCase()]) {
-			acc[contentID].push(item);
-		}
+		acc[contentID].push(el);
 
 		return acc;
 	}, {});
 
-	data.forEach(item => syndicate(item, elementsByContentID[item.id]));
+	DATA_STORE.forEach(item => syndicateElements(item, elementsByContentID[item.id]));
 }
 
 export { init };
