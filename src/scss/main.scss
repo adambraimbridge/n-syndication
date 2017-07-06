@@ -53,14 +53,13 @@
 .n-syndication-menu {
   background-color:  rgba(getColor('black'), 0.85);
   border-radius: 16px;
-  box-shadow: 4px 4px 8px rgba(getColor('black'), 0.35);
+  box-shadow: 4px 4px 8px rgba(getColor('black'), 0.55);
   max-height: 160px;
   min-height: 120px;
   max-width: 320px;
   min-width: 240px;
   position: absolute;
-  top: 32px;
-  left: 32px;
+  z-index: 1000;
   }
 .n-syndication-menu-ct {
   padding: 16px;
