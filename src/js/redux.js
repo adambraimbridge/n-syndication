@@ -2,11 +2,15 @@
 
 import { $$ } from 'n-ui-foundations';
 
+import { toElement } from './util';
+import { init as initContextMenu } from './context-menu';
+
 const ATTR_CONTENT_ID = 'data-content-id';
+const ATTR_CONTENT_TYPE = 'data-content-type';
 const ATTR_SYNDICATED = 'data-syndicated';
 const CSS_CLASS_PREFIX = 'n-syndication';
-const SLC_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
-const SLC_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
+const CSS_SELECTOR_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
+const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
@@ -31,9 +35,14 @@ function init (flags) {
 
 	getUserStatus().then(response => {
 		if (response !== null) {
-			addEventListener('asyncContentLoaded', () => {
-				syndicate();
-			}, true);
+			addEventListener('asyncContentLoaded', () => syndicate(), true);
+
+			initContextMenu({
+				attrContentID: ATTR_CONTENT_ID,
+				attrContentType: ATTR_CONTENT_TYPE,
+				cssClassPrefix: CSS_CLASS_PREFIX,
+				mouseEnterSelector: `.${CSS_CLASS_PREFIX}-icon`
+			});
 
 			return syndicate();
 		}
@@ -57,7 +66,7 @@ function findElementToSyndicate (el) {
 }
 
 function getSyndicatableItems () {
-	return $$(`${SLC_CONTENT_ID}${SLC_NOT_SYNDICATED}`);
+	return $$(`${CSS_SELECTOR_CONTENT_ID}${CSS_SELECTOR_NOT_SYNDICATED}`);
 }
 
 function getSyndicatableItemIDs (items) {
@@ -120,7 +129,7 @@ function getUserStatus () {
 }
 
 function icon (item) {
-	return toElement(`<span class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${item.canBeSyndicated}" role="button"></span>`);
+	return toElement(`<span class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${item.canBeSyndicated}" ${ATTR_CONTENT_ID}="${item.id}" ${ATTR_CONTENT_TYPE}="${item.type}" role="button"></span>`);
 }
 
 function refreshDataStore (data) {
@@ -200,6 +209,7 @@ function syndicate () {
 function syndicateElement (item, el) {
 	const element = findElementToSyndicate(el);
 
+	el.setAttribute(ATTR_CONTENT_TYPE, item.type);
 	el.setAttribute(ATTR_SYNDICATED, 'true');
 
 	if (element !== null && element.getAttribute(ATTR_SYNDICATED) !== 'true') {
@@ -207,6 +217,8 @@ function syndicateElement (item, el) {
 		element.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
 
 		element.prepend(icon(item));
+
+		element.setAttribute(ATTR_CONTENT_TYPE, item.type);
 	}
 }
 
@@ -216,18 +228,6 @@ function syndicateElements (item, els) {
 	}
 
 	els.forEach(el => syndicateElement(item, el));
-}
-
-function toElement (html) {
-	const frag = document.createDocumentFragment();
-
-	const ct = document.createElement('div');
-
-	ct.innerHTML = html;
-
-	Array.from(ct.children).reverse().forEach(el => frag.prepend(el));
-
-	return frag;
 }
 
 function updatePage (els) {
