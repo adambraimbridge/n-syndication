@@ -27,7 +27,7 @@ function actionContextMenu (evt) {
 	if (evt.target.matches(CSS_SELECTOR_FOR_MOUSEENTER)) {
 		CONTEXT_MENU_ANCHOR_ELEMENT = evt.target;
 
-		showAt(evt.target);
+		showAt(evt);
 	}
 	else {
 		if (CONTEXT_MENU_ELEMENT && (evt.target === CONTEXT_MENU_ELEMENT || CONTEXT_MENU_ELEMENT.contains(evt.target))) {
@@ -50,7 +50,7 @@ function createElement (options) {
 		</ul></nav>	
 	</div></div>`);
 
-	return CONTEXT_MENU_ELEMENT = frag.firstElementChild;
+	return frag.firstElementChild;
 }
 
 function generateDownloadURI (contentID) {
@@ -68,18 +68,23 @@ function hide () {
 	CONTEXT_MENU_ELEMENT = null;
 }
 
-function showAt (el) {
+function showAt (evt) {
 	if (visible()) {
 		hide();
 	}
 
-	createElement({
+	const el = evt.target;
+
+	CONTEXT_MENU_ELEMENT = createElement({
 		id: el.getAttribute(ATTR_CONTENT_ID),
 		title: el.nextElementSibling.textContent.trim(),
 		type: el.getAttribute(ATTR_CONTENT_TYPE)
 	});
 
 	document.body.append(CONTEXT_MENU_ELEMENT);
+
+	CONTEXT_MENU_ELEMENT.style.top = `${evt.pageY + 32}px`;
+	CONTEXT_MENU_ELEMENT.style.left = `${evt.pageX}px`;
 }
 
 function visible () {
