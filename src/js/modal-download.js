@@ -137,4 +137,13 @@ function visible () {
 	return !!(OVERLAY_MODAL_ELEMENT && document.body.contains(OVERLAY_MODAL_ELEMENT));
 }
 
-export { init };
+export {
+	createElement,
+	generateDownloadURI,
+	generateSaveURI,
+	hide,
+	init,
+	reposition,
+	show,
+	visible
+};
