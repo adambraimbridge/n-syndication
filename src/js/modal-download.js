@@ -1,8 +1,10 @@
 'use strict';
 
 //import { broadcast } from 'n-ui-foundations';
+import { listenTo } from 'o-viewport';
 
 import {
+	ATTR_ACTION,
 	CSS_CLASS_PREFIX,
 	CSS_CLASS_PREFIX_BUTTON,
 	CSS_CLASS_PREFIX_OVERLAY,
@@ -22,25 +24,30 @@ let OVERLAY_MODAL_ELEMENT;
 let OVERLAY_SHADOW_ELEMENT;
 
 function init () {
-	addEventListener('click', actionContextMenuFromClick, true);
+	addEventListener('click', actionModalFromClick, true);
 
-	addEventListener('keyup', actionContextMenuFromKeyboard, true);
+	addEventListener('keyup', actionModalFromKeyboard, true);
+	addEventListener('resize', reposition, true);
+
+	listenTo('resize');
 }
 
-function actionContextMenuFromClick (evt) {
+function actionModalFromClick (evt) {
 	if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
 		show(evt);
 	}
 	else {
 		if (visible()) {
-			if (evt.target.matches(`${CSS_CLASS_PREFIX_OVERLAY}-shadow`) || evt.target.matches(`${CSS_CLASS_PREFIX_OVERLAY}__close`)) {
+			const action = evt.target.getAttribute(ATTR_ACTION);
+
+			if (evt.target.matches(`.${CSS_CLASS_PREFIX_OVERLAY}-shadow`) || (action && action === 'close')) {
 				hide();
 			}
 		}
 	}
 }
 
-function actionContextMenuFromKeyboard (evt) {
+function actionModalFromKeyboard (evt) {
 	switch (evt.key) {
 		case 'Escape' :
 			hide();
@@ -57,16 +64,18 @@ function actionContextMenuFromKeyboard (evt) {
 
 function createElement (item) {
 
-	let frag = toElement(`<div class="${CSS_CLASS_PREFIX_OVERLAY}-shadow ${CSS_CLASS_PREFIX}-menu-shadow"></div>
-<div class="${CSS_CLASS_PREFIX_OVERLAY} ${CSS_CLASS_PREFIX_OVERLAY}--overlay ${CSS_CLASS_PREFIX_OVERLAY}--modal ${CSS_CLASS_PREFIX}-menu ${CSS_CLASS_PREFIX}-menu-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
+	let frag = toElement(`<div class="${CSS_CLASS_PREFIX_OVERLAY}-shadow ${CSS_CLASS_PREFIX}-shadow"></div>
+<div class="${CSS_CLASS_PREFIX_OVERLAY} ${CSS_CLASS_PREFIX_OVERLAY}--overlay ${CSS_CLASS_PREFIX_OVERLAY}--modal ${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
 	<header class="${CSS_CLASS_PREFIX_OVERLAY}__heading">
-		<a class="${CSS_CLASS_PREFIX_OVERLAY}__close" role="button" href="#void" aria-label="Close" title="Close" tabindex="0"></a>
+		<a class="${CSS_CLASS_PREFIX_OVERLAY}__close" data-action="close" role="button" href="#void" aria-label="Close" title="Close" tabindex="0"></a>
 		<span role="heading" class="${CSS_CLASS_PREFIX_OVERLAY}__title">${item.title}</span>
 	</header>
 	<section class="${CSS_CLASS_PREFIX_OVERLAY}__content">
 		<p>${OVERLAY_TEXT_DISCLAIMER}</p>
-		<a class="${CSS_CLASS_PREFIX}-button ${CSS_CLASS_PREFIX_BUTTON}"  data-action="save" href="${generateSaveURI(item[DATA_ID_PROPERTY])}">Save</a>
-		<a class="${CSS_CLASS_PREFIX}-button ${CSS_CLASS_PREFIX_BUTTON} ${CSS_CLASS_PREFIX_BUTTON}--standout" data-action="download" href="${generateDownloadURI(item[DATA_ID_PROPERTY])}">Download</a>
+		<div class="${CSS_CLASS_PREFIX}-actions">
+			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX_BUTTON}"  data-action="save" href="${generateSaveURI(item[DATA_ID_PROPERTY])}">Save for later</a>
+			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX_BUTTON} ${CSS_CLASS_PREFIX_BUTTON}--standout" data-action="download" href="${generateDownloadURI(item[DATA_ID_PROPERTY])}">Download</a>
+		</div>
 	</section>
 </div>`);
 
@@ -93,6 +102,20 @@ function hide () {
 	}
 }
 
+function reposition () {
+	if (!visible()) {
+		return;
+	}
+
+	const DOC_EL = document.documentElement;
+
+	let x = (DOC_EL.clientWidth / 2) - (OVERLAY_MODAL_ELEMENT.clientWidth / 2);
+	let y = Math.max((DOC_EL.clientHeight / 3) - (OVERLAY_MODAL_ELEMENT.clientHeight / 2), 100);
+
+	OVERLAY_MODAL_ELEMENT.style.left = `${x}px`;
+	OVERLAY_MODAL_ELEMENT.style.top = `${y}px`;
+}
+
 function show (evt) {
 	if (visible()) {
 		hide();
@@ -105,13 +128,7 @@ function show (evt) {
 
 	document.body.append(OVERLAY_FRAGMENT);
 
-	const DOC_EL = document.documentElement;
-
-	let x = (DOC_EL.clientWidth / 2) - (OVERLAY_MODAL_ELEMENT.clientWidth / 2);
-	let y = (DOC_EL.clientHeight / 3) - (OVERLAY_MODAL_ELEMENT.clientHeight / 2);
-
-	OVERLAY_MODAL_ELEMENT.style.left = `${x}px`;
-	OVERLAY_MODAL_ELEMENT.style.top = `${y}px`;
+	reposition();
 }
 
 function visible () {
