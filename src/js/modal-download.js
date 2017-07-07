@@ -1,6 +1,6 @@
 'use strict';
 
-import { broadcast } from 'n-ui-foundations';
+//import { broadcast } from 'n-ui-foundations';
 
 import {
 	CSS_CLASS_PREFIX,
@@ -107,8 +107,6 @@ function show (evt) {
 
 	const DOC_EL = document.documentElement;
 
-//	let x = scrollX + (DOC_EL.clientWidth / 2);
-//	let y = scrollY + (DOC_EL.clientHeight / 2);
 	let x = (DOC_EL.clientWidth / 2) - (OVERLAY_MODAL_ELEMENT.clientWidth / 2);
 	let y = (DOC_EL.clientHeight / 3) - (OVERLAY_MODAL_ELEMENT.clientHeight / 2);
 
