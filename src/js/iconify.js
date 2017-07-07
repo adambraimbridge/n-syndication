@@ -31,6 +31,10 @@ function init () {
 	return syndicate();
 }
 
+function createElement (item) {
+	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${item.canBeSyndicated}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" type="button"></button>`);
+}
+
 function findElementToSyndicate (el) {
 	if (el !== document.documentElement && !EXCLUDE_ELEMENTS[el.tagName.toUpperCase()]) {
 		for (let [match, rule] of Object.entries(SYNDICATION_INSERTION_RULES)) {
@@ -64,10 +68,6 @@ function getSyndicatableItemIDs (items) {
 	}, {});
 
 	return Object.keys(IDs);
-}
-
-function createElement (item) {
-	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${item.canBeSyndicated}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" type="button"></button>`);
 }
 
 function syndicate () {
@@ -124,4 +124,14 @@ function updatePage (els) {
 	broadcast(`${EVENT_PREFIX}.iconified`);
 }
 
-export { init };
+export {
+	createElement,
+	findElementToSyndicate,
+	getSyndicatableItems,
+	getSyndicatableItemIDs,
+	init,
+	syndicate,
+	syndicateElement,
+	syndicateElements,
+	updatePage
+};
