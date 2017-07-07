@@ -1,7 +1,9 @@
 .n-syndication-icon {
   @include oIconsGetIcon('minus', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
   background-color: rgba(getColor('slate'), 0.55);
+  border-color: transparent;
   border-radius: 20px;
+  border-width : 0;
   cursor: pointer;
   display: inline-block;
   height: 20px;
@@ -51,22 +53,23 @@
 // menu
 
 .n-syndication-menu {
-  background-color:  rgba(getColor('black'), 0.85);
-  border-radius: 16px;
-  box-shadow: 4px 4px 8px rgba(getColor('black'), 0.55);
-  max-height: 160px;
-  min-height: 120px;
-  max-width: 320px;
-  min-width: 240px;
+  //background-color:  rgba(getColor('black'), 0.85);
+  //border-radius: 16px;
+  //box-shadow: 4px 4px 8px rgba(getColor('black'), 0.55);
+  max-height: 200px;
+  min-height: 160px;
+  max-width: 420px;
+  min-width: 360px;
   position: absolute;
   z-index: 1000;
   }
 .n-syndication-menu-ct {
   padding: 16px;
   }
+/*
 .n-syndication-menu-title {
-  color: rgba(getColor('white'), 0.75);
-  font-size: 16px;
+  //color: rgba(getColor('white'), 0.75);
+  //font-size: 16px;
   }
 
 .n-syndication-menu-actions-ct {
@@ -80,9 +83,9 @@
   list-style: none;
   }
 .n-syndication-action {
-  background-color: rgba(getColor('sky'), 0.85);
+  background-color: rgba(getColor('teal'), 0.85);
   border: 1px solid rgba(getColor('white'), 0.55);
-  border-radius: 4px;
+  color: rgba(getColor('white'), 0.85);
   display: inline-block;
   margin: 2px;
   padding: 8px 16px 8px;
@@ -90,10 +93,11 @@
   transition: all 350ms ease-in-out;
   }
 .n-syndication-action:hover {
-  background-color: rgba(getColor('candy'), 0.85);
-  border-color: rgba(getColor('claret'), 0.55);
-  color: rgba(getColor('white'), 0.75);
+  background-color: rgba(getColor('white'), 0.85);
+  border-color: rgba(getColor('teal'), 0.55);
+  color: rgba(getColor('teal'), 0.75);
   }
+*/
 
 /** OLD VERSION **/
 
