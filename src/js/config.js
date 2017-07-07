@@ -1,5 +1,6 @@
 'use strict';
 
+export const ATTR_ACTION = 'data-action';
 export const ATTR_CONTENT_ID = 'data-content-id';
 export const ATTR_CONTENT_TYPE = 'data-content-type';
 export const ATTR_SYNDICATED = 'data-syndicated';
