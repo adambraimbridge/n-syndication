@@ -32,6 +32,7 @@ function getContentIDFromHTMLElement (el) {
 	return null;
 }
 
+/*
 function offset (el) {
 	const elements = offsetParents(el);
 
@@ -65,6 +66,7 @@ function offsetTop (el) {
 
 	return coords.reduce((n, v) => n + v, 0);
 }
+*/
 
 function toElement (html) {
 	const frag = document.createDocumentFragment();
@@ -82,9 +84,9 @@ function toElement (html) {
 export {
 	cheapClone,
 	getContentIDFromHTMLElement,
-	offset,
-	offsetLeft,
-	offsetParents,
-	offsetTop,
+//	offset,
+//	offsetLeft,
+//	offsetParents,
+//	offsetTop,
 	toElement
 };
