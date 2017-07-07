@@ -63,6 +63,8 @@ function actionModalFromKeyboard (evt) {
 }
 
 function createElement (item) {
+	let saveText = item.saved === true ? 'Already saved' : 'Save for later';
+	let saveButtonState = item.saved === true ? 'disabled' : '';
 
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX_OVERLAY}-shadow ${CSS_CLASS_PREFIX}-shadow"></div>
 <div class="${CSS_CLASS_PREFIX_OVERLAY} ${CSS_CLASS_PREFIX_OVERLAY}--overlay ${CSS_CLASS_PREFIX_OVERLAY}--modal ${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
@@ -73,7 +75,7 @@ function createElement (item) {
 	<section class="${CSS_CLASS_PREFIX_OVERLAY}__content">
 		<p>${OVERLAY_TEXT_DISCLAIMER}</p>
 		<div class="${CSS_CLASS_PREFIX}-actions">
-			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX_BUTTON}"  data-action="save" href="${generateSaveURI(item[DATA_ID_PROPERTY])}">Save for later</a>
+			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX_BUTTON}" data-action="save" ${saveButtonState} href="${generateSaveURI(item[DATA_ID_PROPERTY])}">${saveText}</a>
 			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX_BUTTON} ${CSS_CLASS_PREFIX_BUTTON}--standout" data-action="download" href="${generateDownloadURI(item[DATA_ID_PROPERTY])}">Download</a>
 		</div>
 	</section>
