@@ -36,7 +36,7 @@ module.exports = function (karma) {
 			'./src/js/**/*.js': ['webpack', 'sourcemap'],
 			'./test/**/*.spec.js': ['webpack', 'sourcemap']
 		},
-		webpack: require('./build/webpack.common.config'),
+		webpack: require('./webpack.config'),
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
