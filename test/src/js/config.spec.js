@@ -4,10 +4,8 @@ const { expect } = require('chai');
 
 const underTest = require('../../../src/js/config');
 
-const MODULE_ID = './src/js/config';
-
-describe(MODULE_ID, function () {
-	it('config should be an object', function () {
+describe('./src/js/config', function () {
+	it('config should be an Object', function () {
 		expect(underTest).to.be.an('object');
 	});
 });
