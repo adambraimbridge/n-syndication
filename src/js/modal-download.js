@@ -98,8 +98,8 @@ function hide () {
 
 		OVERLAY_SHADOW_ELEMENT.remove();
 
-		OVERLAY_FRAGMENT =
-		OVERLAY_MODAL_ELEMENT =
+		OVERLAY_FRAGMENT = null;
+		OVERLAY_MODAL_ELEMENT = null;
 		OVERLAY_SHADOW_ELEMENT = null;
 	}
 }
