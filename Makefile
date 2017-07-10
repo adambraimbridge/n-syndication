@@ -4,4 +4,8 @@ node_modules/@financial-times/n-gage/index.mk:
 
 -include node_modules/@financial-times/n-gage/index.mk
 
-test: verify
+test: verify unit-test
+
+unit-test:
+	@karma start karma.conf.js
+	@$(DONE)
