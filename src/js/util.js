@@ -32,42 +32,6 @@ function getContentIDFromHTMLElement (el) {
 	return null;
 }
 
-/*
-function offset (el) {
-	const elements = offsetParents(el);
-
-	const coords = elements.map(el => [el.offsetLeft || 0, el.offsetTop || 0]);
-
-	return coords.reduce((n, v) => [n[0] + v[0], n[1] + v[1]], [0, 0]);
-}
-
-function offsetLeft (el) {
-	const elements = offsetParents(el);
-
-	const coords = elements.map(el => el.offsetLeft || 0);
-
-	return coords.reduce((n, v) => n + v, 0);
-}
-
-function offsetParents (el) {
-	const elements = [el];
-
-	while (el = el.offsetParent) {
-		elements.push(el);
-	}
-
-	return elements;
-}
-
-function offsetTop (el) {
-	const elements = offsetParents(el);
-
-	const coords = elements.map(el => el.offsetTop || 0);
-
-	return coords.reduce((n, v) => n + v, 0);
-}
-*/
-
 function toElement (html) {
 	const frag = document.createDocumentFragment();
 
@@ -84,9 +48,5 @@ function toElement (html) {
 export {
 	cheapClone,
 	getContentIDFromHTMLElement,
-//	offset,
-//	offsetLeft,
-//	offsetParents,
-//	offsetTop,
 	toElement
 };
