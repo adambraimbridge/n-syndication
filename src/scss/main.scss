@@ -35,14 +35,21 @@
   background-color: rgba(getColor('jade'), 0.85);
   }
 
+.o-teaser--top-story .n-syndication-icon,
 .topper__headline .n-syndication-icon {
   border-radius: 40px;
   height: 40px;
   width: 40px;
   }
 
+.o-teaser--top-story .n-syndication-icon {
+  vertical-align: baseline;
+  }
+
+.o-teaser--hero .n-syndication-icon,
 .o-teaser--large .n-syndication-icon,
-.o-teaser--large-portrait .n-syndication-icon {
+.o-teaser--large-portrait .n-syndication-icon,
+.video-scroller__item-large .o-teaser--stacked .n-syndication-icon {
   border-radius: 28px;
   height: 28px;
   vertical-align: text-bottom;
