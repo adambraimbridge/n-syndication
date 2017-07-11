@@ -1,3 +1,10 @@
+
+$o-buttons-is-silent: false;
+@import 'o-buttons/main';
+
+$o-overlay-is-silent: false;
+@import 'o-overlay/main';
+
 .n-syndication-icon {
   @include oIconsGetIcon('minus', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
   background-color: rgba(getColor('slate'), 0.55);
