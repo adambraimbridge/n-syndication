@@ -19,7 +19,9 @@
   ],
   "dependencies": {
     "n-ui-foundations": "^2.3.0",
-    "next-session-client": "^2.3.3"
+    "next-session-client": "^2.3.3",
+    "o-buttons": ">=4.0.0 <6",
+    "o-overlay": "^2.0.0"
   },
   "resolutions": {
     "o-colors": "^4.0.1"
