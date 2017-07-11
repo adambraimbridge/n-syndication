@@ -65,19 +65,38 @@ $o-overlay-is-silent: false;
 
 // modal
 
+.n-syndication-modal-shadow {
+  @include oOverlayShadow();
+  }
 .n-syndication-modal {
+  @include oOverlay();
+
   max-height: 200px;
   min-height: 160px;
   max-width: 420px;
   min-width: 360px;
-  position: absolute;
+  //position: absolute;
   z-index: 1000;
+  }
+.n-syndication-modal-heading {
+  @include oOverlayHeading();
+  }
+.n-syndication-modal-close {
+  @include oOverlayClose();
+  }
+.n-syndication-modal-title {
+  @include oOverlayTitle();
+  }
+.n-syndication-modal-content {
+  @include oOverlayContent();
   }
 
 .n-syndication-actions {
   text-align: right;
   }
 .n-syndication-action {
+  @include oButtons(default, primary);
+
   min-width: 120px;
   text-align: center;
 }

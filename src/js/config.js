@@ -6,8 +6,6 @@ export const ATTR_CONTENT_TYPE = 'data-content-type';
 export const ATTR_SYNDICATED = 'data-syndicated';
 
 export const CSS_CLASS_PREFIX = 'n-syndication';
-export const CSS_CLASS_PREFIX_BUTTON = 'o-buttons';
-export const CSS_CLASS_PREFIX_OVERLAY = 'o-overlay';
 export const CSS_SELECTOR_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
 export const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 export const CSS_SELECTOR_SYNDATION_ICON = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_PREFIX}-icon`;
