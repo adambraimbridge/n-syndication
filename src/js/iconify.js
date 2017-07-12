@@ -39,6 +39,10 @@ function findElementToSyndicate (el) {
 	if (el !== document.documentElement && !EXCLUDE_ELEMENTS[el.tagName.toUpperCase()]) {
 		for (let [match, rule] of Object.entries(SYNDICATION_INSERTION_RULES)) {
 			if (el.matches(match)) {
+				if (!rule.fn && !rule.slc) {
+					return el;
+				}
+
 				const targetElement = el[rule.fn](rule.slc);
 
 				if (targetElement) {
@@ -81,9 +85,6 @@ function syndicate () {
 function syndicateElement (item, el) {
 	const element = findElementToSyndicate(el);
 
-	el.setAttribute(ATTR_CONTENT_TYPE, item.type);
-	el.setAttribute(ATTR_SYNDICATED, 'true');
-
 	if (element !== null && element.getAttribute(ATTR_SYNDICATED) !== 'true') {
 		element.classList.add(CSS_CLASS_PREFIX);
 		element.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
@@ -91,6 +92,11 @@ function syndicateElement (item, el) {
 		element.prepend(createElement(item));
 
 		element.setAttribute(ATTR_CONTENT_TYPE, item.type);
+	}
+
+	if (element !== el) {
+		el.setAttribute(ATTR_CONTENT_TYPE, item.type);
+		el.setAttribute(ATTR_SYNDICATED, 'true');
 	}
 }
 

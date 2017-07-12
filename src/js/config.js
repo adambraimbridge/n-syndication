@@ -38,7 +38,8 @@ export const OVERLAY_TEXT_DISCLAIMER = 'Please ensure you have considered your c
 
 export const SYNDICATION_INSERTION_RULES = {
 	'a': { fn: 'closest', slc: '.o-teaser__heading' },
-	'article': { fn: 'querySelector', slc: '.topper__headline' }
+	'article': { fn: 'querySelector', slc: '.topper__headline' },
+	'main.video': { fn: 'querySelector', slc: '.video__title' }
 };
 
 export const URI_PREFIX_DOWNLOAD = 'https://www.ft.com/syndication/download';
