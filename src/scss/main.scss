@@ -47,6 +47,7 @@
   vertical-align: baseline;
   }
 
+.hero__heading .n-syndication-icon,
 .o-teaser--hero .n-syndication-icon,
 .o-teaser--large .n-syndication-icon,
 .o-teaser--large-portrait .n-syndication-icon,
@@ -56,6 +57,10 @@
   height: 28px;
   vertical-align: text-bottom;
   width: 28px;
+  }
+
+.hero__heading .n-syndication-icon {
+  vertical-align: baseline;
   }
 
 // modal
