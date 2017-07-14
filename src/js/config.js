@@ -40,7 +40,8 @@ export const SYNDICATION_INSERTION_RULES = {
 	'a': { fn: 'closest', slc: '.o-teaser__heading' },
 	'article': { fn: 'querySelector', slc: '.topper__headline' },
 	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
-	'main.video': { fn: 'querySelector', slc: '.video__title' }
+	'main.video': { fn: 'querySelector', slc: '.video__title' },
+	'li.o-teaser__related-item': {}
 };
 
 export const URI_PREFIX_DOWNLOAD = 'https://www.ft.com/syndication/download';
