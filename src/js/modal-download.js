@@ -6,6 +6,7 @@ import { listenTo } from 'o-viewport';
 import {
 	ATTR_ACTION,
 	CSS_CLASS_PREFIX,
+	CSS_SELECTOR_ACTION_SAVE,
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
 	LABEL_ARIA_OVERLAY,
@@ -33,6 +34,11 @@ function init () {
 function actionModalFromClick (evt) {
 	if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
 		show(evt);
+	}
+	else if (evt.target.matches(CSS_SELECTOR_ACTION_SAVE)) {
+		save(evt);
+
+		hide();
 	}
 	else {
 		if (visible()) {
@@ -72,7 +78,7 @@ function createElement (item) {
 	</header>
 	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
 		<p>${OVERLAY_TEXT_DISCLAIMER}</p>
-		<div class="${CSS_CLASS_PREFIX}-actions">
+		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} href="${generateSaveURI(item[DATA_ID_PROPERTY])}">${saveText}</a>
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" href="${generateDownloadURI(item[DATA_ID_PROPERTY])}">Download</a>
 		</div>
@@ -116,6 +122,12 @@ function reposition () {
 	OVERLAY_MODAL_ELEMENT.style.top = `${y}px`;
 }
 
+function save (evt) {
+	const item = getItemByHTMLElement(evt.target);
+
+	item.saved = true;
+}
+
 function show (evt) {
 	if (visible()) {
 		hide();
@@ -143,5 +155,6 @@ export {
 	init,
 	reposition,
 	show,
+	save,
 	visible
 };
