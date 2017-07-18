@@ -6,6 +6,7 @@ export const ATTR_CONTENT_TYPE = 'data-content-type';
 export const ATTR_SYNDICATED = 'data-syndicated';
 
 export const CSS_CLASS_PREFIX = 'n-syndication';
+export const CSS_SELECTOR_ACTION_SAVE = `.${CSS_CLASS_PREFIX}-action[${ATTR_ACTION}="save"]`;
 export const CSS_SELECTOR_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
 export const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 export const CSS_SELECTOR_SYNDATION_ICON = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_PREFIX}-icon`;
@@ -44,5 +45,5 @@ export const SYNDICATION_INSERTION_RULES = {
 	'li.o-teaser__related-item': {}
 };
 
-export const URI_PREFIX_DOWNLOAD = 'https://www.ft.com/syndication/download';
-export const URI_PREFIX_SAVE = 'https://www.ft.com/syndication/save';
+export const URI_PREFIX_DOWNLOAD = '/syndication/download';
+export const URI_PREFIX_SAVE = '/syndication/save';
