@@ -45,5 +45,6 @@ export const SYNDICATION_INSERTION_RULES = {
 	'li.o-teaser__related-item': {}
 };
 
-export const URI_PREFIX_DOWNLOAD = '/syndication/download';
+//export const URI_PREFIX_DOWNLOAD = '/syndication/download';
+export const URI_PREFIX_DOWNLOAD = `${location.port ? '' : 'https://dl.syndication.ft.com'}/syndication/download`;
 export const URI_PREFIX_SAVE = '/syndication/save';
