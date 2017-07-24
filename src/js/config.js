@@ -46,5 +46,5 @@ export const SYNDICATION_INSERTION_RULES = {
 };
 
 //export const URI_PREFIX_DOWNLOAD = '/syndication/download';
-export const URI_PREFIX_DOWNLOAD = `${location.port ? '' : 'https://ft-next-syndication-dl.herokuapp.com'}/syndication/download`;
+export const URI_PREFIX_DOWNLOAD = `${location.port ? '' : 'https://dl.syndication.ft.com'}/syndication/download`;
 export const URI_PREFIX_SAVE = '/syndication/save';
