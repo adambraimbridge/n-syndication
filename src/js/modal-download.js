@@ -2,6 +2,7 @@
 
 //import { broadcast } from 'n-ui-foundations';
 import { listenTo } from 'o-viewport';
+import Superstore from 'superstore';
 
 import {
 	ATTR_ACTION,
@@ -10,6 +11,7 @@ import {
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
 	LABEL_ARIA_OVERLAY,
+	MAX_LOCAL_FORMAT_TIME_MS,
 	OVERLAY_TEXT_DISCLAIMER,
 	URI_PREFIX_DOWNLOAD,
 	URI_PREFIX_SAVE
@@ -18,9 +20,12 @@ import {
 import { toElement } from './util';
 import { getItemByHTMLElement } from './data-store';
 
+const localStore = new Superstore('local', 'syndication');
+
 let OVERLAY_FRAGMENT;
 let OVERLAY_MODAL_ELEMENT;
 let OVERLAY_SHADOW_ELEMENT;
+let DOWNLOAD_FORMAT;
 
 function init () {
 	addEventListener('click', actionModalFromClick, true);
@@ -89,11 +94,11 @@ function createElement (item) {
 }
 
 function generateDownloadURI (contentID) {
-	return `${URI_PREFIX_DOWNLOAD}/${contentID}`;
+	return `${URI_PREFIX_DOWNLOAD}/${contentID}${DOWNLOAD_FORMAT}`;
 }
 
 function generateSaveURI (contentID) {
-	return `${URI_PREFIX_SAVE}/${contentID}`;
+	return `${URI_PREFIX_SAVE}/${contentID}${DOWNLOAD_FORMAT}`;
 }
 
 function hide () {
@@ -133,14 +138,25 @@ function show (evt) {
 		hide();
 	}
 
-	OVERLAY_FRAGMENT = createElement(getItemByHTMLElement(evt.target));
+	localStore.get('download_format').then(val => {
+		if (val) {
+			if (Date.now() - val.time <= MAX_LOCAL_FORMAT_TIME_MS) {
+				DOWNLOAD_FORMAT = `?format=${val.format}`;
+			}
+			else {
+				DOWNLOAD_FORMAT = '';
+			}
+		}
 
-	OVERLAY_MODAL_ELEMENT = OVERLAY_FRAGMENT.lastElementChild;
-	OVERLAY_SHADOW_ELEMENT = OVERLAY_FRAGMENT.firstElementChild;
+		OVERLAY_FRAGMENT = createElement(getItemByHTMLElement(evt.target));
 
-	document.body.append(OVERLAY_FRAGMENT);
+		OVERLAY_MODAL_ELEMENT = OVERLAY_FRAGMENT.lastElementChild;
+		OVERLAY_SHADOW_ELEMENT = OVERLAY_FRAGMENT.firstElementChild;
 
-	reposition();
+		document.body.append(OVERLAY_FRAGMENT);
+
+		reposition();
+	});
 }
 
 function visible () {
