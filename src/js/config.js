@@ -35,6 +35,9 @@ export const FETCH_OPTIONS_USER_STATUS = {
 };
 
 export const LABEL_ARIA_OVERLAY = 'Download: ';
+
+export const MAX_LOCAL_FORMAT_TIME_MS = 300000;
+
 export const OVERLAY_TEXT_DISCLAIMER = 'Please ensure you have considered your contractual rights before republishing';
 
 export const SYNDICATION_INSERTION_RULES = {
@@ -48,3 +51,4 @@ export const SYNDICATION_INSERTION_RULES = {
 //export const URI_PREFIX_DOWNLOAD = '/syndication/download';
 export const URI_PREFIX_DOWNLOAD = `${location.port ? '' : 'https://dl.syndication.ft.com'}/syndication/download`;
 export const URI_PREFIX_SAVE = '/syndication/save';
+
