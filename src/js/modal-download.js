@@ -147,6 +147,9 @@ function show (evt) {
 				DOWNLOAD_FORMAT = '';
 			}
 		}
+		else {
+			DOWNLOAD_FORMAT = '';
+		}
 
 		OVERLAY_FRAGMENT = createElement(getItemByHTMLElement(evt.target));
 
