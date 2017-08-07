@@ -50,6 +50,8 @@ function actionModalFromClick (evt) {
 			const action = evt.target.getAttribute(ATTR_ACTION);
 
 			if (evt.target.matches(`.${CSS_CLASS_PREFIX}-modal-shadow`) || (action && action === 'close')) {
+				evt.preventDefault();
+
 				hide();
 			}
 		}
@@ -78,7 +80,7 @@ function createElement (item) {
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
 <div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
 	<header class="${CSS_CLASS_PREFIX}-modal-heading">
-		<a class="${CSS_CLASS_PREFIX}-modal-close" data-action="close" role="button" href="#void" aria-label="Close" title="Close" tabindex="0"></a>
+		<a class="${CSS_CLASS_PREFIX}-modal-close" data-action="close" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
 		<span role="heading" class="${CSS_CLASS_PREFIX}-modal-title">${item.title}</span>
 	</header>
 	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
