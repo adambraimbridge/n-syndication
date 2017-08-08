@@ -247,7 +247,7 @@
   }
 
 .o-header__drawer-menu-item .n-syndication-republishing {
-  background-color: rgba(getColor('claret'), .75);
+  background-color: rgba(getColor('claret'), 0.75);
   transition: all 250ms ease-in-out;
 
   &:hover {
