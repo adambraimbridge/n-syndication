@@ -226,3 +226,32 @@
     position: static;
     }
   }
+
+.n-syndication-republishing {
+  background-color: rgba(getColor('claret'), 1);
+  color: getColor('white');
+  font-weight: bold;
+  }
+
+.o-header__nav-item .n-syndication-republishing {
+  padding-left: 12px;
+  padding-right: 12px;
+
+  &:hover {
+    color: getColor('white');
+
+    &:after {
+      background-color: getColor('white');
+      }
+    }
+  }
+
+.o-header__drawer-menu-item .n-syndication-republishing {
+  background-color: rgba(getColor('claret'), .75);
+  transition: all 250ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(getColor('claret'), 1);
+    color: getColor('white');
+    }
+  }
