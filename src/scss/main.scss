@@ -122,6 +122,7 @@
   }
 .n-syndication-modal-content {
   @include oOverlayContent();
+  padding-top: 0;
   }
 
 .n-syndication-actions {
