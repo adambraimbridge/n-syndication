@@ -7,12 +7,14 @@ import Superstore from 'superstore';
 import {
 	ATTR_ACTION,
 	CSS_CLASS_PREFIX,
+	CSS_SELECTOR_ACTION_DOWNLOAD,
 	CSS_SELECTOR_ACTION_SAVE,
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
 	LABEL_ARIA_OVERLAY,
 	MAX_LOCAL_FORMAT_TIME_MS,
-	OVERLAY_TEXT_DISCLAIMER,
+	MESSAGES,
+	MS_DELAY_HIDE,
 	URI_PREFIX_DOWNLOAD,
 	URI_PREFIX_SAVE
 } from './config';
@@ -44,6 +46,17 @@ function actionModalFromClick (evt) {
 		save(evt);
 
 		hide();
+
+		show(evt);
+
+		delayHide();
+	}
+	else if (evt.target.matches(CSS_SELECTOR_ACTION_DOWNLOAD)) {
+		hide();
+
+		show(evt);
+
+		delayHide();
 	}
 	else {
 		if (visible()) {
@@ -52,7 +65,7 @@ function actionModalFromClick (evt) {
 			if (evt.target.matches(`.${CSS_CLASS_PREFIX}-modal-shadow`) || (action && action === 'close')) {
 				evt.preventDefault();
 
-				hide();
+				delayHide();
 			}
 		}
 	}
@@ -75,7 +88,49 @@ function actionModalFromKeyboard (evt) {
 
 function createElement (item) {
 	let saveText = item.saved === true ? 'Already saved' : 'Save for later';
+	let downloadButtonState = '';
+	let downloadHref = generateDownloadURI(item[DATA_ID_PROPERTY]);
+	let downloadText = 'Download';
 	let saveButtonState = item.saved === true ? 'disabled' : '';
+	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
+	let message;
+
+	if (item.canBeSyndicated === 'verify') {
+		downloadButtonState = 'disabled';
+		message = MESSAGES.MSG_2200;
+	}
+	else if (item.canBeSyndicated === 'no' || item.canBeSyndicated === null) {
+		downloadButtonState = 'disabled';
+		saveButtonState = 'disabled';
+		saveHref = '#';
+		saveText = 'Save unavailable';
+		message = MESSAGES.MSG_4000;
+	}
+	else if (item.downloaded === true) {
+		message = MESSAGES.MSG_2100;
+	}
+	else if (item.canDownload < 1) {
+		downloadButtonState = 'disabled';
+
+		switch (item.canDownload) {
+			case 0:
+				message = MESSAGES.MSG_4200.replace(/\{\{type\}\}/gi, item.type);
+
+				break;
+			case -1:
+				message = MESSAGES.MSG_4100;
+
+				break;
+		}
+	}
+	else {
+		message = MESSAGES.MSG_2000;
+	}
+
+	if (downloadButtonState === 'disabled') {
+		downloadHref = '#';
+		downloadText += ' unavailable';
+	}
 
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
 <div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
@@ -84,15 +139,24 @@ function createElement (item) {
 		<span role="heading" class="${CSS_CLASS_PREFIX}-modal-title">${item.title}</span>
 	</header>
 	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
-		<p>${OVERLAY_TEXT_DISCLAIMER}</p>
+		${message}
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} href="${generateSaveURI(item[DATA_ID_PROPERTY])}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" href="${generateDownloadURI(item[DATA_ID_PROPERTY])}">Download</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} href="${saveHref}">${saveText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
 
 	return frag;
+}
+
+function delayHide (ms = MS_DELAY_HIDE) {
+	let tid = setTimeout(() => {
+		clearTimeout(tid);
+		tid = null;
+
+		hide();
+	}, ms);
 }
 
 function generateDownloadURI (contentID) {
