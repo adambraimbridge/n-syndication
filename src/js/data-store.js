@@ -23,7 +23,7 @@ function fetchItems (itemIDs) {
 		body: JSON.stringify(itemIDs)
 	});
 
-	return fetch(FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT, options).then(response => {
+	return fetch(`${FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT}${location.search}`, options).then(response => {
 		if (response.ok) {
 			return response.json().then(items => {
 				broadcast(`${EVENT_PREFIX}.fetch`, {
