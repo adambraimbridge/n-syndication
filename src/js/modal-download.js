@@ -52,6 +52,8 @@ function actionModalFromClick (evt) {
 		delayHide();
 	}
 	else if (evt.target.matches(CSS_SELECTOR_ACTION_DOWNLOAD)) {
+		download(evt);
+
 		hide();
 
 		show(evt);
@@ -157,6 +159,12 @@ function delayHide (ms = MS_DELAY_HIDE) {
 
 		hide();
 	}, ms);
+}
+
+function download (evt) {
+	const item = getItemByHTMLElement(evt.target);
+
+	item.downloaded = true;
 }
 
 function generateDownloadURI (contentID) {
