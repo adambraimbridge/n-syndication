@@ -54,10 +54,6 @@ function actionModalFromClick (evt) {
 	else if (evt.target.matches(CSS_SELECTOR_ACTION_DOWNLOAD)) {
 		download(evt);
 
-		hide();
-
-		show(evt);
-
 		delayHide();
 	}
 	else {
