@@ -15,7 +15,7 @@
 
 .n-syndication-icon.n-syndication-icon-state-no,
 .n-syndication-icon.n-syndication-icon-state-verify,
-.n-syndication-icon.n-syndication-icon-state-withContributorPayment,
+.n-syndication-icon.n-syndication-icon-state-withcontributorpayment,
 .n-syndication-icon.n-syndication-icon-state-yes {
   vertical-align: text-top;
   }
@@ -25,13 +25,13 @@
   }
 
 .n-syndication-icon-state-verify,
-.n-syndication-icon-state-withContributorPayment,
+.n-syndication-icon-state-withcontributorpayment,
 .n-syndication-icon-state-yes {
   @include oIconsGetIcon('tick', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
   }
 
 .n-syndication-icon-state-verify,
-.n-syndication-icon-state-withContributorPayment {
+.n-syndication-icon-state-withcontributorpayment {
   background-color: rgba(getColor('mandarin'), 0.85);
   }
 
