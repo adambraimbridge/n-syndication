@@ -92,6 +92,7 @@ function createElement (item) {
 	let saveButtonState = item.saved === true ? 'disabled' : '';
 	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
 	let message;
+	let wordCount = '';
 
 	if (item.canBeSyndicated === 'verify') {
 		downloadButtonState = 'disabled';
@@ -130,6 +131,10 @@ function createElement (item) {
 		downloadText += ' unavailable';
 	}
 
+	if (item.wordCount) {
+		wordCount = `<span class="${CSS_CLASS_PREFIX}-modal-word-count">Word count: ${item.wordCount}</span>`;
+	}
+
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
 <div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
 	<header class="${CSS_CLASS_PREFIX}-modal-heading">
@@ -137,6 +142,7 @@ function createElement (item) {
 		<span role="heading" class="${CSS_CLASS_PREFIX}-modal-title">${item.title}</span>
 	</header>
 	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
+		${wordCount}
 		${message}
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} href="${saveHref}">${saveText}</a>
