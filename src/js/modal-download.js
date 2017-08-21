@@ -98,6 +98,10 @@ function createElement (item) {
 		downloadButtonState = 'disabled';
 		message = MESSAGES.MSG_2200;
 	}
+	else if (item.canBeSyndicated === 'withContributorPayment') {
+		downloadButtonState = 'disabled';
+		message = MESSAGES.MSG_2300;
+	}
 	else if (item.canBeSyndicated === 'no' || item.canBeSyndicated === null) {
 		downloadButtonState = 'disabled';
 		saveButtonState = 'disabled';
