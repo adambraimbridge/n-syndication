@@ -1,6 +1,6 @@
 'use strict';
 
-//import { broadcast } from 'n-ui-foundations';
+import { broadcast } from 'n-ui-foundations';
 import { listenTo } from 'o-viewport';
 import Superstore from 'superstore';
 
@@ -9,8 +9,10 @@ import {
 	CSS_CLASS_PREFIX,
 	CSS_SELECTOR_ACTION_DOWNLOAD,
 	CSS_SELECTOR_ACTION_SAVE,
+	CSS_SELECTOR_REPUBLISHING_BTN,
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
+	EVENT_PREFIX,
 	LABEL_ARIA_OVERLAY,
 	MAX_LOCAL_FORMAT_TIME_MS,
 	MESSAGES,
@@ -40,6 +42,11 @@ function init () {
 
 function actionModalFromClick (evt) {
 	if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
+		show(evt);
+	}
+	else if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_BTN)) {
+		evt.preventDefault();
+
 		show(evt);
 	}
 	else if (evt.target.matches(CSS_SELECTOR_ACTION_SAVE)) {
@@ -171,6 +178,11 @@ function download (evt) {
 	const item = getItemByHTMLElement(evt.target);
 
 	item.downloaded = true;
+	item.messageCode = 'MSG_2100';
+
+	broadcast(`${EVENT_PREFIX}.downloadItem`, {
+		item: item
+	});
 }
 
 function generateDownloadURI (contentID) {
