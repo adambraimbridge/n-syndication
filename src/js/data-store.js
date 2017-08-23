@@ -14,8 +14,12 @@ import { cheapClone, getContentIDFromHTMLElement } from './util';
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
 
-function init () {
+function init (flags, data = null) {
 	addEventListener(`${EVENT_PREFIX}.fetch`, evt => refresh(evt.detail.response), true);
+
+	if (Object.prototype.toString.call(data) === '[object Array]') {
+		refresh(data);
+	}
 }
 
 function fetchItems (itemIDs) {
