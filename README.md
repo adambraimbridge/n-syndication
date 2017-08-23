@@ -1,14 +1,14 @@
 # n-syndication [![CircleCI](https://circleci.com/gh/Financial-Times/n-syndication.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-syndication)
 
-This contains the implementation for the syndication indicator.  This indiciator is for users who subscribe to our [syndication platform](http://ftsyndication.com/).  Each article contains an attribute to display if it can be syndicated or not.  We then show a tick icon or a red icon that is supposed to look a bit like a stop sign to dislay the status.  They look like this:
+## How does it work
 
-Article which can be syndicated:
-[INSERT IMAGE]
+The `n-syndication` module first checks to see if a user is "syndication enabled". 
 
-Article which can not be syndicated:
-[INSERT IMAGE]
+If they are it aggregates all the content IDs it finds on a page by querying for all the `[data-content-id]` attributes in each [n-teaser](https://github.com/Financial-Times/n-teaser).
 
-There are some article where the syndication status cannot be easily known (fastFT, for example).  For these, we show no icon at all.
+It sends them to the [next-syndication-api](https://github.com/Financial-Times/next-syndication-api), which returns back an Array of Objects for each content ID that can be syndicated according to what this user's contract specifies. 
+
+When a user then clicks a syndicator icon, a modal is displayed with `save` and/or `download` buttons enabled/disabled, along with the appropriate messaging, also according to the user's contractual rights.
 
 ## I can't see the icons!
 
