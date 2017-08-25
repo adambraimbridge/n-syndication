@@ -7,22 +7,29 @@ import { init as initIconify } from './iconify';
 import { init as initDownloadModal } from './modal-download';
 import { init as initNavigation } from './navigation';
 
-function init (flags) {
-	if (!flags.get('syndicationRedux')) {
+function init (flags, user) {
+	if (user) {
+		_init(flags, user);
+	}
+	else {
+		getUserStatus().then(user => {
+			_init(flags, user);
+		});
+	}
+}
+
+function _init (flags, user) {
+	if (user.migrated !== true && !flags.get('syndicationRedux')) {
 		return;
 	}
 
-	getUserStatus().then(response => {
-		if (response !== null) {
-			initNavigation();
+	initNavigation();
 
-			initDataStore(flags);
+	initDataStore(flags);
 
-			initIconify(flags);
+	initIconify(flags);
 
-			initDownloadModal(flags);
-		}
-	});
+	initDownloadModal(flags);
 }
 
 export { init };

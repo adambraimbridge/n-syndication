@@ -1,5 +1,6 @@
 import {$$, $} from 'n-ui-foundations';
 import {products as getUserProducts, uuid as getUuid} from 'next-session-client';
+import getUserStatus from './get-user-status';
 import {init as initRedux} from './redux';
 
 import newSyndicators from './new-synders';
@@ -118,57 +119,59 @@ function onAsyncContentLoaded (createSyndicator){
 }
 
 function init (flags){
-	if (flags.get('syndicationRedux')) {
-		return initRedux(flags);
-	}
+	getUserStatus().then(user => {
+		if (user.migrated === true || flags.get('syndicationRedux')) {
+			return initRedux(flags, user);
+		}
 
-	if(!flags.get('syndication')){
-		return;
-	}
+		if(!flags.get('syndication')){
+			return;
+		}
 
-	const syndicatableTeasers = $$(TEASER_SELECTOR);
-	const syndicatableMainArticle = $('.article[data-syndicatable]');
+		const syndicatableTeasers = $$(TEASER_SELECTOR);
+		const syndicatableMainArticle = $('.article[data-syndicatable]');
 
-	// TODO: update article pages to use generic style?
-	const syndicatableGenerics = $$('[data-syndicatable]:not(.article)');
+		// TODO: update article pages to use generic style?
+		const syndicatableGenerics = $$('[data-syndicatable]:not(.article)');
 
-	if(!syndicatableTeasers.length && !syndicatableMainArticle && !syndicatableGenerics.length){
-		return;
-	}
+		if(!syndicatableTeasers.length && !syndicatableMainArticle && !syndicatableGenerics.length){
+			return;
+		}
 
-	//TODO: refactor this pyramid away
-	checkIfUserIsSyndicationCustomer()
-		.then(userIsSyndicationCustomer => {
-			if(!userIsSyndicationCustomer){
-				return;
-			}
-
-			document.body.setAttribute(SYNDICATION_USER_ATTR, 'true');
-
-			let shouldUseNewSyndication = false;
-
-			getUuid().then(({uuid} = {}) => {
-				shouldUseNewSyndication = (flags.get('syndicationNew') && newSyndicators.includes(uuid)) || flags.get('syndicationNewOverride');
-			})
-			.catch(err => err) // Show old syndicator if anything goes wrong
-			.then(() => {
-				const createSyndicator = (shouldUseNewSyndication) ? createSyndicatorNew : createSyndicationLinkOld;
-
-				document.body.addEventListener('asyncContentLoaded', () => onAsyncContentLoaded(createSyndicator));
-
-				if(syndicatableTeasers.length){
-					updateTeasers(syndicatableTeasers, createSyndicator);
+		//TODO: refactor this pyramid away
+		checkIfUserIsSyndicationCustomer()
+			.then(userIsSyndicationCustomer => {
+				if(!userIsSyndicationCustomer){
+					return;
 				}
 
-				if(syndicatableMainArticle){
-					updateMainArticle(syndicatableMainArticle, createSyndicator);
-				}
+				document.body.setAttribute(SYNDICATION_USER_ATTR, 'true');
 
-				if (syndicatableGenerics.length){
-					updateGenerics(syndicatableGenerics, createSyndicator);
-				}
+				let shouldUseNewSyndication = false;
+
+				getUuid().then(({uuid} = {}) => {
+					shouldUseNewSyndication = (flags.get('syndicationNew') && newSyndicators.includes(uuid)) || flags.get('syndicationNewOverride');
+				})
+				.catch(err => err) // Show old syndicator if anything goes wrong
+				.then(() => {
+					const createSyndicator = (shouldUseNewSyndication) ? createSyndicatorNew : createSyndicationLinkOld;
+
+					document.body.addEventListener('asyncContentLoaded', () => onAsyncContentLoaded(createSyndicator));
+
+					if(syndicatableTeasers.length){
+						updateTeasers(syndicatableTeasers, createSyndicator);
+					}
+
+					if(syndicatableMainArticle){
+						updateMainArticle(syndicatableMainArticle, createSyndicator);
+					}
+
+					if (syndicatableGenerics.length){
+						updateGenerics(syndicatableGenerics, createSyndicator);
+					}
+				});
 			});
-		});
+	});
 }
 
 export {
