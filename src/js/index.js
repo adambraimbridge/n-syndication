@@ -120,7 +120,7 @@ function onAsyncContentLoaded (createSyndicator){
 
 function init (flags){
 	getUserStatus().then(user => {
-		if (user.migrated === true || flags.get('syndicationRedux')) {
+		if (user && user.migrated === true || flags.get('syndicationRedux')) {
 			return initRedux(flags, user);
 		}
 
