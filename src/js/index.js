@@ -1,29 +1,12 @@
 import {$$, $} from 'n-ui-foundations';
-import {products as getUserProducts, uuid as getUuid} from 'next-session-client';
+import {products as getUserProducts} from 'next-session-client';
 import getUserStatus from './get-user-status';
 import {init as initRedux} from './redux';
-
-import newSyndicators from './new-synders';
 
 const SYNDICATION_PRODUCT_CODE = 'S1';
 const SYNDICATION_USER_ATTR = 'data-syndication-user';
 const SYNDICATION_LINK_CLASS = 'o-teaser__syndication-indicator';
 const TEASER_SELECTOR = '.o-teaser--syndicatable, .o-teaser--not-syndicatable';
-
-const downloadableFormats = [
-	{
-		type: 'html',
-		name: 'HTML'
-	},
-	{
-		type: 'docx',
-		name: 'Word doc'
-	},
-	{
-		type: 'plain',
-		name: 'plain text'
-	}
-];
 
 const createSyndicationLinkOld = (uuid, title, syndicationStatus) => {
 	const a = document.createElement('a');
@@ -34,33 +17,6 @@ const createSyndicationLinkOld = (uuid, title, syndicationStatus) => {
 	a.classList.add(SYNDICATION_LINK_CLASS+'--'+syndicationStatus);
 	a.innerHTML = `<span>Download “${title || 'article'}” (opens in a new window)</span>`;
 	return a;
-};
-
-const createSyndiLinkNew = (data) => (`
-	<a href="https://ft-rss.herokuapp.com/content/${data.uuid}?format=${data.format.type}&download=true" class="syndi__link n-skip-link" data-trackable="download-${data.format.type}">Download <span class="n-util-visually-hidden">“${data.title}” </span>as ${data.format.name}</a>
-`);
-
-const createSyndiOverlay = (data) => {
-	const syndiLinks = downloadableFormats.map(format => createSyndiLinkNew(Object.assign({}, data, { format })));
-	return `
-		<div class="syndi__download-options">
-			${syndiLinks.join('\n\t')}
-		</div>
-	`;
-};
-
-const createSyndicatorNew = (uuid, title, syndicationStatus) => {
-	const container = document.createElement('div');
-
-	container.className = [
-		SYNDICATION_LINK_CLASS,
-		`${SYNDICATION_LINK_CLASS}--${syndicationStatus}`,
-		'syndi'
-	].join(' ');
-	container.setAttribute('data-trackable', 'syndication');
-	container.innerHTML = createSyndiOverlay({ uuid, title });
-
-	return container;
 };
 
 function checkIfUserIsSyndicationCustomer () {
@@ -119,58 +75,46 @@ function onAsyncContentLoaded (createSyndicator){
 }
 
 function init (flags){
-	getUserStatus().then(user => {
-		if (user && user.migrated === true || flags.get('syndicationRedux')) {
-			return initRedux(flags, user);
-		}
-
-		if(!flags.get('syndication')){
+	checkIfUserIsSyndicationCustomer().then(userIsSyndicationCustomer => {
+		if(!userIsSyndicationCustomer){
 			return;
 		}
 
-		const syndicatableTeasers = $$(TEASER_SELECTOR);
-		const syndicatableMainArticle = $('.article[data-syndicatable]');
+		getUserStatus().then(user => {
+			if (user && user.migrated === true || flags.get('syndicationRedux')) {
+				return initRedux(flags, user);
+			}
 
-		// TODO: update article pages to use generic style?
-		const syndicatableGenerics = $$('[data-syndicatable]:not(.article)');
+			if(!flags.get('syndication')){
+				return;
+			}
 
-		if(!syndicatableTeasers.length && !syndicatableMainArticle && !syndicatableGenerics.length){
-			return;
-		}
+			const syndicatableTeasers = $$(TEASER_SELECTOR);
+			const syndicatableMainArticle = $('.article[data-syndicatable]');
 
-		//TODO: refactor this pyramid away
-		checkIfUserIsSyndicationCustomer()
-			.then(userIsSyndicationCustomer => {
-				if(!userIsSyndicationCustomer){
-					return;
-				}
+			// TODO: update article pages to use generic style?
+			const syndicatableGenerics = $$('[data-syndicatable]:not(.article)');
 
-				document.body.setAttribute(SYNDICATION_USER_ATTR, 'true');
+			if(!syndicatableTeasers.length && !syndicatableMainArticle && !syndicatableGenerics.length){
+				return;
+			}
 
-				let shouldUseNewSyndication = false;
+			document.body.setAttribute(SYNDICATION_USER_ATTR, 'true');
 
-				getUuid().then(({uuid} = {}) => {
-					shouldUseNewSyndication = (flags.get('syndicationNew') && newSyndicators.includes(uuid)) || flags.get('syndicationNewOverride');
-				})
-				.catch(err => err) // Show old syndicator if anything goes wrong
-				.then(() => {
-					const createSyndicator = (shouldUseNewSyndication) ? createSyndicatorNew : createSyndicationLinkOld;
+			document.body.addEventListener('asyncContentLoaded', () => onAsyncContentLoaded(createSyndicationLinkOld));
 
-					document.body.addEventListener('asyncContentLoaded', () => onAsyncContentLoaded(createSyndicator));
+			if(syndicatableTeasers.length){
+				updateTeasers(syndicatableTeasers, createSyndicationLinkOld);
+			}
 
-					if(syndicatableTeasers.length){
-						updateTeasers(syndicatableTeasers, createSyndicator);
-					}
+			if(syndicatableMainArticle){
+				updateMainArticle(syndicatableMainArticle, createSyndicationLinkOld);
+			}
 
-					if(syndicatableMainArticle){
-						updateMainArticle(syndicatableMainArticle, createSyndicator);
-					}
-
-					if (syndicatableGenerics.length){
-						updateGenerics(syndicatableGenerics, createSyndicator);
-					}
-				});
-			});
+			if (syndicatableGenerics.length){
+				updateGenerics(syndicatableGenerics, createSyndicationLinkOld);
+			}
+		});
 	});
 }
 
