@@ -31,7 +31,7 @@
   }
 
 .n-syndication-icon-state-withcontributorpayment {
-  @include oIconsGetIcon('tick', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
+  @include oIconsGetIcon('dollar', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
   background-color: rgba(getColor('jade'), 0.85);
   }
 
