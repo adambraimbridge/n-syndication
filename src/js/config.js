@@ -64,6 +64,20 @@ export const SYNDICATION_INSERTION_RULES = {
 	'main.video': { fn: 'querySelector', slc: '.video__title' },
 	'li.o-teaser__related-item': {}
 };
+
+export const TRACKING = {
+	DATA: {
+		context: {
+			app: 'Syndication'
+		},
+		system: {
+			product: 'Syndication',
+			source: 'o-tracking'
+		}
+	},
+	URI: 'https://spoor-api.ft.com/px.gif'
+};
+
 //export const URI_PREFIX_DOWNLOAD = '/syndication/download';
 export const URI_PREFIX_DOWNLOAD = `${location.port ? '' : 'https://dl.syndication.ft.com'}/syndication/download`;
 
