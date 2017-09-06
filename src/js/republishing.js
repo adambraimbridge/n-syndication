@@ -1,7 +1,7 @@
 'use strict';
 
 import { broadcast } from 'n-ui-foundations';
-import tracking from 'o-tracking';
+//import tracking from 'o-tracking';
 
 import getUserStatus from './get-user-status';
 import { init as initDataStore } from './data-store';
@@ -27,7 +27,7 @@ function _init (flags, user) {
 
 		initDataStore(flags, window.republishingInitData());
 
-		initDownloadModal(flags);
+		initDownloadModal(flags, user);
 	}
 
 	track(flags, user);
@@ -38,17 +38,24 @@ function track (flags, user) {
 	config.context.contractID = user.contract_id;
 	config.context.appVersion = user.app.version;
 
-	broadcast('oTracking.page', config);
-
-	tracking.init({
-		server: TRACKING.URI
-	});
-
-	tracking.page({
+//	broadcast('oTracking.page', config);
+	broadcast('oTracking.page', {
 		app: TRACKING.DATA.context.app,
 		appVersion: user.app.version,
 		contractID: user.contract_id
-	}, () => {});
+	});
+
+//	tracking.init({
+//		server: TRACKING.URI
+//	});
+//
+//	tracking.page({
+//		app: `${TRACKING.DATA.context.app}.simple`,
+//		appVersion: user.app.version,
+//		contractID: user.contract_id
+//	}, () => {});
+//
+//	tracking.page(config, () => {});
 }
 
 export { init, track };
