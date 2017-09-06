@@ -1,11 +1,16 @@
 'use strict';
 
-import { $ } from 'n-ui-foundations';
+import { $, broadcast } from 'n-ui-foundations';
+//import tracking from 'o-tracking';
 
-function init () {
+let USER_DATA;
+
+function init (flags, user) {
 	insertNavItem('#o-header-nav-desktop', '[data-trackable="My Account" i]', '.o-header__nav-link');
 
 	insertNavItem('#o-header-drawer', '[data-trackable="Portfolio" i]', '.o-header__drawer-menu-link');
+
+	USER_DATA = user;
 }
 
 function insertNavItem (selectorContainer, selectorInsertionPoint, selectorLink) {
@@ -15,6 +20,8 @@ function insertNavItem (selectorContainer, selectorInsertionPoint, selectorLink)
 
 	const elNavItem = elInsertionPoint.cloneNode(true);
 
+	elNavItem.setAttribute('data-trackable', 'syndication');
+
 	const elNavItemLink = elNavItem.querySelector(selectorLink);
 
 	elNavItemLink.classList.add('n-syndication-republishing');
@@ -23,6 +30,16 @@ function insertNavItem (selectorContainer, selectorInsertionPoint, selectorLink)
 	elNavItemLink.textContent = 'Republishing';
 
 	elInsertionPoint.insertAdjacentElement('afterend', elNavItem);
+
+	elNavItemLink.addEventListener('click', (evt) => {
+		broadcast('oTracking.event', {
+			category: 'syndication',
+			action: 'republish',
+			contractID: USER_DATA.contract_id,
+			referrer: location.href,
+			url: evt.target.href || evt.target.getAttribute('href')
+		});
+	});
 
 	return { container: elCt, item: elNavItem };
 }

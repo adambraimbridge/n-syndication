@@ -1,11 +1,13 @@
 'use strict';
 
 import { broadcast } from 'n-ui-foundations';
+//import tracking from 'o-tracking';
 import { listenTo } from 'o-viewport';
 import Superstore from 'superstore';
 
 import {
 	ATTR_ACTION,
+	ATTR_TRACKABLE,
 	CSS_CLASS_PREFIX,
 	CSS_SELECTOR_ACTION_DOWNLOAD,
 	CSS_SELECTOR_ACTION_SAVE,
@@ -17,6 +19,7 @@ import {
 	MAX_LOCAL_FORMAT_TIME_MS,
 	MESSAGES,
 	MS_DELAY_HIDE,
+	TRACKING,
 	URI_PREFIX_DOWNLOAD,
 	URI_PREFIX_SAVE
 } from './config';
@@ -30,17 +33,34 @@ let OVERLAY_FRAGMENT;
 let OVERLAY_MODAL_ELEMENT;
 let OVERLAY_SHADOW_ELEMENT;
 let DOWNLOAD_FORMAT;
+let USER_DATA;
 
-function init () {
+function init (flags, user) {
 	addEventListener('click', actionModalFromClick, true);
 
 	addEventListener('keyup', actionModalFromKeyboard, true);
 	addEventListener('resize', reposition, true);
 
 	listenTo('resize');
+
+	USER_DATA = user;
 }
 
 function actionModalFromClick (evt) {
+	const item = getItemByHTMLElement(evt.target);
+
+	const trackingEvent = {};
+	trackingEvent.category = TRACKING.CATEGORY;
+	trackingEvent.contractID = USER_DATA.contract_id;
+	trackingEvent.referrer = location.href;
+	trackingEvent.action = evt.target.getAttribute(ATTR_TRACKABLE);
+
+	if (item) {
+		trackingEvent.message = item.messageCode;
+		trackingEvent.article_id = item[DATA_ID_PROPERTY];
+		trackingEvent.syndication_content = item.type;
+	}
+
 	if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
 		show(evt);
 	}
@@ -74,12 +94,23 @@ function actionModalFromClick (evt) {
 			}
 		}
 	}
+
+	broadcast('oTracking.event', trackingEvent);
 }
 
 function actionModalFromKeyboard (evt) {
 	switch (evt.key) {
 		case 'Escape' :
 			hide();
+
+			const trackingEvent = {};
+
+			trackingEvent.category = TRACKING.CATEGORY;
+			trackingEvent.contractID = USER_DATA.contract_id;
+			trackingEvent.referrer = location.href;
+			trackingEvent.action = 'close-syndication-modal';
+
+			broadcast('oTracking.event', trackingEvent);
 
 			break;
 		case ' ' : case 'Enter' :
@@ -89,6 +120,7 @@ function actionModalFromKeyboard (evt) {
 
 			break;
 	}
+
 }
 
 function createElement (item) {
@@ -99,7 +131,15 @@ function createElement (item) {
 	let saveButtonState = item.saved === true ? 'disabled' : '';
 	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
 	let message;
+	let trackableValue = 'download-item';
 	let wordCount = '';
+
+	if (location.pathname.includes('/download')) {
+		trackableValue = 'redownload';
+	}
+	else if (location.pathname.includes('/save')) {
+		trackableValue = 'download-saved-item';
+	}
 
 	if (item.canBeSyndicated === 'verify') {
 		downloadButtonState = 'disabled';
@@ -137,6 +177,8 @@ function createElement (item) {
 		message = MESSAGES.MSG_2000;
 	}
 
+//	item.messageCode = message;
+
 	if (downloadButtonState === 'disabled') {
 		downloadHref = '#';
 		downloadText += ' unavailable';
@@ -149,15 +191,15 @@ function createElement (item) {
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
 <div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
 	<header class="${CSS_CLASS_PREFIX}-modal-heading">
-		<a class="${CSS_CLASS_PREFIX}-modal-close" data-action="close" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
+		<a class="${CSS_CLASS_PREFIX}-modal-close" data-action="close" ${ATTR_TRACKABLE}="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
 		<span role="heading" class="${CSS_CLASS_PREFIX}-modal-title">${item.title}</span>
 	</header>
 	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
 		${wordCount}
 		${message}
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} href="${downloadHref}">${downloadText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="save-for-later" href="${saveHref}">${saveText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValue}" href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);

@@ -19,17 +19,17 @@ function init (flags, user) {
 }
 
 function _init (flags, user) {
-	if (user.migrated !== true && !flags.get('syndicationRedux')) {
+	if (user && user.migrated !== true && !flags.get('syndicationRedux')) {
 		return;
 	}
 
-	initNavigation();
+	initNavigation(flags, user);
 
 	initDataStore(flags);
 
-	initIconify(flags);
+	initIconify(flags, user);
 
-	initDownloadModal(flags);
+	initDownloadModal(flags, user);
 }
 
 export { init };
