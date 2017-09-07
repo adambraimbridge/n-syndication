@@ -39,14 +39,32 @@ function toElement (html) {
 
 	ct.insertAdjacentHTML('afterbegin', html);
 
-	Array.from(ct.children).reverse().forEach(el => frag.prepend(el));
+
+	Array.from(ct.children).reverse().forEach(el => prepend(frag, el));
 
 	return frag;
+}
+
+function prepend (parent, element) {
+	if (parent.prepend) {
+		parent.prepend(element);
+	}
+	else {
+		if (parent.childNodes.length) {
+			parent.insertBefore(element, parent.childNodes[0]);
+		}
+		else {
+			parent.appendChild(element);
+		}
+	}
+
+	return parent;
 }
 
 
 export {
 	cheapClone,
 	getContentIDFromHTMLElement,
+	prepend,
 	toElement
 };

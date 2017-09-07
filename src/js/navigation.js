@@ -6,9 +6,9 @@ import { $, broadcast } from 'n-ui-foundations';
 let USER_DATA;
 
 function init (flags, user) {
-	insertNavItem('#o-header-nav-desktop', '[data-trackable="My Account" i]', '.o-header__nav-link');
+	insertNavItem('#o-header-nav-desktop', '[data-trackable="My Account"]', '.o-header__nav-link');
 
-	insertNavItem('#o-header-drawer', '[data-trackable="Portfolio" i]', '.o-header__drawer-menu-link');
+	insertNavItem('#o-header-drawer', '[data-trackable="Portfolio"]', '.o-header__drawer-menu-link');
 
 	USER_DATA = user;
 }

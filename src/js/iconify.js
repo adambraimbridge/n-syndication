@@ -23,6 +23,7 @@ import {
 
 import {
 	getContentIDFromHTMLElement,
+	prepend,
 	toElement
 } from './util';
 
@@ -39,7 +40,11 @@ function createElement (item) {
 
 function findElementToSyndicate (el) {
 	if (el !== document.documentElement && !EXCLUDE_ELEMENTS[el.tagName.toUpperCase()]) {
-		for (let [match, rule] of Object.entries(SYNDICATION_INSERTION_RULES)) {
+		const entries = Object.entries
+				 ? Object.entries(SYNDICATION_INSERTION_RULES)
+				 : Object.keys(SYNDICATION_INSERTION_RULES).map(key => [key, SYNDICATION_INSERTION_RULES[key]]);
+
+		for (let [match, rule] of entries) {
 			if (el.matches(match)) {
 				if (!rule.fn && !rule.slc) {
 					return el;
@@ -91,7 +96,7 @@ function syndicateElement (item, el) {
 		element.classList.add(CSS_CLASS_PREFIX);
 		element.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
 
-		element.prepend(createElement(item));
+		prepend(element, createElement(item));
 
 		element.setAttribute(ATTR_CONTENT_TYPE, item.type);
 //		element.setAttribute(ATTR_TRACKABLE, ATTR_TRACKABLE_VALUE);

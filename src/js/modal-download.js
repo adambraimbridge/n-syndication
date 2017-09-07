@@ -49,6 +49,7 @@ function init (flags, user) {
 function actionModalFromClick (evt) {
 	const item = getItemByHTMLElement(evt.target);
 
+	let fire = true;
 	const trackingEvent = {};
 	trackingEvent.category = TRACKING.CATEGORY;
 	trackingEvent.contractID = USER_DATA.contract_id;
@@ -93,9 +94,12 @@ function actionModalFromClick (evt) {
 				delayHide();
 			}
 		}
+		else {
+			fire = false;
+		}
 	}
 
-	broadcast('oTracking.event', trackingEvent);
+	!fire || broadcast('oTracking.event', trackingEvent);
 }
 
 function actionModalFromKeyboard (evt) {
@@ -287,10 +291,10 @@ function show (evt) {
 
 		OVERLAY_FRAGMENT = createElement(getItemByHTMLElement(evt.target));
 
-		OVERLAY_MODAL_ELEMENT = OVERLAY_FRAGMENT.lastElementChild;
-		OVERLAY_SHADOW_ELEMENT = OVERLAY_FRAGMENT.firstElementChild;
+		OVERLAY_MODAL_ELEMENT = OVERLAY_FRAGMENT.lastElementChild || OVERLAY_FRAGMENT.lastChild;
+		OVERLAY_SHADOW_ELEMENT = OVERLAY_FRAGMENT.firstElementChild || OVERLAY_FRAGMENT.firstChild;
 
-		document.body.append(OVERLAY_FRAGMENT);
+		document.body.appendChild(OVERLAY_FRAGMENT);
 
 		reposition();
 	});
