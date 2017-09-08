@@ -30,6 +30,8 @@ function _init (flags, user) {
 		initDownloadModal(flags, user);
 	}
 
+	window.getRepublishingUser = () => user;
+
 	track(flags, user);
 }
 
