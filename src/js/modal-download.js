@@ -135,14 +135,16 @@ function createElement (item) {
 	let saveButtonState = item.saved === true ? 'disabled' : '';
 	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
 	let message;
-	let trackableValue = 'download-item';
+	let trackableValueDownloadItem = 'download-item';
+	let trackableValueSaveForLater = 'save-for-later';
 	let wordCount = '';
 
 	if (location.pathname.includes('/download')) {
-		trackableValue = 'redownload';
+		trackableValueDownloadItem = 'redownload';
+		trackableValueSaveForLater += '-downloads-page';
 	}
 	else if (location.pathname.includes('/save')) {
-		trackableValue = 'download-saved-item';
+		trackableValueDownloadItem = 'download-saved-item';
 	}
 
 	if (item.canBeSyndicated === 'verify') {
@@ -202,8 +204,8 @@ function createElement (item) {
 		${wordCount}
 		${message}
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="save-for-later" href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValue}" href="${downloadHref}">${downloadText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
