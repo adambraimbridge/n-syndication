@@ -205,7 +205,7 @@ function createElement (item) {
 		${message}
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);

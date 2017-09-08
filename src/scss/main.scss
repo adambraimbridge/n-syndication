@@ -136,11 +136,16 @@
   text-align: right;
   }
 .n-syndication-action {
+  @include oButtons(default, secondary);
+}
+.n-syndication-action-primary {
   @include oButtons(default, primary);
-
+}
+.n-syndication-action,
+.n-syndication-action-primary {
   min-width: 120px;
   text-align: center;
-}
+  }
 
 /** OLD VERSION **/
 
