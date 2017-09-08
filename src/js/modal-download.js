@@ -152,8 +152,16 @@ function createElement (item) {
 		message = MESSAGES.MSG_2200;
 	}
 	else if (item.canBeSyndicated === 'withContributorPayment') {
-		downloadButtonState = 'disabled';
-		message = MESSAGES.MSG_2300;
+		if (USER_DATA.contributor_content !== true) {
+			downloadButtonState = 'disabled';
+			message = MESSAGES.MSG_2300;
+		}
+		else if (item.downloaded === true) {
+			message = MESSAGES.MSG_2340;
+		}
+		else {
+			message = MESSAGES.MSG_2320;
+		}
 	}
 	else if (item.canBeSyndicated === 'no' || item.canBeSyndicated === null) {
 		downloadButtonState = 'disabled';
