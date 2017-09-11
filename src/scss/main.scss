@@ -42,13 +42,10 @@
 
 .o-teaser--top-story .n-syndication-icon,
 .topper__headline .n-syndication-icon {
-  border-radius: 40px;
-  height: 40px;
-  width: 40px;
-  }
-
-.o-teaser--top-story .n-syndication-icon {
+  border-radius: 26px;
+  height: 26px;
   vertical-align: baseline;
+  width: 26px;
   }
 
 .hero__heading .n-syndication-icon,
@@ -57,10 +54,10 @@
 .o-teaser--large-portrait .n-syndication-icon,
 .video-scroller__item-large .o-teaser--stacked .n-syndication-icon,
 .video__description .video__title .n-syndication-icon {
-  border-radius: 28px;
-  height: 28px;
-  vertical-align: text-bottom;
-  width: 28px;
+  border-radius: 24px;
+  height: 24px;
+  vertical-align: baseline;
+  width: 24px;
   }
 
 .o-teaser__related .o-teaser__related-item .n-syndication-icon {
@@ -93,6 +90,7 @@
   }
 .n-syndication-modal-close {
 	@include _oOverlayCloseIcon(oColorsGetColorFor(o-overlay-close, border));
+	border-width: 0;
 	box-sizing: content-box;
 	float: right;
 	position: relative;
@@ -123,13 +121,27 @@
   }
 .n-syndication-modal-title {
   @include oOverlayTitle();
+  font-family: "financier display", "times new roman", serif;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 26px;
   }
 .n-syndication-modal-word-count {
-  font-size: 12px;
+  color: rgba(getColor('black'), 0.4);
+  font-family: metric, arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
   }
 .n-syndication-modal-content {
   @include oOverlayContent();
   padding-top: 0;
+  }
+
+.n-syndication-modal-message {
+  color: rgba(getColor('black'), 0.8);
+  font-family: metric, arial, sans-serif;
+  font-size: 18px;
+  line-height: 20px;
   }
 
 .n-syndication-actions {
