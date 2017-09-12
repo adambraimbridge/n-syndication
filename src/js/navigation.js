@@ -34,7 +34,7 @@ function insertNavItem (selectorContainer, selectorInsertionPoint, selectorLink)
 	elNavItemLink.addEventListener('click', (evt) => {
 		broadcast('oTracking.event', {
 			category: 'syndication',
-			action: 'republish',
+			action: 'Republishing',
 			contractID: USER_DATA.contract_id,
 			referrer: location.href,
 			url: evt.target.href || evt.target.getAttribute('href')
