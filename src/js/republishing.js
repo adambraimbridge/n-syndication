@@ -6,7 +6,11 @@ import { broadcast } from 'n-ui-foundations';
 import getUserStatus from './get-user-status';
 import { init as initDataStore } from './data-store';
 import { init as initDownloadModal } from './modal-download';
-import { TRACKING } from './config';
+import {
+	ATTR_TRACKABLE,
+	CSS_SELECTOR_REPUBLISHING_HEADER_LINK,
+	TRACKING
+} from './config';
 
 function init (flags, user) {
 	if (user) {
@@ -46,6 +50,18 @@ function track (flags, user) {
 		appVersion: user.app.version,
 		contractID: user.contract_id
 	});
+
+	addEventListener('click', (evt) => {
+		if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
+			broadcast('oTracking.event', {
+				category: TRACKING.CATEGORY,
+				action: evt.target.getAttribute(ATTR_TRACKABLE),
+				app: TRACKING.DATA.context.app,
+				appVersion: user.app.version,
+				contractID: user.contract_id
+			});
+		}
+	}, true);
 
 //	tracking.init({
 //		server: TRACKING.URI
