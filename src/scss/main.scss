@@ -137,7 +137,8 @@
   padding-top: 0;
   }
 
-.n-syndication-modal-message {
+.n-syndication-modal-message,
+.n-syndication-modal-message p {
   color: rgba(getColor('black'), 0.8);
   font-family: metric, arial, sans-serif;
   font-size: 14px;
