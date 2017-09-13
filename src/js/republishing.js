@@ -9,6 +9,7 @@ import { init as initDownloadModal } from './modal-download';
 import {
 	ATTR_TRACKABLE,
 	CSS_SELECTOR_REPUBLISHING_HEADER_LINK,
+	CSS_SELECTOR_TRACKABLE,
 	TRACKING
 } from './config';
 
@@ -51,29 +52,30 @@ function track (flags, user) {
 		contractID: user.contract_id
 	});
 
-	addEventListener('click', (evt) => {
-		if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
-			broadcast('oTracking.event', {
-				category: TRACKING.CATEGORY,
-				action: evt.target.getAttribute(ATTR_TRACKABLE),
-				app: TRACKING.DATA.context.app,
-				appVersion: user.app.version,
-				contractID: user.contract_id
-			});
-		}
-	}, true);
+	document.addEventListener('submit', (evt) => broadcastClick(evt, user), true);
+	addEventListener('click', (evt) => broadcastClick(evt, user), true);
+}
 
-//	tracking.init({
-//		server: TRACKING.URI
-//	});
-//
-//	tracking.page({
-//		app: `${TRACKING.DATA.context.app}.simple`,
-//		appVersion: user.app.version,
-//		contractID: user.contract_id
-//	}, () => {});
-//
-//	tracking.page(config, () => {});
+function broadcastClick (evt, user) {
+	let publish = false;
+	if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
+		publish = true;
+	}
+	else if (location.pathname.includes('/save') || location.pathname.includes('/download')) {
+		if (evt.target.matches(CSS_SELECTOR_TRACKABLE)) {
+			publish = true;
+		}
+	}
+
+	if (publish === true) {
+		broadcast('oTracking.event', {
+			category: TRACKING.CATEGORY,
+			action: evt.target.getAttribute(ATTR_TRACKABLE),
+			app: TRACKING.DATA.context.app,
+			appVersion: user.app.version,
+			contractID: user.contract_id
+		});
+	}
 }
 
 export { init, track };
