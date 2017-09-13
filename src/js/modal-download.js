@@ -135,7 +135,7 @@ function createElement (item) {
 	let saveButtonState = item.saved === true ? 'disabled' : '';
 	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
 	let message;
-	let trackableValueDownloadItem = 'download-item';
+	let trackableValueDownloadItem = 'download-items';
 	let trackableValueSaveForLater = 'save-for-later';
 	let wordCount = '';
 
