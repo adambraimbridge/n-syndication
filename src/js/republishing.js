@@ -73,7 +73,8 @@ function broadcastClick (evt, user) {
 			action: evt.target.getAttribute(ATTR_TRACKABLE),
 			app: TRACKING.DATA.context.app,
 			appVersion: user.app.version,
-			contractID: user.contract_id
+			contractID: user.contract_id,
+			url: location.href
 		});
 	}
 }
