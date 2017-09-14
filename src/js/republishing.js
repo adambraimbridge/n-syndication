@@ -61,11 +61,11 @@ function broadcastClick (evt, user) {
 	if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
 		publish = true;
 	}
-	else if (location.pathname.includes('/save') || location.pathname.includes('/download')) {
-		if (evt.target.matches(CSS_SELECTOR_TRACKABLE)) {
-			publish = true;
-		}
-	}
+//	else if (location.pathname.includes('/save') || location.pathname.includes('/download')) {
+//		if (evt.target.matches(CSS_SELECTOR_TRACKABLE)) {
+//			publish = true;
+//		}
+//	}
 
 	if (publish === true) {
 		broadcast('oTracking.event', {
