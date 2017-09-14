@@ -9,7 +9,7 @@ import { init as initDownloadModal } from './modal-download';
 import {
 	ATTR_TRACKABLE,
 	CSS_SELECTOR_REPUBLISHING_HEADER_LINK,
-	CSS_SELECTOR_TRACKABLE,
+//	CSS_SELECTOR_TRACKABLE,
 	TRACKING
 } from './config';
 
