@@ -53,7 +53,7 @@ function actionModalFromClick (evt) {
 	const trackingEvent = {};
 	trackingEvent.category = TRACKING.CATEGORY;
 	trackingEvent.contractID = USER_DATA.contract_id;
-	trackingEvent.referrer = location.href;
+	trackingEvent.url = location.href;
 	trackingEvent.action = evt.target.getAttribute(ATTR_TRACKABLE);
 
 	if (item) {
@@ -111,7 +111,7 @@ function actionModalFromKeyboard (evt) {
 
 			trackingEvent.category = TRACKING.CATEGORY;
 			trackingEvent.contractID = USER_DATA.contract_id;
-			trackingEvent.referrer = location.href;
+			trackingEvent.url = location.href;
 			trackingEvent.action = 'close-syndication-modal';
 
 			broadcast('oTracking.event', trackingEvent);
@@ -215,11 +215,10 @@ function createElement (item) {
 		</div>
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} href="${downloadHref}">${downloadText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
-// ${ATTR_TRACKABLE}="${trackableValueDownloadItem}"
 
 	return frag;
 }
