@@ -163,7 +163,7 @@ function createElement (item) {
 			message = MESSAGES.MSG_2320;
 		}
 	}
-	else if (item.canBeSyndicated === 'no' || item.canBeSyndicated === null) {
+	else if (item.canBeSyndicated === 'no' || !item.canBeSyndicated) {
 		downloadButtonState = 'disabled';
 		saveButtonState = 'disabled';
 		saveHref = '#';
