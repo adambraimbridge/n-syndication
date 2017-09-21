@@ -147,7 +147,11 @@ function createElement (item) {
 		trackableValueDownloadItem = 'download-saved-item';
 	}
 
-	if (item.canBeSyndicated === 'verify') {
+	if (item.notAvailable === true) {
+		downloadButtonState = 'disabled';
+		message = MESSAGES.MSG_4050;
+	}
+	else if (item.canBeSyndicated === 'verify') {
 		downloadButtonState = 'disabled';
 		message = MESSAGES.MSG_2200;
 	}

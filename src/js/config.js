@@ -59,6 +59,7 @@ export const MESSAGES = {
 <p>This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>
 <p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
     MSG_4000: `${EMPTY}<p>This content is not available for republishing.</p>`,
+    MSG_4050: `${EMPTY}<p>Sorry, this content is no longer available.</p>`,
     MSG_4100: `${EMPTY}<p>You have reached your download limit for articles. Please contact your Account Manager to increase your limit.</p>`,
     MSG_4200: `${EMPTY}<p>Your contract does not allow {{type}}s to be downloaded. Please contact your Account Manager to change this.</p>`,
     MSG_5000: `${EMPTY}<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>`
