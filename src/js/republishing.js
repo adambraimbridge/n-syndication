@@ -43,12 +43,12 @@ function _init (flags, user) {
 function track (flags, user) {
 	const config = JSON.parse(JSON.stringify(TRACKING.DATA));
 	config.context.contractID = user.contract_id;
-	config.context.appVersion = user.app.version;
+//	config.context.appVersion = user.app.version;
 
 //	broadcast('oTracking.page', config);
 	broadcast('oTracking.page', {
 		app: TRACKING.DATA.context.app,
-		appVersion: user.app.version,
+//		appVersion: user.app.version,
 		contractID: user.contract_id
 	});
 
@@ -72,7 +72,7 @@ function broadcastClick (evt, user) {
 			category: TRACKING.CATEGORY,
 			action: evt.target.getAttribute(ATTR_TRACKABLE),
 			app: TRACKING.DATA.context.app,
-			appVersion: user.app.version,
+//			appVersion: user.app.version,
 			contractID: user.contract_id,
 			url: location.href
 		});
