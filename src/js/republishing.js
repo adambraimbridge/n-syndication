@@ -30,7 +30,7 @@ function _init (flags, user) {
 			window.republishingInitData = function () {};
 		}
 
-		initDataStore(flags, window.republishingInitData());
+		initDataStore(flags, user, window.republishingInitData());
 
 		initDownloadModal(flags, user);
 	}
