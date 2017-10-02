@@ -26,7 +26,7 @@ export default function getUserStatus () {
 							return response.json().then(error => {
 								error.migrated = true;
 								error.MAINTENANCE_MODE = true;
-								
+
 								return error;
 							});
 						}
