@@ -147,7 +147,13 @@ function createElement (item) {
 		trackableValueDownloadItem = 'download-saved-item';
 	}
 
-	if (item.notAvailable === true) {
+	if (USER_DATA.MAINTENANCE_MODE === true) {
+		message = MESSAGES.MSG_5100;
+		downloadButtonState = 'disabled';
+		saveButtonState = 'disabled';
+		item.title = '';
+	}
+	else if (item.notAvailable === true) {
 		downloadButtonState = 'disabled';
 		message = MESSAGES.MSG_4050;
 	}
@@ -170,8 +176,6 @@ function createElement (item) {
 	else if (item.canBeSyndicated === 'no' || !item.canBeSyndicated) {
 		downloadButtonState = 'disabled';
 		saveButtonState = 'disabled';
-		saveHref = '#';
-		saveText = 'Save unavailable';
 		message = MESSAGES.MSG_4000;
 	}
 	else if (item.downloaded === true) {
@@ -200,6 +204,10 @@ function createElement (item) {
 	if (downloadButtonState === 'disabled') {
 		downloadHref = '#';
 		downloadText += ' unavailable';
+	}
+	if (saveButtonState === 'disabled') {
+		saveHref = '#';
+		saveText = 'Save unavailable';
 	}
 
 	if (item.wordCount) {
