@@ -62,7 +62,8 @@ export const MESSAGES = {
     MSG_4050: `${EMPTY}<p>Sorry, this content is no longer available.</p>`,
     MSG_4100: `${EMPTY}<p>You have reached your download limit for articles. Please contact your Account Manager to increase your limit.</p>`,
     MSG_4200: `${EMPTY}<p>Your contract does not allow {{type}}s to be downloaded. Please contact your Account Manager to change this.</p>`,
-    MSG_5000: `${EMPTY}<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>`
+    MSG_5000: `${EMPTY}<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>`,
+    MSG_5100: `${EMPTY}<p>The Republishing Service is currently undergoing maintenance. Please try again later.</p>`
 };
 
 export const MS_DELAY_HIDE = 500;
