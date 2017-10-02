@@ -25,7 +25,7 @@ function _init (flags, user) {
 
 	initNavigation(flags, user);
 
-	initDataStore(flags);
+	initDataStore(flags, user);
 
 	initIconify(flags, user);
 
