@@ -14,7 +14,11 @@ import { cheapClone, getContentIDFromHTMLElement } from './util';
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
 
-function init (flags, data = null) {
+let USER_DATA;
+
+function init (flags, user, data = null) {
+	USER_DATA = user;
+
 	addEventListener(`${EVENT_PREFIX}.fetch`, evt => refresh(evt.detail.response), true);
 
 	if (Object.prototype.toString.call(data) === '[object Array]') {
@@ -26,6 +30,23 @@ function fetchItems (itemIDs) {
 	const options = Object.assign(cheapClone(FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT), {
 		body: JSON.stringify(itemIDs)
 	});
+
+	if (USER_DATA.MAINTENANCE_MODE === true) {
+		const fakeRes = itemIDs.map(id => {
+			return {
+				id,
+				canBeSyndicated: 'maintenance',
+				messageCode: 'MSG_5100'
+			};
+		});
+
+		broadcast(`${EVENT_PREFIX}.fetch`, {
+			request: itemIDs,
+			response: fakeRes
+		});
+
+		return Promise.resolve(fakeRes);
+	}
 
 	return fetch(`${FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT}${location.search}`, options).then(response => {
 		if (response.ok) {
