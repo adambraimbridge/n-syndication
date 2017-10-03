@@ -207,7 +207,10 @@ function createElement (item) {
 	}
 	if (saveButtonState === 'disabled') {
 		saveHref = '#';
-		saveText = 'Save unavailable';
+
+		if (item.saved !== true) {
+			saveText = 'Save unavailable';
+		}
 	}
 
 	if (item.wordCount) {
