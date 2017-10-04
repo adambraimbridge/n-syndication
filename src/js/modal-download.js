@@ -19,6 +19,7 @@ import {
 	MAX_LOCAL_FORMAT_TIME_MS,
 	MESSAGES,
 	MS_DELAY_HIDE,
+	RE_INTERPOLATE,
 	TRACKING,
 	URI_PREFIX_DOWNLOAD,
 	URI_PREFIX_SAVE
@@ -139,6 +140,12 @@ function createElement (item) {
 	let trackableValueSaveForLater = 'save-for-later';
 	let wordCount = '';
 
+	if (item.embargoPeriod) {
+		item.embargoPeriod = `${item.embargoPeriod} day${item.embargoPeriod > 1 ? 's' : ''}`;
+	}
+
+	item.embargoMessage = item.embargoPeriod ? interpolate(MESSAGES.EMBARGO, item) : '';
+
 	if (location.pathname.includes('/download')) {
 		trackableValueDownloadItem = 'redownload';
 		trackableValueSaveForLater += '-downloads-page';
@@ -186,7 +193,7 @@ function createElement (item) {
 
 		switch (item.canDownload) {
 			case 0:
-				message = MESSAGES.MSG_4200.replace(/\{\{type\}\}/gi, item.type);
+				message = MESSAGES.MSG_4200;
 
 				break;
 			case -1:
@@ -199,6 +206,7 @@ function createElement (item) {
 		message = MESSAGES.MSG_2000;
 	}
 
+	message = interpolate(message, item);
 //	item.messageCode = message;
 
 	if (downloadButtonState === 'disabled') {
@@ -276,6 +284,10 @@ function hide () {
 		OVERLAY_MODAL_ELEMENT = null;
 		OVERLAY_SHADOW_ELEMENT = null;
 	}
+}
+
+function interpolate (str, o) {
+    return String(str).replace(RE_INTERPOLATE, (m, p) => p in o ? o[p] : '');
 }
 
 function reposition () {
