@@ -141,10 +141,12 @@ function createElement (item) {
 	let wordCount = '';
 
 	if (item.embargoPeriod) {
-		item.embargoPeriod = `${item.embargoPeriod} day${item.embargoPeriod > 1 ? 's' : ''}`;
-	}
+		if (typeof item.embargoPeriod === 'number') {
+			item.embargoPeriod = `${item.embargoPeriod} day${item.embargoPeriod > 1 ? 's' : ''}`;
+		}
 
-	item.embargoMessage = item.embargoPeriod ? interpolate(MESSAGES.EMBARGO, item) : '';
+		item.embargoMessage = item.embargoPeriod ? interpolate(MESSAGES.EMBARGO, item) : '';
+	}
 
 	if (location.pathname.includes('/download')) {
 		trackableValueDownloadItem = 'redownload';
