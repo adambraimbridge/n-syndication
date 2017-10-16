@@ -25,11 +25,13 @@ function _init (flags, user) {
 
 	initNavigation(flags, user);
 
-	initDataStore(flags, user);
+	if (user.allowed && user.allowed.ft_com === true) {
+		initDataStore(flags, user);
 
-	initIconify(flags, user);
+		initIconify(flags, user);
 
-	initDownloadModal(flags, user);
+		initDownloadModal(flags, user);
+	}
 }
 
 export { init };
