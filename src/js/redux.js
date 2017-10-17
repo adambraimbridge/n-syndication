@@ -25,13 +25,17 @@ function _init (flags, user) {
 
 	initNavigation(flags, user);
 
-	if (user.allowed && user.allowed.ft_com === true) {
-		initDataStore(flags, user);
+	const allowed = user.allowed || {};
 
-		initIconify(flags, user);
-
-		initDownloadModal(flags, user);
+	if ((allowed.spanish_content === true || allowed.spanish_weekend === true) && allowed.ft_com !== true) {
+		return;
 	}
+
+	initDataStore(flags, user);
+
+	initIconify(flags, user);
+
+	initDownloadModal(flags, user);
 }
 
 export { init };
