@@ -10,39 +10,55 @@ function cheapClone (item) {
 
 function getContentIDFromHTMLElement (el) {
 	do {
-		if (el !== document.documentElement) {
-			if (el.hasAttribute(ATTR_CONTENT_ID)) {
-				let id = el.getAttribute(ATTR_CONTENT_ID);
+		if (el === document.documentElement) {
+			return null;
+		}
 
-				// there is a case where an item has a `data-content-id` with no value.
-				// I can't figure it out right now, so temporary "fix"...
-				if (!id && el.hasAttribute('href')) {
-					id = el.getAttribute('href').split('/').pop();
+//		if (el.hasAttribute(ATTR_CONTENT_ID)) {
+			let id = el.getAttribute(ATTR_CONTENT_ID);
+
+			// there is a case where an item has a `data-content-id` with no value.
+			// I can't figure it out right now, so temporary "fix"...
+			if (!id) {
+				let anchorEl = el;
+
+				if (el.tagName.toUpperCase() !== 'A') {
+					anchorEl = anchorEl.querySelector('a');
+				}
+
+				if (anchorEl && anchorEl.hasAttribute('href')) {
+					id = anchorEl.getAttribute('href').split('/').pop();
+
+					id = getContentIDFromHref(id);
 
 					if (id) {
 						el.setAttribute(ATTR_CONTENT_ID, id);
 					}
 				}
-
-				return id || null;
 			}
-		}
+			else {
+				id = getContentIDFromHref(id);
+
+				el.setAttribute(ATTR_CONTENT_ID, id);
+			}
+
+			return id || null;
+//		}
 	} while (el = el.parentElement);
 
 	return null;
 }
 
-function toElement (html) {
-	const frag = document.createDocumentFragment();
+function getContentIDFromHref (id) {
+	if (id.indexOf('#') > -1) {
+		id = id.substring(0, id.indexOf('#'));
+	}
 
-	const ct = document.createElement('div');
+	if (id.indexOf('?') > -1) {
+		id = id.substring(0, id.indexOf('?'));
+	}
 
-	ct.insertAdjacentHTML('afterbegin', html);
-
-
-	Array.from(ct.children).reverse().forEach(el => prepend(frag, el));
-
-	return frag;
+	return id;
 }
 
 function prepend (parent, element) {
@@ -61,6 +77,17 @@ function prepend (parent, element) {
 	return parent;
 }
 
+function toElement (html) {
+	const frag = document.createDocumentFragment();
+
+	const ct = document.createElement('div');
+
+	ct.insertAdjacentHTML('afterbegin', html);
+
+	Array.from(ct.children).reverse().forEach(el => prepend(frag, el));
+
+	return frag;
+}
 
 export {
 	cheapClone,
