@@ -9,8 +9,10 @@ import {
 	ATTR_TRACKABLE,
 	ATTR_TRACKABLE_VALUE,
 	CSS_CLASS_PREFIX,
+	CSS_SELECTOR_CARD_LINK,
 	CSS_SELECTOR_CONTENT_ID,
-	CSS_SELECTOR_NOT_SYNDICATED, DATA_ID_PROPERTY,
+//	CSS_SELECTOR_NOT_SYNDICATED,
+	DATA_ID_PROPERTY,
 	EVENT_PREFIX,
 	EXCLUDE_ELEMENTS,
 	SYNDICATION_INSERTION_RULES
@@ -63,7 +65,7 @@ function findElementToSyndicate (el) {
 }
 
 function getSyndicatableItems () {
-	return $$(`${CSS_SELECTOR_CONTENT_ID}${CSS_SELECTOR_NOT_SYNDICATED}`);
+	return $$(`${CSS_SELECTOR_CONTENT_ID}, ${CSS_SELECTOR_CARD_LINK}`);
 }
 
 function getSyndicatableItemIDs (items) {
@@ -99,6 +101,7 @@ function syndicateElement (item, el) {
 		prepend(element, createElement(item));
 
 		element.setAttribute(ATTR_CONTENT_TYPE, item.type);
+		element.setAttribute(ATTR_SYNDICATED, 'true');
 //		element.setAttribute(ATTR_TRACKABLE, ATTR_TRACKABLE_VALUE);
 	}
 
