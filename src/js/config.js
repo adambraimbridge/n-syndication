@@ -3,6 +3,7 @@
 export const ATTR_ACTION = 'data-action';
 export const ATTR_CONTENT_ID = 'data-content-id';
 export const ATTR_CONTENT_TYPE = 'data-content-type';
+export const ATTR_ID = 'data-id';
 export const ATTR_SYNDICATED = 'data-syndicated';
 export const ATTR_TRACKABLE = 'data-trackable';
 export const ATTR_TRACKABLE_VALUE = 'syn-icon';
@@ -11,7 +12,9 @@ export const CSS_CLASS_PREFIX = 'n-syndication';
 export const CSS_CLASS_REPUBLISHING_BUTTON = 'download-button';
 export const CSS_SELECTOR_ACTION_DOWNLOAD = `.${CSS_CLASS_PREFIX}-action[${ATTR_ACTION}="download"]`;
 export const CSS_SELECTOR_ACTION_SAVE = `.${CSS_CLASS_PREFIX}-action[${ATTR_ACTION}="save"]`;
+export const CSS_SELECTOR_CARD_LINK = 'a.card__concept-article-link';
 export const CSS_SELECTOR_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
+export const CSS_SELECTOR_ID = `[${ATTR_ID}]`;
 export const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 export const CSS_SELECTOR_REPUBLISHING_HEADER_LINK = '.o-header-services__nav-link';
 export const CSS_SELECTOR_REPUBLISHING_BTN = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_REPUBLISHING_BUTTON}`;
@@ -74,6 +77,7 @@ export const RE_INTERPOLATE = /\{\{([^\}]+)\}\}/gim;
 export const MS_DELAY_HIDE = 500;
 
 export const SYNDICATION_INSERTION_RULES = {
+	[CSS_SELECTOR_CARD_LINK]: { fn: 'closest', slc: '.card__concept-article' },
 	'a': { fn: 'closest', slc: '.o-teaser__heading' },
 	'article': { fn: 'querySelector', slc: '.topper__headline' },
 	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
