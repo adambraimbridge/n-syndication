@@ -131,10 +131,10 @@ function actionModalFromKeyboard (evt) {
 function createElement (item) {
 	let saveText = item.saved === true ? 'Already saved' : 'Save for later';
 	let downloadButtonState = '';
-	let downloadHref = generateDownloadURI(item[DATA_ID_PROPERTY]);
+	let downloadHref = generateDownloadURI(item[DATA_ID_PROPERTY], item);
 	let downloadText = 'Download';
 	let saveButtonState = item.saved === true ? 'disabled' : '';
-	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY]);
+	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY], item);
 	let message;
 	let trackableValueDownloadItem = 'download-items';
 	let trackableValueSaveForLater = 'save-for-later';
@@ -268,12 +268,24 @@ function download (evt) {
 	});
 }
 
-function generateDownloadURI (contentID) {
-	return `${URI_PREFIX_DOWNLOAD}/${contentID}${DOWNLOAD_FORMAT}`;
+function generateDownloadURI (contentID, item) {
+	let uri = `${URI_PREFIX_DOWNLOAD}/${contentID}${DOWNLOAD_FORMAT}`;
+
+	if (item.lang) {
+		uri += (uri.includes('?') ? '&' : '?') + `lang=${item.lang}`;
+	}
+
+	return uri;
 }
 
-function generateSaveURI (contentID) {
-	return `${URI_PREFIX_SAVE}/${contentID}${DOWNLOAD_FORMAT}`;
+function generateSaveURI (contentID, item) {
+	let uri = `${URI_PREFIX_SAVE}/${contentID}${DOWNLOAD_FORMAT}`;
+
+	if (item.lang) {
+		uri += (uri.includes('?') ? '&' : '?') + `lang=${item.lang}`;
+	}
+
+	return uri;
 }
 
 function hide () {
