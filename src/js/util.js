@@ -8,6 +8,22 @@ function cheapClone (item) {
 	return JSON.parse(JSON.stringify(item));
 }
 
+function getContentAttributeFromHTMLElement (el, attrName = ATTR_CONTENT_ID) {
+	do {
+		if (el === document.documentElement) {
+			return null;
+		}
+
+		const attrValue = el.getAttribute(attrName);
+
+		if (attrValue) {
+			return attrValue;
+		}
+	} while (el = el.parentElement);
+
+	return null;
+}
+
 function getContentIDFromHTMLElement (el) {
 	do {
 		if (el === document.documentElement) {
@@ -91,6 +107,7 @@ function toElement (html) {
 
 export {
 	cheapClone,
+	getContentAttributeFromHTMLElement,
 	getContentIDFromHTMLElement,
 	prepend,
 	toElement

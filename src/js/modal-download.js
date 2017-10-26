@@ -26,7 +26,10 @@ import {
 } from './config';
 
 import { toElement } from './util';
-import { getItemByHTMLElement } from './data-store';
+import {
+	getAllItemsForID,
+	getItemByHTMLElement
+} from './data-store';
 
 const localStore = new Superstore('local', 'syndication');
 
@@ -259,9 +262,12 @@ function delayHide (ms = MS_DELAY_HIDE) {
 
 function download (evt) {
 	const item = getItemByHTMLElement(evt.target);
+	const items = getAllItemsForID(item.id);
 
-	item.downloaded = true;
-	item.messageCode = 'MSG_2100';
+	items.forEach(item => {
+		item.downloaded = true;
+		item.messageCode = 'MSG_2100';
+	});
 
 	broadcast(`${EVENT_PREFIX}.downloadItem`, {
 		item: item
@@ -320,8 +326,9 @@ function reposition () {
 
 function save (evt) {
 	const item = getItemByHTMLElement(evt.target);
+	const items = getAllItemsForID(item.id);
 
-	item.saved = true;
+	items.forEach(item => item.saved = true);
 }
 
 function show (evt) {

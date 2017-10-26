@@ -3,13 +3,21 @@
 import { broadcast } from 'n-ui-foundations';
 
 import {
+	ATTR_ISO_LANG,
+	DATA_HIDDEN_ID_PROPERTY,
 	DATA_ID_PROPERTY,
+	DATA_LANG_PROPERTY,
+	DEFAULT_LANGUAGE,
 	EVENT_PREFIX,
 	FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT,
 	FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT
 } from './config';
 
-import { cheapClone, getContentIDFromHTMLElement } from './util';
+import {
+	cheapClone,
+	getContentAttributeFromHTMLElement,
+	getContentIDFromHTMLElement
+} from './util';
 
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
@@ -77,27 +85,42 @@ function fetchItems (itemIDs) {
 
 function getItemByHTMLElement (el) {
 	const id = getContentIDFromHTMLElement(el);
+	const lang = getContentAttributeFromHTMLElement(el, ATTR_ISO_LANG) || DEFAULT_LANGUAGE;
 
-	return getItemByID(id);
+	return getItemByID(id, lang);
 }
 
-function getItemByID (id) {
-	return DATA_STORE_MAP[id] || DATA_STORE.find(item => item[DATA_ID_PROPERTY] === id) || null;
+function getAllItemsForID (id) {
+	return DATA_STORE.filter(item => item[DATA_ID_PROPERTY] === id);
+}
+
+function getItemByID (id, lang = DEFAULT_LANGUAGE) {
+	const _id = `${id}__${lang}`;
+
+	return DATA_STORE_MAP[_id] || DATA_STORE_MAP[id] || DATA_STORE.find(item => matches(item, id, lang)) || null;
 }
 
 function getItemIndex (item) {
-	let id = item;
+	let id;
+	let lang;
 
 	switch (Object.prototype.toString.call(item)) {
 		case '[object Object]' :
 			id = item[DATA_ID_PROPERTY];
+			lang = item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE;
 
 		// allow fall-through
 		case '[object String]' :
-			return DATA_STORE.findIndex(item => item[DATA_ID_PROPERTY] === id);
+			return DATA_STORE.findIndex(item => matches(item, id, lang));
 	}
 
 	return -1;
+}
+
+function matches (item, id, lang) {
+	const _id = `${id}__${lang}`;
+
+	return item[DATA_HIDDEN_ID_PROPERTY] === _id || (item[DATA_ID_PROPERTY] === id && item[DATA_LANG_PROPERTY] === lang);
 }
 
 function refresh (data) {
@@ -105,11 +128,14 @@ function refresh (data) {
 
 	data.forEach(item => {
 		const id = item[DATA_ID_PROPERTY];
+		const lang = item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE;
 
-		if (id in DATA_STORE_MAP) {
+		const _id = item[DATA_HIDDEN_ID_PROPERTY] = `${id}__${lang}`;
+
+		if (_id in DATA_STORE_MAP) {
 			EXISTING.push(item);
 
-			const existingIndex = DATA_STORE.findIndex(storeItem => storeItem[DATA_ID_PROPERTY] === id);
+			const existingIndex = DATA_STORE.findIndex(storeItem => matches(storeItem, id, lang));
 
 			if (existingIndex > -1) {
 				DATA_STORE[existingIndex] = item;
@@ -121,7 +147,7 @@ function refresh (data) {
 		}
 
 		// replace with new content things may have changed
-		DATA_STORE_MAP[id] = item;
+		DATA_STORE_MAP[_id] = item;
 	});
 
 	broadcast(`${EVENT_PREFIX}.dataChanged`, {
@@ -140,6 +166,7 @@ export {
 	DATA_STORE,
 	DATA_STORE_MAP,
 	fetchItems,
+	getAllItemsForID,
 	getItemByHTMLElement,
 	getItemByID,
 	getItemIndex,

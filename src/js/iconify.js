@@ -5,6 +5,7 @@ import { $$, broadcast } from 'n-ui-foundations';
 import {
 	ATTR_CONTENT_ID,
 	ATTR_CONTENT_TYPE,
+	ATTR_ISO_LANG,
 	ATTR_SYNDICATED,
 	ATTR_TRACKABLE,
 	ATTR_TRACKABLE_VALUE,
@@ -13,6 +14,8 @@ import {
 	CSS_SELECTOR_CONTENT_ID,
 //	CSS_SELECTOR_NOT_SYNDICATED,
 	DATA_ID_PROPERTY,
+	DATA_LANG_PROPERTY,
+	DEFAULT_LANGUAGE,
 	EVENT_PREFIX,
 	EXCLUDE_ELEMENTS,
 	SYNDICATION_INSERTION_RULES
@@ -37,7 +40,7 @@ function init () {
 }
 
 function createElement (item) {
-	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${String(item.canBeSyndicated).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
+	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${String(item.canBeSyndicated).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_ISO_LANG}="${item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
 }
 
 function findElementToSyndicate (el) {
