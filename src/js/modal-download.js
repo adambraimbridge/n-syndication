@@ -14,6 +14,7 @@ import {
 	CSS_SELECTOR_REPUBLISHING_BTN,
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
+	DATA_LANG_PROPERTY,
 	EVENT_PREFIX,
 	LABEL_ARIA_OVERLAY,
 	MAX_LOCAL_FORMAT_TIME_MS,
@@ -241,7 +242,7 @@ function createElement (item) {
 		<div class="${CSS_CLASS_PREFIX}-modal-message">
 		${message}
 		</div>
-		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}">
+		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}" data-iso-lang="${item[DATA_LANG_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
 			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
 		</div>
