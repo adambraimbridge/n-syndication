@@ -1,6 +1,6 @@
 'use strict';
 
-import { $$, broadcast } from 'n-ui-foundations';
+import { $$ } from 'n-ui-foundations';
 
 import getUserStatus from './get-user-status';
 
