@@ -351,7 +351,7 @@ function show (evt) {
 		hide();
 	}
 
-	if (shouldPreventDefault(evt.target)) {
+	if (shouldPreventDefault(evt.target.parentElement)) {
 		evt.preventDefault();
 	}
 
