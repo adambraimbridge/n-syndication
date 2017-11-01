@@ -1,11 +1,17 @@
 'use strict';
 
+import { $$, broadcast } from 'n-ui-foundations';
+
 import getUserStatus from './get-user-status';
 
 import { init as initDataStore } from './data-store';
 import { init as initIconify } from './iconify';
 import { init as initDownloadModal } from './modal-download';
 import { init as initNavigation } from './navigation';
+
+import {
+	CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON
+} from './config';
 
 function init (flags, user) {
 	if (user) {
@@ -36,6 +42,10 @@ function _init (flags, user) {
 	initIconify(flags, user);
 
 	initDownloadModal(flags, user);
+
+	if (flags.get('syndicationDownloadMediaResource')) {
+		$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
+	}
 }
 
 export { init };

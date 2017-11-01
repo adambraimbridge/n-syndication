@@ -15,6 +15,7 @@ import {
 	CSS_SELECTOR_SYNDATION_ICON,
 	DATA_ID_PROPERTY,
 	DATA_LANG_PROPERTY,
+	DEFAULT_LANGUAGE,
 	EVENT_PREFIX,
 	LABEL_ARIA_OVERLAY,
 	MAX_LOCAL_FORMAT_TIME_MS,
@@ -177,7 +178,7 @@ function createElement (item) {
 	}
 	else if (item.canBeSyndicated === 'verify') {
 		downloadButtonState = 'disabled';
-		message = MESSAGES.MSG_2200;
+		message = item.lang !== DEFAULT_LANGUAGE ? MESSAGES.MSG_4250 : MESSAGES.MSG_2200;
 	}
 	else if (item.canBeSyndicated === 'withContributorPayment') {
 		if (USER_DATA.contributor_content !== true) {
@@ -204,7 +205,7 @@ function createElement (item) {
 
 		switch (item.canDownload) {
 		case 0:
-			message = MESSAGES.MSG_4200;
+			message = item.lang !== DEFAULT_LANGUAGE ? MESSAGES.MSG_4250 : MESSAGES.MSG_4200;
 
 			break;
 		case -1:

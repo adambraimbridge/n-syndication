@@ -22,6 +22,7 @@ export const CSS_SELECTOR_REPUBLISHING_HEADER_LINK = '.o-header-services__nav-li
 export const CSS_SELECTOR_REPUBLISHING_BTN = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_REPUBLISHING_BUTTON}`;
 export const CSS_SELECTOR_SYNDATION_ICON = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_PREFIX}-icon`;
 export const CSS_SELECTOR_TRACKABLE = `[${ATTR_TRACKABLE}]`;
+export const CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON = '.video__actions__download';
 
 export const DATA_HIDDEN_ID_PROPERTY = '__id__';
 export const DATA_ID_PROPERTY = 'id';
@@ -72,8 +73,9 @@ export const MESSAGES = {
 <p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
 	MSG_4000: `${EMPTY}<p>This content is not available for republishing.</p>`,
 	MSG_4050: `${EMPTY}<p>Sorry, this content is no longer available.</p>`,
-	MSG_4100: `${EMPTY}<p>You have reached your download limit for articles. Please contact your Account Manager to increase your limit.</p>`,
+	MSG_4100: `${EMPTY}<p>You have reached your download limit for {{type}}s. Please contact your Account Manager to increase your limit.</p>`,
 	MSG_4200: `${EMPTY}<p>Your contract does not allow {{type}}s to be downloaded. Please contact your Account Manager to change this.</p>`,
+	MSG_4250: `${EMPTY}<p>You do not have rights to republish this type of content. Please contact your Account Manager for further details.</p>`,
 	MSG_4300: `${EMPTY}<p>Report contains multiple articles. Please view each article individually for republishing rights.</p>`,
 	MSG_5000: `${EMPTY}<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>`,
 	MSG_5100: `${EMPTY}<p>The Republishing Service is currently undergoing maintenance. Please try again later.</p>`
