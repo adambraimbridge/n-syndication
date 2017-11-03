@@ -20,9 +20,18 @@ export const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
 export const CSS_SELECTOR_PACKAGE_CONTENT_ITEM = 'a.package__content-item';
 export const CSS_SELECTOR_REPUBLISHING_HEADER_LINK = '.o-header-services__nav-link';
 export const CSS_SELECTOR_REPUBLISHING_BTN = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_REPUBLISHING_BUTTON}`;
+export const CSS_SELECTOR_STORY_LINK = '.story__link'; // for top fastFT bar under main navigation
 export const CSS_SELECTOR_SYNDATION_ICON = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_PREFIX}-icon`;
 export const CSS_SELECTOR_TRACKABLE = `[${ATTR_TRACKABLE}]`;
 export const CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON = '.video__actions__download';
+
+export const CSS_SELECTOR_SYNDICATABLE_ITEMS = [
+	CSS_SELECTOR_CONTENT_ID,
+	CSS_SELECTOR_ID,
+	CSS_SELECTOR_CARD_LINK,
+	CSS_SELECTOR_PACKAGE_CONTENT_ITEM,
+	CSS_SELECTOR_STORY_LINK
+].join(', ');
 
 export const DATA_HIDDEN_ID_PROPERTY = '__id__';
 export const DATA_ID_PROPERTY = 'id';
@@ -87,8 +96,10 @@ export const MS_DELAY_HIDE = 500;
 
 export const SYNDICATION_INSERTION_RULES = {
 	[CSS_SELECTOR_CARD_LINK]: { fn: 'closest', slc: '.card__concept-article' },
-	[CSS_SELECTOR_PACKAGE_CONTENT_ITEM]: {fn: 'querySelector', slc: '.package__title'},
+	[CSS_SELECTOR_PACKAGE_CONTENT_ITEM]: {fn: 'querySelector', slc: '.package__title' },
+	[CSS_SELECTOR_STORY_LINK]: {fn: 'closest', slc: 'article[data-trackable="story"]' },
 	'a': { fn: 'closest', slc: '.o-teaser__heading' },
+	'.stream-item': { fn: 'querySelector', slc: '.card-openable__headline' },
 	'article': { fn: 'querySelector', slc: '.topper__headline' },
 	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
 	'main.video': { fn: 'querySelector', slc: '.video__title' },

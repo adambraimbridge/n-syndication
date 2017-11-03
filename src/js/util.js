@@ -1,7 +1,8 @@
 'use strict';
 
 import {
-	ATTR_CONTENT_ID
+	ATTR_CONTENT_ID,
+	ATTR_ID
 } from './config';
 
 function cheapClone (item) {
@@ -36,23 +37,28 @@ function getContentIDFromHTMLElement (el) {
 		// there is a case where an item has a `data-content-id` with no value.
 		// I can't figure it out right now, so temporary "fix"...
 		if (!id) {
-			let anchorEl = el;
+			id = el.getAttribute(ATTR_ID);
 
-			if (el.tagName.toUpperCase() !== 'A') {
-				anchorEl = anchorEl.querySelector('a');
-			}
+			if (!id) {
+				let anchorEl = el;
 
-			if (anchorEl && anchorEl.hasAttribute('href')) {
-				id = anchorEl.getAttribute('href').split('/').pop();
+				if (el.tagName.toUpperCase() !== 'A') {
+					anchorEl = anchorEl.querySelector('a');
+				}
 
-				id = getContentIDFromHref(id);
+				if (anchorEl && anchorEl.hasAttribute('href')) {
+					id = anchorEl.getAttribute('href').split('/').pop();
 
-				if (id) {
-					el.setAttribute(ATTR_CONTENT_ID, id);
+					id = getContentIDFromHref(id);
+
+					if (id) {
+						el.setAttribute(ATTR_CONTENT_ID, id);
+					}
 				}
 			}
 		}
-		else {
+
+		if (id) {
 			id = getContentIDFromHref(id);
 
 			el.setAttribute(ATTR_CONTENT_ID, id);
