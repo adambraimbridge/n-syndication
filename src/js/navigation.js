@@ -36,6 +36,7 @@ function insertNavItem (selectorContainer, selectorInsertionPoint, selectorLink)
 			category: 'syndication',
 			action: 'Republishing',
 			contractID: USER_DATA.contract_id,
+			product: 'syndication',
 			referrer: location.href,
 			url: evt.target.href || evt.target.getAttribute('href')
 		});
