@@ -117,6 +117,10 @@ function getItemIndex (item) {
 	return -1;
 }
 
+function getUserData () {
+	return USER_DATA;
+}
+
 function matches (item, id, lang) {
 	const _id = `${id}__${lang}`;
 
@@ -170,6 +174,7 @@ export {
 	getItemByHTMLElement,
 	getItemByID,
 	getItemIndex,
+	getUserData,
 	init,
 	refresh
 };
