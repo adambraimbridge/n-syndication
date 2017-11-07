@@ -100,7 +100,9 @@ export const SYNDICATION_INSERTION_RULES = {
 	[CSS_SELECTOR_STORY_LINK]: {fn: 'closest', slc: 'article[data-trackable="story"]' },
 	'a': { fn: 'closest', slc: '.o-teaser__heading' },
 	'.stream-item': { fn: 'querySelector', slc: '.card-openable__headline' },
-	'article': { fn: 'querySelector', slc: '.topper__headline' },
+	'article[class="article"]': { fn: 'querySelector', slc: '.topper__headline' },
+	'article.article--brand': { fn: 'querySelector', slc: '.topper__headline' },
+	'article.article-clean-wrapper': { fn: 'querySelector', slc: '.topper__headline', up: 1 },
 	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
 	'main.video': { fn: 'querySelector', slc: '.video__title' },
 	'li.o-teaser__related-item': {}

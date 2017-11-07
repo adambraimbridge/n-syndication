@@ -49,6 +49,17 @@ function findElementToSyndicate (el) {
 
 		for (let [match, rule] of entries) {
 			if (el.matches(match)) {
+				// in the case where the element to insert the syndication icon is a sibling of the element
+				// that contains the content ID, rather than a ancestor or descendant of the element
+				// we can use the `up` property to start the search from a `parentElement` of the source element
+				if (typeof rule.up === 'number' && rule.up === rule.up) {
+					let i = -1;
+
+					while (++i < rule.up) {
+						el = el.parentElement;
+					}
+				}
+
 				if (!rule.fn && !rule.slc) {
 					return el;
 				}
