@@ -59,7 +59,9 @@ function actionModalFromClick (evt) {
 	const trackingEvent = {};
 	trackingEvent.category = TRACKING.CATEGORY;
 	trackingEvent.contractID = USER_DATA.contract_id;
+	trackingEvent.product = TRACKING.CATEGORY;
 	trackingEvent.url = location.href;
+	trackingEvent.lang = item.lang;
 	trackingEvent.action = evt.target.getAttribute(ATTR_TRACKABLE);
 
 	if (item) {
@@ -117,6 +119,7 @@ function actionModalFromKeyboard (evt) {
 
 		trackingEvent.category = TRACKING.CATEGORY;
 		trackingEvent.contractID = USER_DATA.contract_id;
+		trackingEvent.product = TRACKING.CATEGORY;
 		trackingEvent.url = location.href;
 		trackingEvent.action = 'close-syndication-modal';
 
@@ -144,6 +147,7 @@ function createElement (item) {
 	let trackableValueDownloadItem = 'download-items';
 	let trackableValueSaveForLater = 'save-for-later';
 	let wordCount = '';
+	let trackableAttributeForDownload = `${ATTR_TRACKABLE}`;
 
 	if (item.embargoPeriod) {
 		if (typeof item.embargoPeriod === 'number') {
@@ -158,7 +162,8 @@ function createElement (item) {
 		trackableValueSaveForLater += '-downloads-page';
 	}
 	else if (location.pathname.includes('/save')) {
-		trackableValueDownloadItem = 'download-saved-item';
+//		trackableValueDownloadItem = 'download-saved-item';
+		trackableValueDownloadItem = '';
 	}
 
 	if (USER_DATA.MAINTENANCE_MODE === true) {
@@ -237,6 +242,13 @@ function createElement (item) {
 		wordCount = `<span class="${CSS_CLASS_PREFIX}-modal-word-count">Word count: ${item.wordCount}</span>`;
 	}
 
+	if (trackableValueDownloadItem) {
+		trackableAttributeForDownload = `${trackableAttributeForDownload}="${trackableValueDownloadItem}"`;
+	}
+	else {
+		trackableAttributeForDownload = '';
+	}
+
 	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
 <div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
 	<header class="${CSS_CLASS_PREFIX}-modal-heading">
@@ -250,7 +262,7 @@ function createElement (item) {
 		</div>
 		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}" data-iso-lang="${item[DATA_LANG_PROPERTY]}">
 			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${ATTR_TRACKABLE}="${trackableValueDownloadItem}" href="${downloadHref}">${downloadText}</a>
+			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${trackableAttributeForDownload} href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
