@@ -9,7 +9,6 @@ import { init as initDownloadModal } from './modal-download';
 import {
 	ATTR_TRACKABLE,
 	CSS_SELECTOR_REPUBLISHING_HEADER_LINK,
-	//	CSS_SELECTOR_TRACKABLE,
 	TRACKING
 } from './config';
 
@@ -45,13 +44,6 @@ function track (flags, user) {
 	config.context.contractID = user.contract_id;
 	//	config.context.appVersion = user.app.version;
 
-	//	broadcast('oTracking.page', config);
-	broadcast('oTracking.page', {
-		app: TRACKING.DATA.context.app,
-		//		appVersion: user.app.version,
-		contractID: user.contract_id
-	});
-
 	document.addEventListener('submit', (evt) => broadcastClick(evt, user), true);
 	addEventListener('click', (evt) => broadcastClick(evt, user), true);
 }
@@ -61,11 +53,6 @@ function broadcastClick (evt, user) {
 	if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
 		publish = true;
 	}
-	//	else if (location.pathname.includes('/save') || location.pathname.includes('/download')) {
-	//		if (evt.target.matches(CSS_SELECTOR_TRACKABLE)) {
-	//			publish = true;
-	//		}
-	//	}
 
 	if (publish === true) {
 		broadcast('oTracking.event', {
