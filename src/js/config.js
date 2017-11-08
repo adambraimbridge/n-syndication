@@ -102,7 +102,7 @@ export const SYNDICATION_INSERTION_RULES = {
 	'.stream-item': { fn: 'querySelector', slc: '.card-openable__headline' },
 	'article[class="article"]': { fn: 'querySelector', slc: '.topper__headline' },
 	'article.article--brand': { fn: 'querySelector', slc: '.topper__headline' },
-	'article.article-clean-wrapper': { fn: 'querySelector', slc: '.topper__headline', up: 1 },
+	'article.article-grid': { fn: 'querySelector', slc: '.topper__headline', up: 1 },
 	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
 	'main.video': { fn: 'querySelector', slc: '.video__title' },
 	'li.o-teaser__related-item': {}
