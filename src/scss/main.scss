@@ -20,25 +20,40 @@
 	vertical-align: text-top;
 	}
 
+.n-syndication-icon-state-msg_4000,
+.n-syndication-icon-state-msg_4050,
+.n-syndication-icon-state-msg_5000,
+.n-syndication-icon-state-msg_5100,
 .n-syndication-icon-state-no {
 	@include oIconsGetIcon('cross', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
 	background-color: rgba(getColor('claret'), 0.85);
 	}
 
+.n-syndication-icon-state-msg_2000,
+.n-syndication-icon-state-msg_2100,
+.n-syndication-icon-state-msg_4100,
+.n-syndication-icon-state-msg_4300,
 .n-syndication-icon-state-yes {
 	@include oIconsGetIcon('tick', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
 	background-color: rgba(getColor('jade'), 0.85);
 	}
 
+.n-syndication-icon-state-msg_2300,
+.n-syndication-icon-state-msg_2320,
+.n-syndication-icon-state-msg_2340,
 .n-syndication-icon-state-withcontributorpayment {
 	@include oIconsGetIcon('dollar', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
 	background-color: rgba(getColor('jade'), 0.85);
 	}
 
+.n-syndication-icon-state-msg_2200,
+.n-syndication-icon-state-msg_4200,
+.n-syndication-icon-state-msg_4250,
 .n-syndication-icon-state-verify {
 	@include oIconsGetIcon('minus', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
 	background-color: rgba(getColor('mandarin'), 0.85);
 	}
+
 
 .n-syndication-icon-state-maintenance {
 	background-image: none;
