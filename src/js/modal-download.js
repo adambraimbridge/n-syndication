@@ -56,15 +56,17 @@ function actionModalFromClick (evt) {
 	const item = getItemByHTMLElement(evt.target);
 
 	let fire = true;
+
 	const trackingEvent = {};
+
 	trackingEvent.category = TRACKING.CATEGORY;
 	trackingEvent.contractID = USER_DATA.contract_id;
 	trackingEvent.product = TRACKING.CATEGORY;
 	trackingEvent.url = location.href;
-	trackingEvent.lang = item.lang;
 	trackingEvent.action = evt.target.getAttribute(ATTR_TRACKABLE);
 
 	if (item) {
+		trackingEvent.lang = item.lang;
 		trackingEvent.message = item.messageCode;
 		trackingEvent.article_id = item[DATA_ID_PROPERTY];
 		trackingEvent.syndication_content = item.type;
