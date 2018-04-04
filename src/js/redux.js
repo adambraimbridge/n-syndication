@@ -43,9 +43,7 @@ function _init (flags, user) {
 
 	initDownloadModal(flags, user);
 
-	if (flags.get('syndicationDownloadMediaResource')) {
-		$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
-	}
+	$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
 }
 
 export { init };
