@@ -25,7 +25,7 @@ function init (flags, user) {
 }
 
 function _init (flags, user) {
-	if (user && user.migrated !== true && !flags.get('syndicationRedux')) {
+	if (user && user.migrated !== true) {
 		return;
 	}
 
