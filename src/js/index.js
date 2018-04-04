@@ -85,7 +85,7 @@ function init (flags){
 		}
 
 		getUserStatus().then(user => {
-			if (user && user.migrated === true || flags.get('syndicationRedux')) {
+			if (user && user.migrated === true) {
 				return initRedux(flags, user);
 			}
 
