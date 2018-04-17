@@ -1,3 +1,4 @@
+@import 'o-overlay/main';
 
 .n-syndication-icon {
 	@include oIconsGetIcon('cross', oColorsGetPaletteColor('white'), 20, $iconset-version: 1);
