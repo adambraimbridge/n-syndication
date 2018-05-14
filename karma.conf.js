@@ -113,9 +113,9 @@ module.exports = function (karma) {
 			ie11: {
 				base: 'BrowserStack',
 				browser: 'IE',
-				browser_version: '11',
+				browser_version: '11.0',
 				os: 'Windows',
-				os_version: '8'
+				os_version: '8.1'
 			},
 			safari: {
 				base: 'BrowserStack',
