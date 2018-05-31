@@ -20,12 +20,17 @@ module.exports = function (karma) {
 				'Promise',
 				'matchMedia',
 				'HTMLPictureElement',
-				// the following polyfills are included pending https://github.com/Financial-Times/polyfill-service/issues/653
-				'CustomEvent|always|gated',
-				'fetch|always|gated',
-				'Array.prototype.find|always|gated',
-				'Array.prototype.findIndex|always|gated'
-			].join(',') + '&excludes=Symbol,Symbol.iterator,Symbol.species,Map,Set',
+				'fetch',
+				'Array.prototype.find',
+				'Array.prototype.findIndex',
+				'IntersectionObserver',
+				'Map',
+				'Array.from',
+				'NodeList.prototype.@@iterator',
+				'Array.prototype.@@iterator',
+				'EventSource',
+				'Number.isInteger'
+			].join(',') + '&flags=gated&source=n-syndication-tests',
 			'src/js/*.js',
 			'test/**/*.spec.js'
 		],
@@ -84,7 +89,9 @@ module.exports = function (karma) {
 
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		singleRun: true
+		singleRun: true,
+		browserNoActivityTimeout: 50000,
+		browserDisconnectTolerance: 3
 	};
 
 	if (process.env.CI) {
