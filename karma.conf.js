@@ -89,7 +89,9 @@ module.exports = function (karma) {
 
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
-		singleRun: true
+		singleRun: true,
+		browserNoActivityTimeout: 50000,
+		browserDisconnectTolerance: 3
 	};
 
 	if (process.env.CI) {
