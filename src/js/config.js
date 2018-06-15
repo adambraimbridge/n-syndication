@@ -58,11 +58,6 @@ export const FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT = {
 	},
 	method: 'POST'
 };
-export const FETCH_URI_USER_STATUS = '/syndication/user-status';
-
-export const FETCH_OPTIONS_USER_STATUS = {
-	credentials: 'include'
-};
 
 export const LABEL_ARIA_OVERLAY = 'Download: ';
 
