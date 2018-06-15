@@ -63,20 +63,16 @@ export const LABEL_ARIA_OVERLAY = 'Download: ';
 
 export const MAX_LOCAL_FORMAT_TIME_MS = 300000;
 
+const CONTRACTUAL_RIGHTS_CONSIDERATION = '<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>';
+const ADDITIONAL_CHARGES_WARNING = '<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>';
 export const MESSAGES = {
-	EMBARGO: `${EMPTY}<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>`,
-	MSG_2000: `${EMPTY}{{embargoMessage}}<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_2100: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>
-{{embargoMessage}}
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
+	EMBARGO : `${EMPTY}<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>`,
+	MSG_2000: `${EMPTY}{{embargoMessage}}${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_2100: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_2200: `${EMPTY}<p>Please contact us for details of republishing rights for this content (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>`,
-	MSG_2300: `${EMPTY}{{embargoMessage}}<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>`,
-	MSG_2320: `${EMPTY}{{embargoMessage}}<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_2340: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>
-{{embargoMessage}}
-<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
+	MSG_2300: `${EMPTY}{{embargoMessage}}${ADDITIONAL_CHARGES_WARNING}`,
+	MSG_2320: `${EMPTY}{{embargoMessage}}${ADDITIONAL_CHARGES_WARNING}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_2340: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${ADDITIONAL_CHARGES_WARNING}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_4000: `${EMPTY}<p>This content is not available for republishing.</p>`,
 	MSG_4050: `${EMPTY}<p>Sorry, this content is no longer available.</p>`,
 	MSG_4100: `${EMPTY}<p>You have reached your download limit for {{type}}s. Please contact your Account Manager to increase your limit.</p>`,
