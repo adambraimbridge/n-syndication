@@ -1,6 +1,11 @@
+import { $$ } from 'n-ui-foundations';
 import {products as getUserProducts} from 'next-session-client';
 import getUserStatus from './get-user-status';
-import {init as initRedux} from './redux';
+import { init as initDataStore } from './data-store';
+import { init as initIconify } from './iconify';
+import { init as initDownloadModal } from './modal-download';
+import { init as initNavigation } from './navigation';
+import { CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON } from './config';
 
 
 async function checkIfUserIsSyndicationCustomer () {
@@ -23,9 +28,25 @@ async function init (flags){
 	}
 
 	const user = await getUserStatus();
-	if (user && user.migrated === true) {
-		return initRedux(user);
+
+	const noUserOrUserNotMigrated = (!user || user.migrated !== true)
+	if (noUserOrUserNotMigrated) {
+		return;
 	}
+
+	initNavigation(user);
+
+	const allowed = user.allowed || {};
+
+	const allowedSomeSpanishContent = (allowed.spanish_content === true || allowed.spanish_weekend === true)
+	if (allowedSomeSpanishContent && allowed.ft_com !== true) {
+		return;
+	}
+
+	initDataStore(user);
+	initIconify();
+	initDownloadModal(user);
+	$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
 }
 
 export {
