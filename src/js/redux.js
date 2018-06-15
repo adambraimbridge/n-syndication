@@ -14,17 +14,7 @@ import {
 } from './config';
 
 function init (flags, user) {
-	if (user) {
-		_init(flags, user);
-	}
-	else {
-		getUserStatus().then(user => {
-			_init(flags, user);
-		});
-	}
-}
-
-function _init (flags, user) {
+	// this if statement can be removed I think because we check this stuff in index.js
 	if (user && user.migrated !== true) {
 		return;
 	}
