@@ -16,22 +16,20 @@ function checkIfUserIsSyndicationCustomer () {
 		.then(() => userIsSyndicationCustomer);
 }
 
-function init (flags){
+async function init (flags){
 	if (!flags.get('syndication')) {
 		return;
 	}
 
-	checkIfUserIsSyndicationCustomer().then(userIsSyndicationCustomer => {
-		if(!userIsSyndicationCustomer){
-			return;
-		}
+	const userIsSyndicationCustomer = await checkIfUserIsSyndicationCustomer();
+	if(!userIsSyndicationCustomer){
+		return;
+	}
 
-		getUserStatus().then(user => {
-			if (user && user.migrated === true) {
-				return initRedux(user);
-			}
-		});
-	});
+	const user = await getUserStatus();
+	if (user && user.migrated === true) {
+		return initRedux(user);
+	}
 }
 
 export {
