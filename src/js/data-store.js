@@ -24,7 +24,7 @@ const DATA_STORE_MAP = {};
 
 let USER_DATA;
 
-function init (flags, user, data = null) {
+function init (user, data = null) {
 	USER_DATA = user;
 
 	addEventListener(`${EVENT_PREFIX}.fetch`, evt => refresh(evt.detail.response), true);

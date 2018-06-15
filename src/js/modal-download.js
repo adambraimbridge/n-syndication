@@ -41,7 +41,7 @@ let OVERLAY_SHADOW_ELEMENT;
 let DOWNLOAD_FORMAT;
 let USER_DATA;
 
-function init (flags, user) {
+function init (user) {
 	addEventListener('click', actionModalFromClick, true);
 
 	addEventListener('keyup', actionModalFromKeyboard, true);

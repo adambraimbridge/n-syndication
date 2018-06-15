@@ -13,13 +13,10 @@ import {
 	CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON
 } from './config';
 
-function init (flags, user) {
-	// this if statement can be removed I think because we check this stuff in index.js
-	if (user && user.migrated !== true) {
-		return;
-	}
+// TODO: move this init logic into index.js
+function init (user) {
 
-	initNavigation(flags, user);
+	initNavigation(user);
 
 	const allowed = user.allowed || {};
 
@@ -27,11 +24,11 @@ function init (flags, user) {
 		return;
 	}
 
-	initDataStore(flags, user);
+	initDataStore(user);
 
-	initIconify(flags, user);
+	initIconify();
 
-	initDownloadModal(flags, user);
+	initDownloadModal(user);
 
 	$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
 }

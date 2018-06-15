@@ -28,7 +28,7 @@ function init (flags){
 
 		getUserStatus().then(user => {
 			if (user && user.migrated === true) {
-				return initRedux(flags, user);
+				return initRedux(user);
 			}
 		});
 	});
