@@ -2,8 +2,6 @@
 
 import { $$ } from 'n-ui-foundations';
 
-import getUserStatus from './get-user-status';
-
 import { init as initDataStore } from './data-store';
 import { init as initIconify } from './iconify';
 import { init as initDownloadModal } from './modal-download';
