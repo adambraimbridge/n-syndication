@@ -18,7 +18,8 @@ function init (user) {
 
 	const allowed = user.allowed || {};
 
-	if ((allowed.spanish_content === true || allowed.spanish_weekend === true) && allowed.ft_com !== true) {
+	const allowedSomeSpanishContent = (allowed.spanish_content === true || allowed.spanish_weekend === true)
+	if (allowedSomeSpanishContent && allowed.ft_com !== true) {
 		return;
 	}
 
