@@ -31,16 +31,7 @@ function init (user, data = null) {
 	}
 }
 
-function fetchItems (itemIDs) {
-	const options = {
-		credentials: 'include',
-		headers: {
-			'content-type': 'application/json'
-		},
-		method: 'POST',
-		body: JSON.stringify(itemIDs)
-	};
-
+async function fetchItems (itemIDs) {
 	if (USER_DATA.MAINTENANCE_MODE === true) {
 		const fakeRes = itemIDs.map(id => {
 			return {
@@ -58,31 +49,38 @@ function fetchItems (itemIDs) {
 		return Promise.resolve(fakeRes);
 	}
 
-	return fetch(`/syndication/resolve${location.search}`, options).then(response => {
-		if (response.ok) {
-			return response.json().then(items => {
-				broadcast(`${EVENT_PREFIX}.fetch`, {
-					request: itemIDs,
-					response: items
-				});
+	const options = {
+		credentials: 'include',
+		headers: { 'content-type': 'application/json' },
+		method: 'POST',
+		body: JSON.stringify(itemIDs)
+	};
 
-				return items;
-			});
+	try {
+		const response = await fetch(`/syndication/resolve${location.search}`, options);
+
+		if (!response.ok) {
+			const text = await response.text();
+			throw new Error(`Next /syndication/resolve responded with "${text}" (${response.status})`);
 		}
-		else {
-			return response.text()
-				.then(text => {
-					throw new Error(`Next /syndication/resolve responded with "${text}" (${response.status})`);
-				});
-		}
-	}).catch(error => {
+
+		const items = await response.json();
+
+		broadcast(`${EVENT_PREFIX}.fetch`, {
+			request: itemIDs,
+			response: items
+		});
+
+		return items;
+
+	} catch (error) {
 		broadcast('oErrors.log', {
-			error: error,
+			error,
 			info: {
 				component: 'next-syndication-redux'
 			}
 		});
-	});
+	}
 }
 
 function getItemByHTMLElement (el) {
