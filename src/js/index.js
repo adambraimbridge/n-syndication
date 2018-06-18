@@ -29,7 +29,7 @@ async function init (flags){
 
 	const user = await getUserStatus();
 
-	const noUserOrUserNotMigrated = (!user || user.migrated !== true)
+	const noUserOrUserNotMigrated = (!user || user.migrated !== true);
 	if (noUserOrUserNotMigrated) {
 		return;
 	}
@@ -38,7 +38,7 @@ async function init (flags){
 
 	const allowed = user.allowed || {};
 
-	const allowedSomeSpanishContent = (allowed.spanish_content === true || allowed.spanish_weekend === true)
+	const allowedSomeSpanishContent = (allowed.spanish_content === true || allowed.spanish_weekend === true);
 	if (allowedSomeSpanishContent && allowed.ft_com !== true) {
 		return;
 	}
