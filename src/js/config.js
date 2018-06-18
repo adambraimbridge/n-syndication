@@ -35,7 +35,6 @@ export const CSS_SELECTOR_SYNDICATABLE_ITEMS = [
 	CSS_SELECTOR_STORY_LINK
 ].join(', ');
 
-export const DATA_HIDDEN_ID_PROPERTY = '__id__';
 export const DATA_ID_PROPERTY = 'id';
 export const DATA_LANG_PROPERTY = 'lang';
 
@@ -46,15 +45,6 @@ export const EVENT_PREFIX = 'nSyndication';
 export const EXCLUDE_ELEMENTS = {
 	BUTTON: true,
 	FORM: true
-};
-export const FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT = '/syndication/resolve';
-
-export const FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT = {
-	credentials: 'include',
-	headers: {
-		'content-type': 'application/json'
-	},
-	method: 'POST'
 };
 
 export const LABEL_ARIA_OVERLAY = 'Download: ';
