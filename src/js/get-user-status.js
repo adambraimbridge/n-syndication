@@ -21,19 +21,16 @@ export default async function getUserStatus () {
 				return null;
 			case 503:
 				if (response.headers.get('content-type').includes('application/json')) {
-					return response.json().then(error => {
-						error.migrated = true;
-						error.MAINTENANCE_MODE = true;
+					const error = await response.json();
+					error.migrated = true;
+					error.MAINTENANCE_MODE = true;
 
-						return error;
-					});
+					return error;
 				}
 			}
 
-			return response.text()
-				.then(text => {
-					throw new Error(`Next ${url} responded with "${text}" (${response.status})`);
-				});
+			const text = await response.text();
+			throw new Error(`Next ${url} responded with "${text}" (${response.status})`);
 		}
 	} catch (error) {
 		broadcast('oErrors.log', {
