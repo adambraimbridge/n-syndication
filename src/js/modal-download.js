@@ -399,13 +399,5 @@ function visible () {
 }
 
 export {
-	createElement,
-	generateDownloadURI,
-	generateSaveURI,
-	hide,
-	init,
-	reposition,
-	show,
-	save,
-	visible
+	init
 };

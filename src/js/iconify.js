@@ -154,13 +154,5 @@ function updatePage (els) {
 }
 
 export {
-	createElement,
-	findElementToSyndicate,
-	getSyndicatableItems,
-	getSyndicatableItemIDs,
-	init,
-	syndicate,
-	syndicateElement,
-	syndicateElements,
-	updatePage
+	init
 };
