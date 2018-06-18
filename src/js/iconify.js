@@ -15,7 +15,6 @@ import {
 	DATA_LANG_PROPERTY,
 	DEFAULT_LANGUAGE,
 	EVENT_PREFIX,
-	EXCLUDE_ELEMENTS,
 	SYNDICATION_INSERTION_RULES
 } from './config';
 
@@ -41,14 +40,16 @@ function createElement (item) {
 	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${String(item.messageCode).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_ISO_LANG}="${item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
 }
 
-function findElementToSyndicate (el) {
-	if (el !== document.documentElement && !EXCLUDE_ELEMENTS[el.tagName.toUpperCase()]) {
-		const entries = Object.entries
-			? Object.entries(SYNDICATION_INSERTION_RULES)
-			: Object.keys(SYNDICATION_INSERTION_RULES).map(key => [key, SYNDICATION_INSERTION_RULES[key]]);
+function findElementToSyndicate (element) {
+	const elementIsNotFormOrButton =
+		element.tagName.toUpperCase() !== 'FORM'
+		&& element.tagName.toUpperCase() !== 'BUTTON';
+
+	if (element !== document.documentElement && elementIsNotFormOrButton) {
+		const entries = Object.entries(SYNDICATION_INSERTION_RULES);
 
 		for (let [match, rule] of entries) {
-			if (el.matches(match)) {
+			if (element.matches(match)) {
 				// in the case where the element to insert the syndication icon is a sibling of the element
 				// that contains the content ID, rather than a ancestor or descendant of the element
 				// we can use the `up` property to start the search from a `parentElement` of the source element
@@ -56,15 +57,15 @@ function findElementToSyndicate (el) {
 					let i = -1;
 
 					while (++i < rule.up) {
-						el = el.parentElement;
+						element = element.parentElement;
 					}
 				}
 
 				if (!rule.fn && !rule.slc) {
-					return el;
+					return element;
 				}
 
-				const targetElement = el[rule.fn](rule.slc);
+				const targetElement = element[rule.fn](rule.slc);
 
 				if (targetElement) {
 					return targetElement;
@@ -82,8 +83,8 @@ function getSyndicatableItems () {
 
 function getSyndicatableItemIDs (items) {
 	// Save time by sending only distinct content IDs
-	let IDs = Array.from(items).reduce((acc, el) => {
-		let ID = getContentIDFromHTMLElement(el);
+	const IDs = Array.from(items).reduce((acc, el) => {
+		const ID = getContentIDFromHTMLElement(el);
 
 		if (ID) {
 			acc[ID] = ID;
