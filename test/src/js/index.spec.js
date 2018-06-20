@@ -13,7 +13,7 @@ describe('#init', function () {
 
 	context('when syndication customer', () => {
 		it.skip('should return undefined if the user isn’t migrated', () => { });
-		it.skip('should return initialise the republising navigation', () => { });
+		it.skip('should initialise the republising navigation', () => { });
 		it.skip('should end if the user isn’t allowed ft.com republishing', () => { });
 		it.skip('should initialise the rest if allowed ft.com republishing', () => { });
 	});
