@@ -22,9 +22,15 @@ function insertUserNavItem (user) {
 	return ({ selectorContainer, selectorInsertionPoint, selectorLink }) => {
 		const elCt = $(selectorContainer);
 
-		const elInsertionPoint = elCt.querySelector(selectorInsertionPoint).parentElement;
+		const navLink = elCt.querySelector(selectorInsertionPoint);
+		if (!navLink)
+			return;
 
-		const elNavItem = elInsertionPoint.cloneNode(true);
+		const elInsertionPoint = navLink.parentElement;
+
+		const elNavItem = elInsertionPoint.cloneNode();
+		const navLinkCopy = navLink.cloneNode();
+		elNavItem.appendChild(navLinkCopy);
 
 		elNavItem.setAttribute('data-trackable', 'syndication');
 
