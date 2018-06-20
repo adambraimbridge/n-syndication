@@ -7,7 +7,7 @@ function init (user) {
 
 	insertNavItem({
 		selectorContainer: '#o-header-nav-desktop',
-		selectorInsertionPoint: '[data-trackable="My Account"]',
+		selectorInsertionPoint: '[data-trackable="Account Settings"]',
 		selectorLink: '.o-header__nav-link',
 	});
 
