@@ -4,27 +4,24 @@ import { broadcast } from 'n-ui-foundations';
 
 import {
 	ATTR_ISO_LANG,
-	DATA_HIDDEN_ID_PROPERTY,
 	DATA_ID_PROPERTY,
 	DATA_LANG_PROPERTY,
 	DEFAULT_LANGUAGE,
-	EVENT_PREFIX,
-	FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT,
-	FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT
+	EVENT_PREFIX
 } from './config';
 
 import {
-	cheapClone,
 	getContentAttributeFromHTMLElement,
 	getContentIDFromHTMLElement
 } from './util';
 
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
+const DATA_HIDDEN_ID_PROPERTY = '__id__';
 
 let USER_DATA;
 
-function init (flags, user, data = null) {
+function init (user, data = null) {
 	USER_DATA = user;
 
 	addEventListener(`${EVENT_PREFIX}.fetch`, evt => refresh(evt.detail.response), true);
@@ -34,11 +31,7 @@ function init (flags, user, data = null) {
 	}
 }
 
-function fetchItems (itemIDs) {
-	const options = Object.assign(cheapClone(FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT), {
-		body: JSON.stringify(itemIDs)
-	});
-
+async function fetchItems (itemIDs) {
 	if (USER_DATA.MAINTENANCE_MODE === true) {
 		const fakeRes = itemIDs.map(id => {
 			return {
@@ -56,31 +49,38 @@ function fetchItems (itemIDs) {
 		return Promise.resolve(fakeRes);
 	}
 
-	return fetch(`${FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT}${location.search}`, options).then(response => {
-		if (response.ok) {
-			return response.json().then(items => {
-				broadcast(`${EVENT_PREFIX}.fetch`, {
-					request: itemIDs,
-					response: items
-				});
+	const options = {
+		credentials: 'include',
+		headers: { 'content-type': 'application/json' },
+		method: 'POST',
+		body: JSON.stringify(itemIDs)
+	};
 
-				return items;
-			});
+	try {
+		const response = await fetch(`/syndication/resolve${location.search}`, options);
+
+		if (!response.ok) {
+			const text = await response.text();
+			throw new Error(`Next /syndication/resolve responded with "${text}" (${response.status})`);
 		}
-		else {
-			return response.text()
-				.then(text => {
-					throw new Error(`Next ${FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT} responded with "${text}" (${response.status})`);
-				});
-		}
-	}).catch(error => {
+
+		const items = await response.json();
+
+		broadcast(`${EVENT_PREFIX}.fetch`, {
+			request: itemIDs,
+			response: items
+		});
+
+		return items;
+
+	} catch (error) {
 		broadcast('oErrors.log', {
-			error: error,
+			error,
 			info: {
 				component: 'next-syndication-redux'
 			}
 		});
-	});
+	}
 }
 
 function getItemByHTMLElement (el) {

@@ -35,13 +35,10 @@ export const CSS_SELECTOR_SYNDICATABLE_ITEMS = [
 	CSS_SELECTOR_STORY_LINK
 ].join(', ');
 
-export const DATA_HIDDEN_ID_PROPERTY = '__id__';
 export const DATA_ID_PROPERTY = 'id';
 export const DATA_LANG_PROPERTY = 'lang';
 
 export const DEFAULT_LANGUAGE = 'en';
-
-export const EMPTY = '';
 
 export const EVENT_PREFIX = 'nSyndication';
 
@@ -49,47 +46,29 @@ export const EXCLUDE_ELEMENTS = {
 	BUTTON: true,
 	FORM: true
 };
-export const FETCH_URI_RESOLVE_SYNDICATABLE_CONTENT = '/syndication/resolve';
-
-export const FETCH_OPTIONS_RESOLVE_SYNDICATABLE_CONTENT = {
-	credentials: 'include',
-	headers: {
-		'content-type': 'application/json'
-	},
-	method: 'POST'
-};
-export const FETCH_URI_USER_STATUS = '/syndication/user-status';
-
-export const FETCH_OPTIONS_USER_STATUS = {
-	credentials: 'include'
-};
 
 export const LABEL_ARIA_OVERLAY = 'Download: ';
 
 export const MAX_LOCAL_FORMAT_TIME_MS = 300000;
 
+const CONTRACTUAL_RIGHTS_CONSIDERATION = '<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>';
+const ADDITIONAL_CHARGES_WARNING = '<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>';
 export const MESSAGES = {
-	EMBARGO: `${EMPTY}<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>`,
-	MSG_2000: `${EMPTY}{{embargoMessage}}<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_2100: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>
-{{embargoMessage}}
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_2200: `${EMPTY}<p>Please contact us for details of republishing rights for this content (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>`,
-	MSG_2300: `${EMPTY}{{embargoMessage}}<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>`,
-	MSG_2320: `${EMPTY}{{embargoMessage}}<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_2340: `${EMPTY}<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>
-{{embargoMessage}}
-<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>
-<p>Please ensure you have considered your <a data-trackable="contractual-rights" href="/republishing/contract">contractual rights</a> before republishing.</p>`,
-	MSG_4000: `${EMPTY}<p>This content is not available for republishing.</p>`,
-	MSG_4050: `${EMPTY}<p>Sorry, this content is no longer available.</p>`,
-	MSG_4100: `${EMPTY}<p>You have reached your download limit for {{type}}s. Please contact your Account Manager to increase your limit.</p>`,
-	MSG_4200: `${EMPTY}<p>Your contract does not allow {{type}}s to be downloaded. Please contact your Account Manager to change this.</p>`,
-	MSG_4250: `${EMPTY}<p>You do not have rights to republish this type of content. Please contact your Account Manager for further details.</p>`,
-	MSG_4300: `${EMPTY}<p>Report contains multiple articles. Please view each article individually for republishing rights.</p>`,
-	MSG_5000: `${EMPTY}<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>`,
-	MSG_5100: `${EMPTY}<p>The Republishing Service is currently undergoing maintenance. Please try again later.</p>`
+	EMBARGO : '<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>',
+	MSG_2000: `{{embargoMessage}}${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_2100: `<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_2200: '<p>Please contact us for details of republishing rights for this content (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>',
+	MSG_2300: `{{embargoMessage}}${ADDITIONAL_CHARGES_WARNING}`,
+	MSG_2320: `{{embargoMessage}}${ADDITIONAL_CHARGES_WARNING}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_2340: `<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${ADDITIONAL_CHARGES_WARNING}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	MSG_4000: '<p>This content is not available for republishing.</p>',
+	MSG_4050: '<p>Sorry, this content is no longer available.</p>',
+	MSG_4100: '<p>You have reached your download limit for {{type}}s. Please contact your Account Manager to increase your limit.</p>',
+	MSG_4200: '<p>Your contract does not allow {{type}}s to be downloaded. Please contact your Account Manager to change this.</p>',
+	MSG_4250: '<p>You do not have rights to republish this type of content. Please contact your Account Manager for further details.</p>',
+	MSG_4300: '<p>Report contains multiple articles. Please view each article individually for republishing rights.</p>',
+	MSG_5000: '<p>Sorry, an error has occurred. Please try signing out and then in again. If error persists, please contact your Account Manager.</p>',
+	MSG_5100: '<p>The Republishing Service is currently undergoing maintenance. Please try again later.</p>'
 };
 
 export const RE_INTERPOLATE = /\{\{([^\}]+)\}\}/gim;

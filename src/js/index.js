@@ -1,37 +1,52 @@
+import { $$ } from 'n-ui-foundations';
 import {products as getUserProducts} from 'next-session-client';
 import getUserStatus from './get-user-status';
-import {init as initRedux} from './redux';
+import { init as initDataStore } from './data-store';
+import { init as initIconify } from './iconify';
+import { init as initDownloadModal } from './modal-download';
+import { init as initNavigation } from './navigation';
+import { CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON } from './config';
 
-const SYNDICATION_PRODUCT_CODE = 'S1';
 
-function checkIfUserIsSyndicationCustomer () {
-	let userIsSyndicationCustomer = false;
-	return getUserProducts()
-		.then(response => {
-			if (response && response.products) {
-				userIsSyndicationCustomer = response.products.includes(SYNDICATION_PRODUCT_CODE);
-			}
-		})
-		.catch(err => err)
-		.then(() => userIsSyndicationCustomer);
+async function checkIfUserIsSyndicationCustomer () {
+	const SYNDICATION_PRODUCT_CODE = 'S1';
+	const response = await getUserProducts().catch(err => err);
+
+	return response && response.products
+		? response.products.includes(SYNDICATION_PRODUCT_CODE)
+		: false;
 }
 
-function init (flags){
+async function init (flags){
 	if (!flags.get('syndication')) {
 		return;
 	}
 
-	checkIfUserIsSyndicationCustomer().then(userIsSyndicationCustomer => {
-		if(!userIsSyndicationCustomer){
-			return;
-		}
+	const userIsSyndicationCustomer = await checkIfUserIsSyndicationCustomer();
+	if(!userIsSyndicationCustomer){
+		return;
+	}
 
-		getUserStatus().then(user => {
-			if (user && user.migrated === true) {
-				return initRedux(flags, user);
-			}
-		});
-	});
+	const user = await getUserStatus();
+
+	const noUserOrUserNotMigrated = (!user || user.migrated !== true);
+	if (noUserOrUserNotMigrated) {
+		return;
+	}
+
+	initNavigation(user);
+
+	const allowed = user.allowed || {};
+
+	const allowedSomeSpanishContent = (allowed.spanish_content === true || allowed.spanish_weekend === true);
+	if (allowedSomeSpanishContent && allowed.ft_com !== true) {
+		return;
+	}
+
+	initDataStore(user);
+	initIconify();
+	initDownloadModal(user);
+	$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
 }
 
 export {
