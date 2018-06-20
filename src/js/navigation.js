@@ -23,8 +23,9 @@ function insertUserNavItem (user) {
 		const elCt = $(selectorContainer);
 
 		const navLink = elCt.querySelector(selectorInsertionPoint);
-		if (!navLink)
+		if (!navLink) {
 			return;
+		}
 
 		const elInsertionPoint = navLink.parentElement;
 
