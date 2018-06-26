@@ -21,6 +21,9 @@ function init (user) {
 function insertUserNavItem (user) {
 	return ({ selectorContainer, selectorInsertionPoint, selectorLink }) => {
 		const elCt = $(selectorContainer);
+		if (!elCt) {
+			return;
+		}
 
 		const navLink = elCt.querySelector(selectorInsertionPoint);
 		if (!navLink) {
