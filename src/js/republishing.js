@@ -29,7 +29,7 @@ function _init (flags, user) {
 			window.republishingInitData = function () {};
 		}
 
-		initDataStore(flags, user, window.republishingInitData());
+		initDataStore(user, window.republishingInitData());
 
 		initDownloadModal(user);
 	}
