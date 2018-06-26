@@ -31,7 +31,7 @@ function _init (flags, user) {
 
 		initDataStore(flags, user, window.republishingInitData());
 
-		initDownloadModal(flags, user);
+		initDownloadModal(user);
 	}
 
 	window.getRepublishingUser = () => user;
