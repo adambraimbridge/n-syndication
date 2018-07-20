@@ -9,21 +9,17 @@ export const ATTR_SYNDICATED = 'data-syndicated';
 export const ATTR_TRACKABLE = 'data-trackable';
 export const ATTR_TRACKABLE_VALUE = 'syn-icon';
 
-export const CSS_CLASS_PREFIX = 'n-syndication';
-export const CSS_CLASS_REPUBLISHING_BUTTON = 'download-button';
-export const CSS_SELECTOR_ACTION_DOWNLOAD = `.${CSS_CLASS_PREFIX}-action[${ATTR_ACTION}="download"]`;
-export const CSS_SELECTOR_ACTION_SAVE = `.${CSS_CLASS_PREFIX}-action[${ATTR_ACTION}="save"]`;
+export const CSS_SELECTOR_ACTION_DOWNLOAD = '.n-syndication-action[data-action="download"]';
+export const CSS_SELECTOR_ACTION_SAVE = '.n-syndication-action[data-action="save"]';
 export const CSS_SELECTOR_CARD_LINK = 'a.card__concept-article-link';
-export const CSS_SELECTOR_CONTENT_ID = `[${ATTR_CONTENT_ID}]`;
-export const CSS_SELECTOR_ID = `[${ATTR_ID}]`;
-export const CSS_SELECTOR_NOT_SYNDICATED = `:not([${ATTR_SYNDICATED}="true"])`;
+export const CSS_SELECTOR_CONTENT_ID = '[data-content-id]';
+export const CSS_SELECTOR_ID = '[data-id]';
 export const CSS_SELECTOR_PACKAGE_CONTENT_ITEM = 'a.package__content-item';
 export const CSS_SELECTOR_REPUBLISHING_HEADER_LINK = '.o-header-services__nav-link';
-export const CSS_SELECTOR_REPUBLISHING_BTN = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_REPUBLISHING_BUTTON}`;
+export const CSS_SELECTOR_REPUBLISHING_BTN = `[data-content-id][data-syndicated="true"].download-button`;
 export const CSS_SELECTOR_STORY_LINK = '.story__link'; // for top fastFT bar under main navigation
-export const CSS_SELECTOR_SYNDATION_ICON = `${CSS_SELECTOR_CONTENT_ID}[${ATTR_SYNDICATED}="true"].${CSS_CLASS_PREFIX}-icon`;
+export const CSS_SELECTOR_SYNDATION_ICON = '[data-content-id][data-syndicated="true"].n-syndication-icon';
 export const CSS_SELECTOR_TOPIC_CARD_LINK = 'a.topic-card__concept-article-link';
-export const CSS_SELECTOR_TRACKABLE = `[${ATTR_TRACKABLE}]`;
 export const CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON = '.video__actions__download';
 
 export const CSS_SELECTOR_SYNDICATABLE_ITEMS = [

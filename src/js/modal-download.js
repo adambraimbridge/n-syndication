@@ -8,7 +8,6 @@ import Superstore from 'superstore';
 import {
 	ATTR_ACTION,
 	ATTR_TRACKABLE,
-	CSS_CLASS_PREFIX,
 	CSS_SELECTOR_ACTION_DOWNLOAD,
 	CSS_SELECTOR_ACTION_SAVE,
 	CSS_SELECTOR_REPUBLISHING_BTN,
@@ -98,7 +97,7 @@ function actionModalFromClick (evt) {
 		if (visible()) {
 			const action = evt.target.getAttribute(ATTR_ACTION);
 
-			if (evt.target.matches(`.${CSS_CLASS_PREFIX}-modal-shadow`) || (action && action === 'close')) {
+			if (evt.target.matches(`.n-syndication-modal-shadow`) || (action && action === 'close')) {
 				evt.preventDefault();
 
 				delayHide();
@@ -241,7 +240,7 @@ function createElement (item) {
 	}
 
 	if (item.wordCount) {
-		wordCount = `<span class="${CSS_CLASS_PREFIX}-modal-word-count">Word count: ${item.wordCount}</span>`;
+		wordCount = `<span class="n-syndication-modal-word-count">Word count: ${item.wordCount}</span>`;
 	}
 
 	if (trackableValueDownloadItem) {
@@ -251,20 +250,20 @@ function createElement (item) {
 		trackableAttributeForDownload = '';
 	}
 
-	let frag = toElement(`<div class="${CSS_CLASS_PREFIX}-modal-shadow"></div>
-<div class="${CSS_CLASS_PREFIX}-modal ${CSS_CLASS_PREFIX}-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
-	<header class="${CSS_CLASS_PREFIX}-modal-heading">
-		<a class="${CSS_CLASS_PREFIX}-modal-close" data-action="close" ${ATTR_TRACKABLE}="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
-		<span role="heading" class="${CSS_CLASS_PREFIX}-modal-title">${item.title}</span>
+	let frag = toElement(`<div class="n-syndication-modal-shadow"></div>
+<div class="n-syndication-modal n-syndication-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
+	<header class="n-syndication-modal-heading">
+		<a class="n-syndication-modal-close" data-action="close" ${ATTR_TRACKABLE}="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
+		<span role="heading" class="n-syndication-modal-title">${item.title}</span>
 	</header>
-	<section class=" ${CSS_CLASS_PREFIX}-modal-content">
+	<section class=" n-syndication-modal-content">
 		${wordCount}
-		<div class="${CSS_CLASS_PREFIX}-modal-message">
+		<div class="n-syndication-modal-message">
 		${message}
 		</div>
-		<div class="${CSS_CLASS_PREFIX}-actions" data-content-id="${item[DATA_ID_PROPERTY]}" data-iso-lang="${item[DATA_LANG_PROPERTY]}">
-			<a class="${CSS_CLASS_PREFIX}-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
-			<a class="${CSS_CLASS_PREFIX}-action ${CSS_CLASS_PREFIX}-action-primary" data-action="download" ${downloadButtonState} ${trackableAttributeForDownload} href="${downloadHref}">${downloadText}</a>
+		<div class="n-syndication-actions" data-content-id="${item[DATA_ID_PROPERTY]}" data-iso-lang="${item[DATA_LANG_PROPERTY]}">
+			<a class="n-syndication-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
+			<a class="n-syndication-action n-syndication-action-primary" data-action="download" ${downloadButtonState} ${trackableAttributeForDownload} href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
