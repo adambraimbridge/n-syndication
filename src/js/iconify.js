@@ -9,7 +9,6 @@ import {
 	ATTR_SYNDICATED,
 	ATTR_TRACKABLE,
 	ATTR_TRACKABLE_VALUE,
-	CSS_CLASS_PREFIX,
 	CSS_SELECTOR_SYNDICATABLE_ITEMS,
 	DATA_ID_PROPERTY,
 	DATA_LANG_PROPERTY,
@@ -37,7 +36,7 @@ function init () {
 }
 
 function createElement (item) {
-	return toElement(`<button class="${CSS_CLASS_PREFIX}-icon ${CSS_CLASS_PREFIX}-icon-state-${String(item.messageCode).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_ISO_LANG}="${item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
+	return toElement(`<button class="n-syndication-icon n-syndication-icon-state-${String(item.messageCode).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_ISO_LANG}="${item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
 }
 
 function findElementToSyndicate (element) {
@@ -108,8 +107,8 @@ function syndicateElement (item, el) {
 	const element = findElementToSyndicate(el);
 
 	if (element !== null && element.getAttribute(ATTR_SYNDICATED) !== 'true') {
-		element.classList.add(CSS_CLASS_PREFIX);
-		element.classList.add(`${CSS_CLASS_PREFIX}-state-${item.canBeSyndicated}`);
+		element.classList.add('n-syndication');
+		element.classList.add(`n-syndication-state-${item.canBeSyndicated}`);
 
 		prepend(element, createElement(item));
 
