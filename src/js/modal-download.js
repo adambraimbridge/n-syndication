@@ -97,7 +97,7 @@ function actionModalFromClick (evt) {
 		if (visible()) {
 			const action = evt.target.getAttribute(ATTR_ACTION);
 
-			if (evt.target.matches(`.n-syndication-modal-shadow`) || (action && action === 'close')) {
+			if (evt.target.matches('.n-syndication-modal-shadow') || (action && action === 'close')) {
 				evt.preventDefault();
 
 				delayHide();
@@ -156,6 +156,11 @@ function createElement (item) {
 		}
 
 		item.embargoMessage = item.embargoPeriod ? interpolate(MESSAGES.EMBARGO, item) : '';
+	}
+
+	const hasTranslationComponent = document.getElementById('ftlabsTranslationContainer');
+	if(!!hasTranslationComponent) {
+		item.translationMessage = item ? interpolate(MESSAGES.ENGLISH, item) : '';
 	}
 
 	if (location.pathname.includes('/download')) {

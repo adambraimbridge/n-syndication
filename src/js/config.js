@@ -16,7 +16,7 @@ export const CSS_SELECTOR_CONTENT_ID = '[data-content-id]';
 export const CSS_SELECTOR_ID = '[data-id]';
 export const CSS_SELECTOR_PACKAGE_CONTENT_ITEM = 'a.package__content-item';
 export const CSS_SELECTOR_REPUBLISHING_HEADER_LINK = '.o-header-services__nav-link';
-export const CSS_SELECTOR_REPUBLISHING_BTN = `[data-content-id][data-syndicated="true"].download-button`;
+export const CSS_SELECTOR_REPUBLISHING_BTN = '[data-content-id][data-syndicated="true"].download-button';
 export const CSS_SELECTOR_STORY_LINK = '.story__link'; // for top fastFT bar under main navigation
 export const CSS_SELECTOR_SYNDATION_ICON = '[data-content-id][data-syndicated="true"].n-syndication-icon';
 export const CSS_SELECTOR_TOPIC_CARD_LINK = 'a.topic-card__concept-article-link';
@@ -51,7 +51,8 @@ const CONTRACTUAL_RIGHTS_CONSIDERATION = '<p>Please ensure you have considered y
 const ADDITIONAL_CHARGES_WARNING = '<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>';
 export const MESSAGES = {
 	EMBARGO : '<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>',
-	MSG_2000: `{{embargoMessage}}${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
+	ENGLISH : '<p>Please note that this content is only available to download in English.</p>',
+	MSG_2000: `{{embargoMessage}}{{translationMessage}}${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_2100: `<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_2200: '<p>Please contact us for details of republishing rights for this content (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>',
 	MSG_2300: `{{embargoMessage}}${ADDITIONAL_CHARGES_WARNING}`,
