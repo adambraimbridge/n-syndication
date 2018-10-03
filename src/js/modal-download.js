@@ -159,9 +159,7 @@ function createElement (item) {
 	}
 
 	const hasTranslationComponent = document.getElementById('ftlabsTranslationContainer');
-	if(!!hasTranslationComponent) {
-		item.translationMessage = item ? interpolate(MESSAGES.ENGLISH, item) : '';
-	}
+	item.translationMessage = Boolean(hasTranslationComponent) ? interpolate(MESSAGES.ENGLISH, item) : '';
 
 	if (location.pathname.includes('/download')) {
 		trackableValueDownloadItem = 'redownload';
