@@ -51,7 +51,7 @@ const CONTRACTUAL_RIGHTS_CONSIDERATION = '<p>Please ensure you have considered y
 const ADDITIONAL_CHARGES_WARNING = '<p class="syndication-message__content--warning">This content will incur additional charges to republish. Please contact us for further details (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>';
 export const MESSAGES = {
 	EMBARGO : '<p>Please note that this content is embargoed until {{embargoPeriod}} after its original publication date of {{publishedDateDisplay}}.</p>',
-	ENGLISH : '<p>Please note that this content is only available to download in English.</p>',
+	ENGLISH : '<p class="syndication-message__content--warning">Please note that this content is only available to download in English.</p>',
 	MSG_2000: `{{embargoMessage}}{{translationMessage}}${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_2100: `<p>This content has already been downloaded and therefore will not count towards your republishing limit.</p>\n{{embargoMessage}}\n${CONTRACTUAL_RIGHTS_CONSIDERATION}`,
 	MSG_2200: '<p>Please contact us for details of republishing rights for this content (<a href="mailto:syndication@ft.com">syndication@ft.com</a> or +44 (0)207 873 4816).</p>',
