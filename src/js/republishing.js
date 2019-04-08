@@ -1,16 +1,12 @@
 'use strict';
 
-import { broadcast } from 'n-ui-foundations';
-//import tracking from 'o-tracking';
-
+import {broadcast} from 'n-ui-foundations';
 import getUserStatus from './get-user-status';
-import { init as initDataStore } from './data-store';
-import { init as initDownloadModal } from './modal-download';
-import {
-	ATTR_TRACKABLE,
-	CSS_SELECTOR_REPUBLISHING_HEADER_LINK,
-	TRACKING
-} from './config';
+import {init as initDataStore} from './data-store';
+import {init as initDownloadModal} from './modal-download';
+import {TRACKING} from './config';
+
+//import tracking from 'o-tracking';
 
 function init (flags, user) {
 	if (user) {
@@ -50,14 +46,14 @@ function track (flags, user) {
 
 function broadcastClick (evt, user) {
 	let publish = false;
-	if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_HEADER_LINK)) {
+	if (evt.target.matches('.o-header-services__nav-link')) {
 		publish = true;
 	}
 
 	if (publish === true) {
 		broadcast('oTracking.event', {
 			category: TRACKING.CATEGORY,
-			action: evt.target.getAttribute(ATTR_TRACKABLE),
+			action: evt.target.getAttribute('data-trackable'),
 			app: TRACKING.DATA.context.app,
 			//			appVersion: user.app.version,
 			contractID: user.contract_id,

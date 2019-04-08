@@ -1,19 +1,8 @@
 'use strict';
 
-import { broadcast } from 'n-ui-foundations';
+import {broadcast} from 'n-ui-foundations';
 
-import {
-	ATTR_ISO_LANG,
-	DATA_ID_PROPERTY,
-	DATA_LANG_PROPERTY,
-	DEFAULT_LANGUAGE,
-	EVENT_PREFIX
-} from './config';
-
-import {
-	getContentAttributeFromHTMLElement,
-	getContentIDFromHTMLElement
-} from './util';
+import {getContentAttributeFromHTMLElement, getContentIDFromHTMLElement} from './util';
 
 const DATA_STORE = [];
 const DATA_STORE_MAP = {};
@@ -24,7 +13,7 @@ let USER_DATA;
 function init (user, data = null) {
 	USER_DATA = user;
 
-	addEventListener(`${EVENT_PREFIX}.fetch`, evt => refresh(evt.detail.response), true);
+	addEventListener('nSyndication.fetch', evt => refresh(evt.detail.response), true);
 
 	if (Object.prototype.toString.call(data) === '[object Array]') {
 		refresh(data);
@@ -41,7 +30,7 @@ async function fetchItems (itemIDs) {
 			};
 		});
 
-		broadcast(`${EVENT_PREFIX}.fetch`, {
+		broadcast('nSyndication.fetch', {
 			request: itemIDs,
 			response: fakeRes
 		});
@@ -66,7 +55,7 @@ async function fetchItems (itemIDs) {
 
 		const items = await response.json();
 
-		broadcast(`${EVENT_PREFIX}.fetch`, {
+		broadcast('nSyndication.fetch', {
 			request: itemIDs,
 			response: items
 		});
@@ -85,16 +74,16 @@ async function fetchItems (itemIDs) {
 
 function getItemByHTMLElement (el) {
 	const id = getContentIDFromHTMLElement(el);
-	const lang = getContentAttributeFromHTMLElement(el, ATTR_ISO_LANG) || DEFAULT_LANGUAGE;
+	const lang = getContentAttributeFromHTMLElement(el, 'data-iso-lang') || 'en';
 
 	return getItemByID(id, lang);
 }
 
 function getAllItemsForID (id) {
-	return DATA_STORE.filter(item => item[DATA_ID_PROPERTY] === id);
+	return DATA_STORE.filter(item => item['id'] === id);
 }
 
-function getItemByID (id, lang = DEFAULT_LANGUAGE) {
+function getItemByID (id, lang = 'en') {
 	const _id = `${id}__${lang}`;
 
 	return DATA_STORE_MAP[_id] || DATA_STORE_MAP[id] || DATA_STORE.find(item => matches(item, id, lang)) || null;
@@ -106,8 +95,8 @@ function getItemIndex (item) {
 
 	switch (Object.prototype.toString.call(item)) {
 	case '[object Object]' :
-		id = item[DATA_ID_PROPERTY];
-		lang = item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE;
+		id = item['id'];
+		lang = item['lang'] || 'en';
 
 		// allow fall-through
 	case '[object String]' :
@@ -124,15 +113,15 @@ function getUserData () {
 function matches (item, id, lang) {
 	const _id = `${id}__${lang}`;
 
-	return item[DATA_HIDDEN_ID_PROPERTY] === _id || (item[DATA_ID_PROPERTY] === id && item[DATA_LANG_PROPERTY] === lang);
+	return item[DATA_HIDDEN_ID_PROPERTY] === _id || (item['id'] === id && item['lang'] === lang);
 }
 
 function refresh (data) {
 	const EXISTING = [];
 
 	data.forEach(item => {
-		const id = item[DATA_ID_PROPERTY];
-		const lang = item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE;
+		const id = item['id'];
+		const lang = item['lang'] || 'en';
 
 		const _id = item[DATA_HIDDEN_ID_PROPERTY] = `${id}__${lang}`;
 
@@ -154,7 +143,7 @@ function refresh (data) {
 		DATA_STORE_MAP[_id] = item;
 	});
 
-	broadcast(`${EVENT_PREFIX}.dataChanged`, {
+	broadcast('nSyndication.dataChanged', {
 		existing: EXISTING,
 		items: DATA_STORE
 	});

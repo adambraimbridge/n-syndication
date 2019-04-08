@@ -1,12 +1,10 @@
-import { $$ } from 'n-ui-foundations';
+import {$$} from 'n-ui-foundations';
 import {products as getUserProducts} from 'next-session-client';
 import getUserStatus from './get-user-status';
-import { init as initDataStore } from './data-store';
-import { init as initIconify } from './iconify';
-import { init as initDownloadModal } from './modal-download';
-import { init as initNavigation } from './navigation';
-import { CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON } from './config';
-
+import {init as initDataStore} from './data-store';
+import {init as initIconify} from './iconify';
+import {init as initDownloadModal} from './modal-download';
+import {init as initNavigation} from './navigation';
 
 async function checkIfUserIsSyndicationCustomer () {
 	const SYNDICATION_PRODUCT_CODE = 'S1';
@@ -46,7 +44,7 @@ async function init (flags){
 	initDataStore(user);
 	initIconify();
 	initDownloadModal(user);
-	$$(CSS_SELECTOR_VIDEO_DOWNLOAD_BUTTON).forEach(el => el.parentNode.removeChild(el));
+	$$('.video__actions__download').forEach(el => el.parentNode.removeChild(el));
 }
 
 export {

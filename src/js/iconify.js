@@ -1,42 +1,38 @@
 'use strict';
 
-import { $$, broadcast } from 'n-ui-foundations';
+import {$$, broadcast} from 'n-ui-foundations';
 
-import {
-	ATTR_CONTENT_ID,
-	ATTR_CONTENT_TYPE,
-	ATTR_ISO_LANG,
-	ATTR_SYNDICATED,
-	ATTR_TRACKABLE,
-	ATTR_TRACKABLE_VALUE,
-	CSS_SELECTOR_SYNDICATABLE_ITEMS,
-	DATA_ID_PROPERTY,
-	DATA_LANG_PROPERTY,
-	DEFAULT_LANGUAGE,
-	EVENT_PREFIX,
-	SYNDICATION_INSERTION_RULES
-} from './config';
+import {DATA_STORE, fetchItems} from './data-store';
 
-import {
-	DATA_STORE,
-	fetchItems
-} from './data-store';
+import {getContentIDFromHTMLElement, prepend, toElement} from './util';
 
-import {
-	getContentIDFromHTMLElement,
-	prepend,
-	toElement
-} from './util';
+const SYNDICATION_INSERTION_RULES = {
+	['a.card__concept-article-link']: { fn: 'closest', slc: '.card__concept-article' },
+	['a.topic-card__concept-article-link']: { fn: 'closest', slc: '.topic-card__concept-article' },
+	['a.package__content-item']: {fn: 'querySelector', slc: '.package__title' },
+	['.story__link']: {fn: 'closest', slc: 'article[data-trackable="story"]' },
+	// matcher for n-teaser
+	'a': { fn: 'closest', slc: '.o-teaser__heading' },
+	// matcher for x-teaser
+	'.o-teaser': { fn: 'querySelector', slc: '.o-teaser__heading' },
+	'.stream-item': { fn: 'querySelector', slc: '.card-openable__headline' },
+	'article[class="article"]': { fn: 'querySelector', slc: '.topper__headline' },
+	'article.article--brand': { fn: 'querySelector', slc: '.topper__headline' },
+	'article.article-grid': { fn: 'querySelector', slc: '.topper__headline', up: 1 },
+	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
+	'main.video': { fn: 'querySelector', slc: '.video__title' },
+	'li.o-teaser__related-item': {}
+};
 
 function init () {
 	addEventListener('asyncContentLoaded', () => syndicate(), true);
-	addEventListener(`${EVENT_PREFIX}.dataChanged`, () => updatePage(), true);
+	addEventListener(`${'nSyndication'}.dataChanged`, () => updatePage(), true);
 
 	return syndicate();
 }
 
 function createElement (item) {
-	return toElement(`<button class="n-syndication-icon n-syndication-icon-state-${String(item.messageCode).toLowerCase()}" ${ATTR_CONTENT_ID}="${item[DATA_ID_PROPERTY]}" ${ATTR_ISO_LANG}="${item[DATA_LANG_PROPERTY] || DEFAULT_LANGUAGE}" ${ATTR_CONTENT_TYPE}="${item.type}" ${ATTR_SYNDICATED}="true" ${ATTR_TRACKABLE}="${ATTR_TRACKABLE_VALUE}" data-message-code="${item.messageCode}" type="button"></button>`);
+	return toElement(`<button class="n-syndication-icon n-syndication-icon-state-${String(item.messageCode).toLowerCase()}" data-content-id="${item['id']}" data-iso-lang="${item['lang'] || 'en'}" data-content-type="${item.type}" data-syndicated="true" data-trackable="syn-icon" data-message-code="${item.messageCode}" type="button"></button>`);
 }
 
 function findElementToSyndicate (element) {
@@ -77,7 +73,14 @@ function findElementToSyndicate (element) {
 }
 
 function getSyndicatableItems () {
-	return $$(CSS_SELECTOR_SYNDICATABLE_ITEMS);
+	return $$([
+		'[data-content-id]',
+		'[data-id]',
+		'a.card__concept-article-link',
+		'a.topic-card__concept-article-link',
+		'a.package__content-item',
+		'.story__link'
+	].join(', '));
 }
 
 function getSyndicatableItemIDs (items) {
@@ -106,20 +109,20 @@ function syndicate () {
 function syndicateElement (item, el) {
 	const element = findElementToSyndicate(el);
 
-	if (element !== null && element.getAttribute(ATTR_SYNDICATED) !== 'true') {
+	if (element !== null && element.getAttribute('data-syndicated') !== 'true') {
 		element.classList.add('n-syndication');
 		element.classList.add(`n-syndication-state-${item.canBeSyndicated}`);
 
 		prepend(element, createElement(item));
 
-		element.setAttribute(ATTR_CONTENT_TYPE, item.type);
-		element.setAttribute(ATTR_SYNDICATED, 'true');
+		element.setAttribute('data-content-type', item.type);
+		element.setAttribute('data-syndicated', 'true');
 		//		element.setAttribute(ATTR_TRACKABLE, ATTR_TRACKABLE_VALUE);
 	}
 
 	if (element !== el) {
-		el.setAttribute(ATTR_CONTENT_TYPE, item.type);
-		el.setAttribute(ATTR_SYNDICATED, 'true');
+		el.setAttribute('data-content-type', item.type);
+		el.setAttribute('data-syndicated', 'true');
 	}
 }
 
@@ -137,7 +140,7 @@ function updatePage (els) {
 	}
 
 	const elementsByContentID = Array.from(els).reduce((acc, el) => {
-		const contentID = el.getAttribute(ATTR_CONTENT_ID);
+		const contentID = el.getAttribute('data-content-id');
 
 		if (!Array.isArray(acc[contentID])) {
 			acc[contentID] = [];
@@ -148,9 +151,9 @@ function updatePage (els) {
 		return acc;
 	}, {});
 
-	DATA_STORE.forEach(item => syndicateElements(item, elementsByContentID[item[DATA_ID_PROPERTY]]));
+	DATA_STORE.forEach(item => syndicateElements(item, elementsByContentID[item['id']]));
 
-	broadcast(`${EVENT_PREFIX}.iconified`);
+	broadcast('nSyndication.iconified');
 }
 
 export {

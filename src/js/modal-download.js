@@ -1,37 +1,17 @@
 'use strict';
 
-import { broadcast } from 'n-ui-foundations';
+import {broadcast} from 'n-ui-foundations';
 //import tracking from 'o-tracking';
-import { listenTo } from 'o-viewport';
+import {listenTo} from 'o-viewport';
 import Superstore from 'superstore';
 
-import {
-	ATTR_ACTION,
-	ATTR_TRACKABLE,
-	CSS_SELECTOR_ACTION_DOWNLOAD,
-	CSS_SELECTOR_ACTION_SAVE,
-	CSS_SELECTOR_REPUBLISHING_BTN,
-	CSS_SELECTOR_SYNDATION_ICON,
-	DATA_ID_PROPERTY,
-	DATA_LANG_PROPERTY,
-	DEFAULT_LANGUAGE,
-	EVENT_PREFIX,
-	LABEL_ARIA_OVERLAY,
-	MAX_LOCAL_FORMAT_TIME_MS,
-	MESSAGES,
-	MS_DELAY_HIDE,
-	RE_INTERPOLATE,
-	TRACKING,
-	URI_PREFIX_DOWNLOAD,
-	URI_PREFIX_SAVE
-} from './config';
+import {MESSAGES, TRACKING} from './config';
 
-import { toElement } from './util';
-import {
-	getAllItemsForID,
-	getItemByHTMLElement
-} from './data-store';
+import {toElement} from './util';
+import {getAllItemsForID, getItemByHTMLElement} from './data-store';
 
+
+const MAX_LOCAL_FORMAT_TIME_MS = 300000;
 const localStore = new Superstore('local', 'syndication');
 
 let OVERLAY_FRAGMENT;
@@ -62,24 +42,24 @@ function actionModalFromClick (evt) {
 	trackingEvent.contractID = USER_DATA.contract_id;
 	trackingEvent.product = TRACKING.CATEGORY;
 	trackingEvent.url = location.href;
-	trackingEvent.action = evt.target.getAttribute(ATTR_TRACKABLE);
+	trackingEvent.action = evt.target.getAttribute('data-trackable');
 
 	if (item) {
 		trackingEvent.lang = item.lang;
 		trackingEvent.message = item.messageCode;
-		trackingEvent.article_id = item[DATA_ID_PROPERTY];
+		trackingEvent.article_id = item['id'];
 		trackingEvent.syndication_content = item.type;
 	}
 
-	if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
+	if (evt.target.matches('[data-content-id][data-syndicated="true"].n-syndication-icon')) {
 		show(evt);
 	}
-	else if (evt.target.matches(CSS_SELECTOR_REPUBLISHING_BTN)) {
+	else if (evt.target.matches('[data-content-id][data-syndicated="true"].download-button')) {
 		evt.preventDefault();
 
 		show(evt);
 	}
-	else if (evt.target.matches(CSS_SELECTOR_ACTION_SAVE)) {
+	else if (evt.target.matches('.n-syndication-action[data-action="save"]')) {
 		save(evt);
 
 		hide();
@@ -88,14 +68,14 @@ function actionModalFromClick (evt) {
 
 		delayHide();
 	}
-	else if (evt.target.matches(CSS_SELECTOR_ACTION_DOWNLOAD)) {
+	else if (evt.target.matches('.n-syndication-action[data-action="download"]')) {
 		download(evt);
 
 		delayHide();
 	}
 	else {
 		if (visible()) {
-			const action = evt.target.getAttribute(ATTR_ACTION);
+			const action = evt.target.getAttribute('data-action');
 
 			if (evt.target.matches('.n-syndication-modal-shadow') || (action && action === 'close')) {
 				evt.preventDefault();
@@ -113,26 +93,26 @@ function actionModalFromClick (evt) {
 
 function actionModalFromKeyboard (evt) {
 	switch (evt.key) {
-	case 'Escape' :
-		hide();
+		case 'Escape' :
+			hide();
 
-		const trackingEvent = {};
+			const trackingEvent = {};
 
-		trackingEvent.category = TRACKING.CATEGORY;
-		trackingEvent.contractID = USER_DATA.contract_id;
-		trackingEvent.product = TRACKING.CATEGORY;
-		trackingEvent.url = location.href;
-		trackingEvent.action = 'close-syndication-modal';
+			trackingEvent.category = TRACKING.CATEGORY;
+			trackingEvent.contractID = USER_DATA.contract_id;
+			trackingEvent.product = TRACKING.CATEGORY;
+			trackingEvent.url = location.href;
+			trackingEvent.action = 'close-syndication-modal';
 
-		broadcast('oTracking.event', trackingEvent);
+			broadcast('oTracking.event', trackingEvent);
 
-		break;
-	case ' ' : case 'Enter' :
-		if (evt.target.matches(CSS_SELECTOR_SYNDATION_ICON)) {
-			show(evt);
-		}
+			break;
+		case ' ' : case 'Enter' :
+			if (evt.target.matches('[data-content-id][data-syndicated="true"].n-syndication-icon')) {
+				show(evt);
+			}
 
-		break;
+			break;
 	}
 
 }
@@ -140,15 +120,15 @@ function actionModalFromKeyboard (evt) {
 function createElement (item) {
 	let saveText = item.saved === true ? 'Already saved' : 'Save for later';
 	let downloadButtonState = '';
-	let downloadHref = generateDownloadURI(item[DATA_ID_PROPERTY], item);
+	let downloadHref = generateDownloadURI(item['id'], item);
 	let downloadText = 'Download';
 	let saveButtonState = item.saved === true ? 'disabled' : '';
-	let saveHref = generateSaveURI(item[DATA_ID_PROPERTY], item);
+	let saveHref = generateSaveURI(item['id'], item);
 	let message;
 	let trackableValueDownloadItem = 'download-items';
 	let trackableValueSaveForLater = 'save-for-later';
 	let wordCount = '';
-	let trackableAttributeForDownload = `${ATTR_TRACKABLE}`;
+	let trackableAttributeForDownload = `${'data-trackable'}`;
 
 	if (item.embargoPeriod) {
 		if (typeof item.embargoPeriod === 'number') {
@@ -187,7 +167,7 @@ function createElement (item) {
 	}
 	else if (item.canBeSyndicated === 'verify') {
 		downloadButtonState = 'disabled';
-		message = item.lang !== DEFAULT_LANGUAGE ? MESSAGES.MSG_4250 : MESSAGES.MSG_2200;
+		message = item.lang !== 'en' ? MESSAGES.MSG_4250 : MESSAGES.MSG_2200;
 	}
 	else if (item.canBeSyndicated === 'withContributorPayment') {
 		if (USER_DATA.contributor_content !== true) {
@@ -213,14 +193,14 @@ function createElement (item) {
 		downloadButtonState = 'disabled';
 
 		switch (item.canDownload) {
-		case 0:
-			message = item.lang !== DEFAULT_LANGUAGE ? MESSAGES.MSG_4250 : MESSAGES.MSG_4200;
+			case 0:
+				message = item.lang !== 'en' ? MESSAGES.MSG_4250 : MESSAGES.MSG_4200;
 
-			break;
-		case -1:
-			message = MESSAGES.MSG_4100;
+				break;
+			case -1:
+				message = MESSAGES.MSG_4100;
 
-			break;
+				break;
 		}
 	}
 	else {
@@ -253,10 +233,10 @@ function createElement (item) {
 		trackableAttributeForDownload = '';
 	}
 
-	let frag = toElement(`<div class="n-syndication-modal-shadow"></div>
-<div class="n-syndication-modal n-syndication-modal-${item.type}" role="dialog" aria-labelledby="${LABEL_ARIA_OVERLAY} ${item.title}" tabindex="0">
+	return toElement(`<div class="n-syndication-modal-shadow"></div>
+<div class="n-syndication-modal n-syndication-modal-${item.type}" role="dialog" aria-labelledby="'Download:  ${item.title}" tabindex="0">
 	<header class="n-syndication-modal-heading">
-		<a class="n-syndication-modal-close" data-action="close" ${ATTR_TRACKABLE}="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
+		<a class="n-syndication-modal-close" data-action="close" 'data-trackable="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
 		<span role="heading" class="n-syndication-modal-title">${item.title}</span>
 	</header>
 	<section class=" n-syndication-modal-content">
@@ -264,17 +244,15 @@ function createElement (item) {
 		<div class="n-syndication-modal-message">
 		${message}
 		</div>
-		<div class="n-syndication-actions" data-content-id="${item[DATA_ID_PROPERTY]}" data-iso-lang="${item[DATA_LANG_PROPERTY]}">
-			<a class="n-syndication-action" data-action="save" ${saveButtonState} ${ATTR_TRACKABLE}="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
+		<div class="n-syndication-actions" data-content-id="${item['id']}" data-iso-lang="${item['lang']}">
+			<a class="n-syndication-action" data-action="save" ${saveButtonState} data-trackable="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
 			<a class="n-syndication-action n-syndication-action-primary" data-action="download" ${downloadButtonState} ${trackableAttributeForDownload} href="${downloadHref}">${downloadText}</a>
 		</div>
 	</section>
 </div>`);
-
-	return frag;
 }
 
-function delayHide (ms = MS_DELAY_HIDE) {
+function delayHide (ms = 500) {
 	let tid = setTimeout(() => {
 		clearTimeout(tid);
 		tid = null;
@@ -292,13 +270,13 @@ function download (evt) {
 		item.messageCode = 'MSG_2100';
 	});
 
-	broadcast(`${EVENT_PREFIX}.downloadItem`, {
+	broadcast(`nSyndication.downloadItem`, {
 		item: item
 	});
 }
 
 function generateDownloadURI (contentID, item) {
-	let uri = `${URI_PREFIX_DOWNLOAD}/${contentID}${DOWNLOAD_FORMAT}`;
+	let uri = `${location.port ? '' : 'https://dl.syndication.ft.com'}/syndication/download/${contentID}${DOWNLOAD_FORMAT}`;
 
 	if (item.lang) {
 		uri += (uri.includes('?') ? '&' : '?') + `lang=${item.lang}`;
@@ -308,7 +286,7 @@ function generateDownloadURI (contentID, item) {
 }
 
 function generateSaveURI (contentID, item) {
-	let uri = `${URI_PREFIX_SAVE}/${contentID}${DOWNLOAD_FORMAT}`;
+	let uri = `/syndication/save/${contentID}${DOWNLOAD_FORMAT}`;
 
 	if (item.lang) {
 		uri += (uri.includes('?') ? '&' : '?') + `lang=${item.lang}`;
@@ -330,7 +308,7 @@ function hide () {
 }
 
 function interpolate (str, o) {
-	return String(str).replace(RE_INTERPOLATE, (m, p) => p in o ? o[p] : '');
+	return String(str).replace(/\{\{([^\}]+)\}\}/gim, (m, p) => p in o ? o[p] : '');
 }
 
 function reposition () {
