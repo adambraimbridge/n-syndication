@@ -1,15 +1,10 @@
 'use strict';
 
-import {
-	ATTR_CONTENT_ID,
-	ATTR_ID
-} from './config';
-
 function cheapClone (item) {
 	return JSON.parse(JSON.stringify(item));
 }
 
-function getContentAttributeFromHTMLElement (el, attrName = ATTR_CONTENT_ID) {
+function getContentAttributeFromHTMLElement (el, attrName = 'data-content-id') {
 	do {
 		if (el === document.documentElement) {
 			return null;
@@ -32,12 +27,12 @@ function getContentIDFromHTMLElement (el) {
 		}
 
 		//		if (el.hasAttribute(ATTR_CONTENT_ID)) {
-		let id = el.getAttribute(ATTR_CONTENT_ID);
+		let id = el.getAttribute('data-content-id');
 
 		// there is a case where an item has a `data-content-id` with no value.
 		// I can't figure it out right now, so temporary "fix"...
 		if (!id) {
-			id = el.getAttribute(ATTR_ID);
+			id = el.getAttribute('data-id');
 
 			if (!id) {
 				let anchorEl = el;
@@ -52,7 +47,7 @@ function getContentIDFromHTMLElement (el) {
 					id = getContentIDFromHref(id);
 
 					if (id) {
-						el.setAttribute(ATTR_CONTENT_ID, id);
+						el.setAttribute('data-content-id', id);
 					}
 				}
 			}
@@ -61,7 +56,7 @@ function getContentIDFromHTMLElement (el) {
 		if (id) {
 			id = getContentIDFromHref(id);
 
-			el.setAttribute(ATTR_CONTENT_ID, id);
+			el.setAttribute('data-content-id', id);
 		}
 
 		return id || null;
