@@ -24,5 +24,8 @@
     "o-overlay": "^2.0.0",
     "o-tracking": "^1.1.8",
     "superstore": "^2.1.0"
+  },
+  "resolutions": {
+    "ftdomdelegate": "^3.0.0"
   }
 }
