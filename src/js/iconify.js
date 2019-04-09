@@ -31,8 +31,9 @@ function init () {
 	return syndicate();
 }
 
-function createElement (item) {
-	return toElement(`<button class="n-syndication-icon n-syndication-icon-state-${String(item.messageCode).toLowerCase()}" data-content-id="${item['id']}" data-iso-lang="${item['lang'] || 'en'}" data-content-type="${item.type}" data-syndicated="true" data-trackable="syn-icon" data-message-code="${item.messageCode}" type="button"></button>`);
+function createElement ({messageCode, lang = 'en', id, type}) {
+	const stateClass = `n-syndication-icon-state-${messageCode}`.toLowerCase();
+	return toElement(`<button class="n-syndication-icon ${stateClass}" data-content-id="${id}" data-iso-lang="${lang}" data-content-type="${type}" data-syndicated="true" data-trackable="syn-icon" data-message-code="${messageCode}" type="button"></button>`);
 }
 
 function findElementToSyndicate (element) {
