@@ -3,7 +3,7 @@
 import {$$, broadcast} from 'n-ui-foundations';
 
 import {DATA_STORE, fetchItems} from './data-store';
-
+import {getMessage} from './config';
 import {getContentIDFromHTMLElement, prepend, toElement} from './util';
 
 const SYNDICATION_INSERTION_RULES = {
@@ -33,7 +33,8 @@ function init (user) {
 	return syndicate();
 }
 
-function createElement ({messageCode, lang = 'en', id, type}) {
+function createElement (item) {
+    const {messageCode, lang = 'en', id, type} = item;
 	const stateClass = `n-syndication-icon-state-${messageCode}`.toLowerCase();
 	const template = `<button 
 							class="n-syndication-icon ${stateClass}"
@@ -44,7 +45,7 @@ function createElement ({messageCode, lang = 'en', id, type}) {
 							data-trackable="syn-icon"
 							data-message-code="${messageCode}"
 							type="button">
-							
+							<span class="o-normalise-visually-hidden">${getMessage(item, USER_DATA)}</span>
 					  </button>`;
 	return toElement(template);
 }
@@ -131,7 +132,6 @@ function syndicateElement (item, el) {
 
 		element.setAttribute('data-content-type', item.type);
 		element.setAttribute('data-syndicated', 'true');
-		//		element.setAttribute(ATTR_TRACKABLE, ATTR_TRACKABLE_VALUE);
 	}
 
 	if (element !== el) {

@@ -1,7 +1,6 @@
 'use strict';
 
 import {broadcast} from 'n-ui-foundations';
-//import tracking from 'o-tracking';
 import {listenTo} from 'o-viewport';
 import Superstore from 'superstore';
 
@@ -145,7 +144,7 @@ function createElement (item) {
 	const disableDownloadButton = isDownloadDisabled(item);
 	const disableSaveButton = isSaveDisabled(item);
 	const downloadHref = disableDownloadButton ? '#' : generateDownloadURI(item.id, item);
-	const downloadText = disableDownloadButton ? 'Download' : 'Download unavailable';
+	const downloadText = disableDownloadButton ? 'Download unavailable' : 'Download';
 	const saveHref = disableSaveButton ? generateSaveURI(item['id'], item) : '#';
 	const saveTrackingId = isDownloadPage ? 'save-for-later' : 'save-for-later-downloads-page';
 	const title = USER_DATA.MAINTENANCE_MODE === true ? '' : item.title;
