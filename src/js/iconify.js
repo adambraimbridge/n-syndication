@@ -23,17 +23,30 @@ const SYNDICATION_INSERTION_RULES = {
 	'main.video': { fn: 'querySelector', slc: '.video__title' },
 	'li.o-teaser__related-item': {}
 };
+let USER_DATA;
 
-function init () {
+function init (user) {
+	USER_DATA = user;
 	addEventListener('asyncContentLoaded', () => syndicate(), true);
-	addEventListener(`${'nSyndication'}.dataChanged`, () => updatePage(), true);
+	addEventListener(`nSyndication.dataChanged`, () => updatePage(), true);
 
 	return syndicate();
 }
 
 function createElement ({messageCode, lang = 'en', id, type}) {
 	const stateClass = `n-syndication-icon-state-${messageCode}`.toLowerCase();
-	return toElement(`<button class="n-syndication-icon ${stateClass}" data-content-id="${id}" data-iso-lang="${lang}" data-content-type="${type}" data-syndicated="true" data-trackable="syn-icon" data-message-code="${messageCode}" type="button"></button>`);
+	const template = `<button 
+							class="n-syndication-icon ${stateClass}"
+							data-content-id="${id}"
+							data-iso-lang="${lang}"
+							data-content-type="${type}"
+							data-syndicated="true"
+							data-trackable="syn-icon"
+							data-message-code="${messageCode}"
+							type="button">
+							
+					  </button>`;
+	return toElement(template);
 }
 
 function findElementToSyndicate (element) {
