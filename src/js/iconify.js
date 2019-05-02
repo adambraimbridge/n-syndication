@@ -34,9 +34,9 @@ function init (user) {
 }
 
 function createElement (item) {
-    const {messageCode, lang = 'en', id, type} = item;
+	const {messageCode, lang = 'en', id, type} = item;
 	const stateClass = `n-syndication-icon-state-${messageCode}`.toLowerCase();
-	const template = `<button 
+	const template = `<button
 							class="n-syndication-icon ${stateClass}"
 							data-content-id="${id}"
 							data-iso-lang="${lang}"
@@ -46,7 +46,7 @@ function createElement (item) {
 							data-message-code="${messageCode}"
 							type="button">
 							<span class="o-normalise-visually-hidden">${getMessage(item, USER_DATA)}</span>
-					  </button>`;
+						</button>`;
 	return toElement(template);
 }
 

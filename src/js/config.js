@@ -78,4 +78,3 @@ export const TRACKING = {
 	},
 	URI: 'https://spoor-api.ft.com/px.gif'
 };
-
