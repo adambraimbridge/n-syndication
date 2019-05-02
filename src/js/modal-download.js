@@ -200,7 +200,7 @@ function download (evt) {
 		item.messageCode = 'MSG_2100';
 	});
 
-	broadcast(`nSyndication.downloadItem`, {
+	broadcast('nSyndication.downloadItem', {
 		item: item
 	});
 }

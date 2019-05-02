@@ -28,7 +28,7 @@ let USER_DATA;
 function init (user) {
 	USER_DATA = user;
 	addEventListener('asyncContentLoaded', () => syndicate(), true);
-	addEventListener(`nSyndication.dataChanged`, () => updatePage(), true);
+	addEventListener('nSyndication.dataChanged', () => updatePage(), true);
 
 	return syndicate();
 }
