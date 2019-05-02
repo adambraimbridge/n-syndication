@@ -42,7 +42,7 @@ async function init (flags){
 	}
 
 	initDataStore(user);
-	initIconify();
+	initIconify(user);
 	initDownloadModal(user);
 	$$('.video__actions__download').forEach(el => el.parentNode.removeChild(el));
 }

@@ -1,18 +1,18 @@
 'use strict';
 
 import {broadcast} from 'n-ui-foundations';
-//import tracking from 'o-tracking';
 import {listenTo} from 'o-viewport';
 import Superstore from 'superstore';
 
-import {MESSAGES, TRACKING} from './config';
+import {getMessage, TRACKING} from './config';
 
 import {toElement} from './util';
 import {getAllItemsForID, getItemByHTMLElement} from './data-store';
 
-
 const MAX_LOCAL_FORMAT_TIME_MS = 300000;
 const localStore = new Superstore('local', 'syndication');
+const isDownloadPage = location.pathname.includes('/download');
+const isSavePage = location.pathname.includes('/save');
 
 let OVERLAY_FRAGMENT;
 let OVERLAY_MODAL_ELEMENT;
@@ -117,139 +117,69 @@ function actionModalFromKeyboard (evt) {
 
 }
 
+function isDownloadDisabled (item) {
+	return [
+		USER_DATA.MAINTENANCE_MODE === true,
+		item.type === 'package',
+		item.notAvailable === true,
+		item.canBeSyndicated === 'verify',
+		item.canBeSyndicated === 'withContributorPayment' && USER_DATA.contributor_content !== true,
+		item.canBeSyndicated === 'no',
+		!item.canBeSyndicated,
+		item.canDownload < 1
+	].includes(true);
+}
+
+function isSaveDisabled (item) {
+	return [
+		item.saved === true,
+		USER_DATA.MAINTENANCE_MODE === true,
+		item.type === 'package',
+		item.notAvailable !== true && item.canBeSyndicated === 'no',
+		item.notAvailable !== true && !item.canBeSyndicated
+	].includes(true);
+}
+
 function createElement (item) {
-	let saveText = item.saved === true ? 'Already saved' : 'Save for later';
-	let downloadButtonState = '';
-	let downloadHref = generateDownloadURI(item['id'], item);
-	let downloadText = 'Download';
-	let saveButtonState = item.saved === true ? 'disabled' : '';
-	let saveHref = generateSaveURI(item['id'], item);
-	let message;
-	let trackableValueDownloadItem = 'download-items';
-	let trackableValueSaveForLater = 'save-for-later';
-	let wordCount = '';
-	let trackableAttributeForDownload = `${'data-trackable'}`;
+	const disableDownloadButton = isDownloadDisabled(item);
+	const disableSaveButton = isSaveDisabled(item);
+	const downloadHref = disableDownloadButton ? '#' : generateDownloadURI(item.id, item);
+	const downloadText = disableDownloadButton ? 'Download unavailable' : 'Download';
+	const saveHref = disableSaveButton ? generateSaveURI(item['id'], item) : '#';
+	const saveTrackingId = isDownloadPage ? 'save-for-later' : 'save-for-later-downloads-page';
+	const title = USER_DATA.MAINTENANCE_MODE === true ? '' : item.title;
+	let downloadTrackingId;
+	let saveText;
 
-	if (item.embargoPeriod) {
-		if (typeof item.embargoPeriod === 'number') {
-			item.embargoPeriod = `${item.embargoPeriod} day${item.embargoPeriod > 1 ? 's' : ''}`;
-		}
-
-		item.embargoMessage = item.embargoPeriod ? interpolate(MESSAGES.EMBARGO, item) : '';
+	if (item.saved === true) {
+		saveText = 'Already saved';
+	} else {
+		saveText = disableSaveButton ? 'Save unavailable' : 'Save for later';
 	}
 
-	const hasTranslationComponent = document.getElementById('ftlabsTranslationContainer');
-	item.translationMessage = Boolean(hasTranslationComponent) ? interpolate(MESSAGES.ENGLISH, item) : '';
-
-	if (location.pathname.includes('/download')) {
-		trackableValueDownloadItem = 'redownload';
-		trackableValueSaveForLater += '-downloads-page';
-	}
-	else if (location.pathname.includes('/save')) {
-		// trackableValueDownloadItem = 'download-saved-item';
-		trackableValueDownloadItem = '';
-	}
-
-	if (USER_DATA.MAINTENANCE_MODE === true) {
-		message = MESSAGES.MSG_5100;
-		downloadButtonState = 'disabled';
-		saveButtonState = 'disabled';
-		item.title = '';
-	}
-	else if (item.type === 'package') {
-		message = MESSAGES.MSG_4300;
-		downloadButtonState = 'disabled';
-		saveButtonState = 'disabled';
-	}
-	else if (item.notAvailable === true) {
-		downloadButtonState = 'disabled';
-		message = MESSAGES.MSG_4050;
-	}
-	else if (item.canBeSyndicated === 'verify') {
-		downloadButtonState = 'disabled';
-		message = item.lang !== 'en' ? MESSAGES.MSG_4250 : MESSAGES.MSG_2200;
-	}
-	else if (item.canBeSyndicated === 'withContributorPayment') {
-		if (USER_DATA.contributor_content !== true) {
-			downloadButtonState = 'disabled';
-			message = MESSAGES.MSG_2300;
-		}
-		else if (item.downloaded === true) {
-			message = MESSAGES.MSG_2340;
-		}
-		else {
-			message = MESSAGES.MSG_2320;
-		}
-	}
-	else if (item.canBeSyndicated === 'no' || !item.canBeSyndicated) {
-		downloadButtonState = 'disabled';
-		saveButtonState = 'disabled';
-		message = MESSAGES.MSG_4000;
-	}
-	else if (item.downloaded === true) {
-		message = MESSAGES.MSG_2100;
-	}
-	else if (item.canDownload < 1) {
-		downloadButtonState = 'disabled';
-
-		switch (item.canDownload) {
-			case 0:
-				message = item.lang !== 'en' ? MESSAGES.MSG_4250 : MESSAGES.MSG_4200;
-
-				break;
-			case -1:
-				message = MESSAGES.MSG_4100;
-
-				break;
-		}
-	}
-	else {
-		message = MESSAGES.MSG_2000;
-	}
-
-	message = interpolate(message, item);
-	//	item.messageCode = message;
-
-	if (downloadButtonState === 'disabled') {
-		downloadHref = '#';
-		downloadText += ' unavailable';
-	}
-	if (saveButtonState === 'disabled') {
-		saveHref = '#';
-
-		if (item.saved !== true) {
-			saveText = 'Save unavailable';
-		}
-	}
-
-	if (item.wordCount) {
-		wordCount = `<span class="n-syndication-modal-word-count">Word count: ${item.wordCount}</span>`;
-	}
-
-	if (trackableValueDownloadItem) {
-		trackableAttributeForDownload = `${trackableAttributeForDownload}="${trackableValueDownloadItem}"`;
-	}
-	else {
-		trackableAttributeForDownload = '';
+	if (isDownloadPage) {
+		downloadTrackingId = 'redownload';
+	} else if (!isSavePage) {
+		downloadTrackingId = 'download-items';
 	}
 
 	return toElement(`<div class="n-syndication-modal-shadow"></div>
-<div class="n-syndication-modal n-syndication-modal-${item.type}" role="dialog" aria-labelledby="'Download:  ${item.title}" tabindex="0">
-	<header class="n-syndication-modal-heading">
-		<a class="n-syndication-modal-close" data-action="close" 'data-trackable="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
-		<span role="heading" class="n-syndication-modal-title">${item.title}</span>
-	</header>
-	<section class=" n-syndication-modal-content">
-		${wordCount}
-		<div class="n-syndication-modal-message">
-		${message}
-		</div>
-		<div class="n-syndication-actions" data-content-id="${item['id']}" data-iso-lang="${item['lang']}">
-			<a class="n-syndication-action" data-action="save" ${saveButtonState} data-trackable="${trackableValueSaveForLater}" href="${saveHref}">${saveText}</a>
-			<a class="n-syndication-action n-syndication-action-primary" data-action="download" ${downloadButtonState} ${trackableAttributeForDownload} href="${downloadHref}">${downloadText}</a>
-		</div>
-	</section>
-</div>`);
+							<div class="n-syndication-modal n-syndication-modal-${item.type}" role="dialog" aria-labelledby="'Download:  ${title}" tabindex="0">
+								<header class="n-syndication-modal-heading">
+									<a class="n-syndication-modal-close" data-action="close" 'data-trackable="close-syndication-modal" role="button" href="#" aria-label="Close" title="Close" tabindex="0"></a>
+									<span role="heading" class="n-syndication-modal-title">${title}</span>
+								</header>
+								<section class=" n-syndication-modal-content">
+									${(item.wordCount ? `<span class="n-syndication-modal-word-count">Word count: ${item.wordCount}</span>` : '')}
+									<div class="n-syndication-modal-message">
+									${getMessage(item, USER_DATA)}
+									</div>
+									<div class="n-syndication-actions" data-content-id="${item.id}" data-iso-lang="${item.lang}">
+										<a class="n-syndication-action" data-action="save" ${disableSaveButton ? 'disabled' : ''} data-trackable="${saveTrackingId}" href="${saveHref}">${saveText}</a>
+										<a class="n-syndication-action n-syndication-action-primary" data-action="download" ${disableDownloadButton ? 'disabled' : ''} ${downloadTrackingId ? `data-trackable="${downloadTrackingId}"` : ''} href="${downloadHref}">${downloadText}</a>
+									</div>
+								</section>
+							</div>`);
 }
 
 function delayHide (ms = 500) {
@@ -270,7 +200,7 @@ function download (evt) {
 		item.messageCode = 'MSG_2100';
 	});
 
-	broadcast(`nSyndication.downloadItem`, {
+	broadcast('nSyndication.downloadItem', {
 		item: item
 	});
 }
@@ -305,10 +235,6 @@ function hide () {
 		OVERLAY_MODAL_ELEMENT = null;
 		OVERLAY_SHADOW_ELEMENT = null;
 	}
-}
-
-function interpolate (str, o) {
-	return String(str).replace(/\{\{([^\}]+)\}\}/gim, (m, p) => p in o ? o[p] : '');
 }
 
 function reposition () {

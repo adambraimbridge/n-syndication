@@ -106,7 +106,12 @@ function toElement (html) {
 	return frag;
 }
 
+function interpolate (str, o) {
+	return String(str).replace(/\{\{([^\}]+)\}\}/gim, (m, p) => p in o ? o[p] : '');
+}
+
 export {
+	interpolate,
 	cheapClone,
 	getContentAttributeFromHTMLElement,
 	getContentIDFromHTMLElement,

@@ -3,7 +3,7 @@
 import {$$, broadcast} from 'n-ui-foundations';
 
 import {DATA_STORE, fetchItems} from './data-store';
-
+import {getMessage} from './config';
 import {getContentIDFromHTMLElement, prepend, toElement} from './util';
 
 const SYNDICATION_INSERTION_RULES = {
@@ -23,16 +23,31 @@ const SYNDICATION_INSERTION_RULES = {
 	'main.video': { fn: 'querySelector', slc: '.video__title' },
 	'li.o-teaser__related-item': {}
 };
+let USER_DATA;
 
-function init () {
+function init (user) {
+	USER_DATA = user;
 	addEventListener('asyncContentLoaded', () => syndicate(), true);
-	addEventListener(`${'nSyndication'}.dataChanged`, () => updatePage(), true);
+	addEventListener('nSyndication.dataChanged', () => updatePage(), true);
 
 	return syndicate();
 }
 
 function createElement (item) {
-	return toElement(`<button class="n-syndication-icon n-syndication-icon-state-${String(item.messageCode).toLowerCase()}" data-content-id="${item['id']}" data-iso-lang="${item['lang'] || 'en'}" data-content-type="${item.type}" data-syndicated="true" data-trackable="syn-icon" data-message-code="${item.messageCode}" type="button"></button>`);
+	const {messageCode, lang = 'en', id, type} = item;
+	const stateClass = `n-syndication-icon-state-${messageCode}`.toLowerCase();
+	const template = `<button
+							class="n-syndication-icon ${stateClass}"
+							data-content-id="${id}"
+							data-iso-lang="${lang}"
+							data-content-type="${type}"
+							data-syndicated="true"
+							data-trackable="syn-icon"
+							data-message-code="${messageCode}"
+							type="button">
+							<span class="o-normalise-visually-hidden">${getMessage(item, USER_DATA)}</span>
+						</button>`;
+	return toElement(template);
 }
 
 function findElementToSyndicate (element) {
@@ -117,7 +132,6 @@ function syndicateElement (item, el) {
 
 		element.setAttribute('data-content-type', item.type);
 		element.setAttribute('data-syndicated', 'true');
-		//		element.setAttribute(ATTR_TRACKABLE, ATTR_TRACKABLE_VALUE);
 	}
 
 	if (element !== el) {
