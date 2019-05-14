@@ -141,7 +141,7 @@ function createElement (item) {
 	const disableSaveButton = isSaveDisabled(item);
 	const downloadHref = disableDownloadButton ? '#' : generateDownloadURI(item.id, item);
 	const downloadText = disableDownloadButton ? 'Download unavailable' : 'Download';
-	const saveHref = disableSaveButton ? generateSaveURI(item['id'], item) : '#';
+	const saveHref = disableSaveButton ? '#' : generateSaveURI(item['id'], item) ;
 	const saveTrackingId = isDownloadPage ? 'save-for-later' : 'save-for-later-downloads-page';
 	const title = USER_DATA.MAINTENANCE_MODE === true ? '' : item.title;
 	let downloadTrackingId;
