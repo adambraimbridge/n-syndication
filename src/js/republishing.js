@@ -11,8 +11,7 @@ import {TRACKING} from './config';
 function init (flags, user) {
 	if (user) {
 		_init(flags, user);
-	}
-	else {
+	} else {
 		getUserStatus().then(user => {
 			_init(flags, user);
 		});
@@ -22,7 +21,8 @@ function init (flags, user) {
 function _init (flags, user) {
 	if (!location.pathname.includes('/contract')) {
 		if (typeof window.republishingInitData !== 'function') {
-			window.republishingInitData = function () {};
+			window.republishingInitData = function () {
+			};
 		}
 
 		initDataStore(user, window.republishingInitData());
@@ -62,4 +62,4 @@ function broadcastClick (evt, user) {
 	}
 }
 
-export { init, track };
+export {init, track};

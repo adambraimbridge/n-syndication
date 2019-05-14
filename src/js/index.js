@@ -15,13 +15,13 @@ async function checkIfUserIsSyndicationCustomer () {
 		: false;
 }
 
-async function init (flags){
+async function init (flags) {
 	if (!flags.get('syndication')) {
 		return;
 	}
 
 	const userIsSyndicationCustomer = await checkIfUserIsSyndicationCustomer();
-	if(!userIsSyndicationCustomer){
+	if (!userIsSyndicationCustomer) {
 		return;
 	}
 

@@ -7,20 +7,20 @@ import {getMessage} from './config';
 import {getContentIDFromHTMLElement, prepend, toElement} from './util';
 
 const SYNDICATION_INSERTION_RULES = {
-	['a.card__concept-article-link']: { fn: 'closest', slc: '.card__concept-article' },
-	['a.topic-card__concept-article-link']: { fn: 'closest', slc: '.topic-card__concept-article' },
-	['a.package__content-item']: {fn: 'querySelector', slc: '.package__title' },
-	['.story__link']: {fn: 'closest', slc: 'article[data-trackable="story"]' },
+	['a.card__concept-article-link']: {fn: 'closest', slc: '.card__concept-article'},
+	['a.topic-card__concept-article-link']: {fn: 'closest', slc: '.topic-card__concept-article'},
+	['a.package__content-item']: {fn: 'querySelector', slc: '.package__title'},
+	['.story__link']: {fn: 'closest', slc: 'article[data-trackable="story"]'},
 	// matcher for n-teaser
-	'a': { fn: 'closest', slc: '.o-teaser__heading' },
+	'a': {fn: 'closest', slc: '.o-teaser__heading'},
 	// matcher for x-teaser
-	'.o-teaser': { fn: 'querySelector', slc: '.o-teaser__heading' },
-	'.stream-item': { fn: 'querySelector', slc: '.card-openable__headline' },
-	'article[class="article"]': { fn: 'querySelector', slc: '.topper__headline' },
-	'article.article--brand': { fn: 'querySelector', slc: '.topper__headline' },
-	'article.article-grid': { fn: 'querySelector', slc: '.topper__headline', up: 1 },
-	'div.hero': { fn: 'querySelector', slc: '.hero__heading' },
-	'main.video': { fn: 'querySelector', slc: '.video__title' },
+	'.o-teaser': {fn: 'querySelector', slc: '.o-teaser__heading'},
+	'.stream-item': {fn: 'querySelector', slc: '.card-openable__headline'},
+	'article[class="article"]': {fn: 'querySelector', slc: '.topper__headline'},
+	'article.article--brand': {fn: 'querySelector', slc: '.topper__headline'},
+	'article.article-grid': {fn: 'querySelector', slc: '.topper__headline', up: 1},
+	'div.hero': {fn: 'querySelector', slc: '.hero__heading'},
+	'main.video': {fn: 'querySelector', slc: '.video__title'},
 	'li.o-teaser__related-item': {}
 };
 let USER_DATA;

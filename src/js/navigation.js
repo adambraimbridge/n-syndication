@@ -1,6 +1,6 @@
 'use strict';
 
-import { $, broadcast } from 'n-ui-foundations';
+import {$, broadcast} from 'n-ui-foundations';
 
 function init (user) {
 	const insertNavItem = insertUserNavItem(user);
@@ -8,18 +8,18 @@ function init (user) {
 	insertNavItem({
 		selectorContainer: '#o-header-nav-desktop',
 		selectorInsertionPoint: '[data-trackable="Account Settings"]',
-		selectorLink: '.o-header__nav-link',
+		selectorLink: '.o-header__nav-link'
 	});
 
 	insertNavItem({
 		selectorContainer: '#o-header-drawer',
 		selectorInsertionPoint: '[data-trackable="Portfolio"]',
-		selectorLink: '.o-header__drawer-menu-link',
+		selectorLink: '.o-header__drawer-menu-link'
 	});
 }
 
 function insertUserNavItem (user) {
-	return ({ selectorContainer, selectorInsertionPoint, selectorLink }) => {
+	return ({selectorContainer, selectorInsertionPoint, selectorLink}) => {
 		const elCt = $(selectorContainer);
 		if (!elCt) {
 			return;

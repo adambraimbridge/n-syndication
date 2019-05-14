@@ -40,7 +40,7 @@ async function fetchItems (itemIDs) {
 
 	const options = {
 		credentials: 'include',
-		headers: { 'content-type': 'application/json' },
+		headers: {'content-type': 'application/json'},
 		method: 'POST',
 		body: JSON.stringify(itemIDs)
 	};
@@ -94,13 +94,13 @@ function getItemIndex (item) {
 	let lang;
 
 	switch (Object.prototype.toString.call(item)) {
-	case '[object Object]' :
-		id = item['id'];
-		lang = item['lang'] || 'en';
+		case '[object Object]' :
+			id = item['id'];
+			lang = item['lang'] || 'en';
 
 		// allow fall-through
-	case '[object String]' :
-		return DATA_STORE.findIndex(item => matches(item, id, lang));
+		case '[object String]' :
+			return DATA_STORE.findIndex(item => matches(item, id, lang));
 	}
 
 	return -1;

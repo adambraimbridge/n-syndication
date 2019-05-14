@@ -81,12 +81,10 @@ function getContentIDFromHref (id) {
 function prepend (parent, element) {
 	if (parent.prepend) {
 		parent.prepend(element);
-	}
-	else {
+	} else {
 		if (parent.childNodes.length) {
 			parent.insertBefore(element, parent.childNodes[0]);
-		}
-		else {
+		} else {
 			parent.appendChild(element);
 		}
 	}

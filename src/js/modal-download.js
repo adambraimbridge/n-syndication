@@ -53,13 +53,11 @@ function actionModalFromClick (evt) {
 
 	if (evt.target.matches('[data-content-id][data-syndicated="true"].n-syndication-icon')) {
 		show(evt);
-	}
-	else if (evt.target.matches('[data-content-id][data-syndicated="true"].download-button')) {
+	} else if (evt.target.matches('[data-content-id][data-syndicated="true"].download-button')) {
 		evt.preventDefault();
 
 		show(evt);
-	}
-	else if (evt.target.matches('.n-syndication-action[data-action="save"]')) {
+	} else if (evt.target.matches('.n-syndication-action[data-action="save"]')) {
 		save(evt);
 
 		hide();
@@ -67,13 +65,11 @@ function actionModalFromClick (evt) {
 		show(evt);
 
 		delayHide();
-	}
-	else if (evt.target.matches('.n-syndication-action[data-action="download"]')) {
+	} else if (evt.target.matches('.n-syndication-action[data-action="download"]')) {
 		download(evt);
 
 		delayHide();
-	}
-	else {
+	} else {
 		if (visible()) {
 			const action = evt.target.getAttribute('data-action');
 
@@ -82,8 +78,7 @@ function actionModalFromClick (evt) {
 
 				delayHide();
 			}
-		}
-		else {
+		} else {
 			fire = false;
 		}
 	}
@@ -107,7 +102,8 @@ function actionModalFromKeyboard (evt) {
 			broadcast('oTracking.event', trackingEvent);
 
 			break;
-		case ' ' : case 'Enter' :
+		case ' ' :
+		case 'Enter' :
 			if (evt.target.matches('[data-content-id][data-syndicated="true"].n-syndication-icon')) {
 				show(evt);
 			}
@@ -257,6 +253,7 @@ function save (evt) {
 
 	items.forEach(item => item.saved = true);
 }
+
 function shouldPreventDefault (el) {
 	do {
 		if (el.tagName.toUpperCase() === 'A') {
@@ -280,12 +277,10 @@ function show (evt) {
 		if (val) {
 			if (Date.now() - val.time <= MAX_LOCAL_FORMAT_TIME_MS) {
 				DOWNLOAD_FORMAT = `?format=${val.format}`;
-			}
-			else {
+			} else {
 				DOWNLOAD_FORMAT = '';
 			}
-		}
-		else {
+		} else {
 			DOWNLOAD_FORMAT = '';
 		}
 
