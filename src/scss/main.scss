@@ -3,8 +3,6 @@
 @import "o-overlay/main";
 @import "o-visual-effects/main";
 
-$system-code: "n-syndication";
-
 .n-syndication-icon {
 	@include oIconsContent(
 		$icon-name: "cross",
