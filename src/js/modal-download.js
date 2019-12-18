@@ -1,7 +1,7 @@
 'use strict';
 
 import {broadcast} from 'n-ui-foundations';
-import {listenTo} from 'o-viewport';
+import oViewport from 'o-viewport';
 import Superstore from 'superstore';
 
 import {getMessage, TRACKING} from './config';
@@ -26,7 +26,7 @@ function init (user) {
 	addEventListener('keyup', actionModalFromKeyboard, true);
 	addEventListener('resize', reposition, true);
 
-	listenTo('resize');
+	oViewport.listenTo('resize');
 
 	USER_DATA = user;
 }
