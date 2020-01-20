@@ -16,7 +16,7 @@ Run the (incomplete) test suite with
 $ make test
 ```
 
-Verify that the Sass can compile by running 
+Verify that the Sass can compile by running
 
 ```sh
 $ npx sass ./test/main.scss --load-path=./bower_components/
@@ -45,7 +45,7 @@ When a user then clicks a syndicator icon, a modal is displayed with `save` and/
 
 ## I can't see the icons!
 
-You need to be a syndication subscriber to see them - on a technical level this means having `S1` in your [products list](https://session-next.ft.com/products).  To get this contact Rika Niekzad or, failing that, maybe syndhelp@ft.com can help you.
+You need to be a syndication subscriber to see them - on a technical level this means having `S1` in your [products list](https://session-next.ft.com/products). To find out how to get this, contact syndhelp@ft.com.
 
 ## Where does the data come from?
 The Content API has the property `canBeSyndicated` which is a string containing either `yes`, `no` or `verify`.  This property is available in Next's Elastic search cluster and in [Next API](https://github.com/Financial-Times/next-api)
