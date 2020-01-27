@@ -45,7 +45,9 @@ When a user then clicks a syndicator icon, a modal is displayed with `save` and/
 
 ## I can't see the icons!
 
-You need to be a syndication subscriber to see them - on a technical level this means having `S1` in your [products list](https://session-next.ft.com/products). To find out how to get this, contact syndhelp@ft.com.
+You need to be a syndication subscriber to see them. On a technical level this means having `S1` in your [products list](https://session-next.ft.com/products), which should be the default case for all FT developer accounts, but if not then contact syndhelp@ft.com.
+
+The icons can be toggled on/off using the `syndication` flag via the [Flag Toggler](https://toggler.ft.com/).
 
 ## Where does the data come from?
 The Content API has the property `canBeSyndicated` which is a string containing either `yes`, `no` or `verify`.  This property is available in Next's Elastic search cluster and in [Next API](https://github.com/Financial-Times/next-api)
