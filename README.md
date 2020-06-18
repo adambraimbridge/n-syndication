@@ -2,6 +2,10 @@
 
 A client side library available as a Bower component that displays links next to headlines allowing syndication customers to download or save content for republishing.
 
+## What is Syndication and how does it work
+
+For an explanation, including a Slides deck which explains the infrastructure, please see [the Wiki page](https://github.com/Financial-Times/next/wiki/Syndication)
+
 ## Local Development
 
 ```sh
